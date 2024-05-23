@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "cssnano": "^7.0.1",
+    "postcss-import": "^16.1.0",
+    "postcss-preset-env": "^9.5.13",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   }
