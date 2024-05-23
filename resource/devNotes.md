@@ -75,7 +75,11 @@ Add configuration file: `postcss.config.cjs`. See links below for example config
 
 - [Astro PostCSS Example: Future CSS Today](https://rodneylab.com/astro-postcss-example/) (Rodney Lab, 2022)
 
-**Astro**
+**Web Components**
+
+[Build a Web App with Modern JavaScript and Web Components](https://www.sitepoint.com/build-frameworkless-web-app-modern-javascript-web-components/) (Sitepoint) A little dated, but comes with a [repo](https://github.com/sitepoint-editors/framework-less-web-components/tree/master) that might be interesting.
+
+**Astro** _Sidbar only_
 
 [Astro | Scripts and Event Handling](https://docs.astro.build/en/guides/client-side-scripts/) (Astro Docs) Includes info in integrating and/or creating web components with Astro.
 
