@@ -40,7 +40,7 @@ _PostCSS engine is included in Vite_
   - CSSNano: CSS minifier
 
 ```bash
-pnpm add -d autoprefixer postcss-preset-env cssnano postcss-import
+pnpm add -D autoprefixer postcss-preset-env cssnano postcss-import
 ```
 
 Add configuration file: `postcss.config.cjs`. See links below for example config files. The Astro doc shows a minimal one line export config. The Rodney Lab page show a more verbose expanded that allows for verbose configuration of the plugins.
