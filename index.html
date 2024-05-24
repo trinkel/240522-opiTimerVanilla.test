@@ -16,11 +16,23 @@
     <menu></menu>
   </header>
 
-  <clock-block></clock-block>
-
-  <timer-block></timer-block>
-
-  <team-block></team-block>
+  <main class="application">
+    <section id="clock_block class=" wrapper">
+      <clock-badge id="start-time"></clock-badge>
+      <clock-badge id="current-time"></clock-badge>
+      <clock-badge id="stop-time"></clock-badge>
+    </section>
+    <section id="time_block class=" wrapper">
+      <progress-indicator id="first-music"></progress-indicator>
+      <progress-indicator id="second-music"></progress-indicator>
+      <progress-indicator id="end-session"></progress-indicator>
+    </section>
+    <section id="team_block class=" wrapper">
+      <team-button id="previous-team"></team-button>
+      <team-button id="current-team"></team-button>
+      <team-button id="next-team"></team-button>
+    </section>
+  </main>
 
 </body>
 
