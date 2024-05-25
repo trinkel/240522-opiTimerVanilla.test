@@ -85,9 +85,7 @@
 
 body {
 	min-height: 100vh;
-	display: grid;
 	background-color: var(--clr-primary-100);
 	font-family: var(--ff-base);
 	font-size: var(--fs-0);
 }
-/* ToDo: Add web component style sheet as `components/_timer.css */

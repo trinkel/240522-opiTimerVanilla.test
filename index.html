@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>OPI Timer</title>
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
 	<link rel="stylesheet" href="./src/css/main.css">
 	<script type="module" src="./src/ts/main.ts"></script>
 </head>
@@ -13,24 +14,24 @@
 	<header>
 		<h1 class="visually-hidden">OPI Timer</h1>
 		<p class="visually-hidden">A product of dBugg.dev</p>
-		<menu></menu>
+		<menu id="setup">Hamburger</menu>
 	</header>
 
 	<main class="application">
 		<section id="clock_block" class="wrapper">
-			<clock-badge id="start-time"></clock-badge>
-			<clock-badge id="current-time"></clock-badge>
-			<clock-badge id="stop-time"></clock-badge>
+			<clock-badge id="start-time">Clock</clock-badge>
+			<clock-badge id="current-time">Clock</clock-badge>
+			<clock-badge id="stop-time">Clock</clock-badge>
 		</section>
 		<section id="time_block" class="wrapper">
-			<progress-indicator id="first-music"></progress-indicator>
-			<progress-indicator id="second-music"></progress-indicator>
-			<progress-indicator id="end-session"></progress-indicator>
+			<progress-indicator id="first-music">Timer</progress-indicator>
+			<progress-indicator id="second-music">Timer</progress-indicator>
+			<progress-indicator id="end-session">Timer</progress-indicator>
 		</section>
 		<section id="team_block" class="wrapper">
-			<team-button id="previous-team"></team-button>
-			<team-button id="current-team"></team-button>
-			<team-button id="next-team"></team-button>
+			<team-button id="previous-team">Team</team-button>
+			<team-button id="current-team">Team</team-button>
+			<team-button id="next-team">Team</team-button>
 		</section>
 	</main>
 
