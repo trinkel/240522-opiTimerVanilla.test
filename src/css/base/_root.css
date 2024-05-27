@@ -2,7 +2,7 @@
 @use '../../node_modules/utopia-core-scss/src/utopia' as utopia;
 @use './accessibility.scss'; */
 
-::root {
+:root {
 	/* colors */
 	--clr-neutral-000: hsl(0, 0%, 100%, 1);
 	--clr-neutral-100: hsl(0, 0%, 94%, 1);
@@ -78,9 +78,6 @@
 
 	/* OPI Timer starting values */
 	--transition: 200ms linear;
-	--progress-indicator-color-complete: var(--clr-critical-100);
-	--progress-indicator-progress-stroke: var(--clr-active-700);
-	--progress-indicator-bg-stroke: var(--clr-neutral-100);
 }
 
 body {

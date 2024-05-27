@@ -10,6 +10,10 @@
 
 .wrapper {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
 	place-items: center;
+
+	@media (orientation: landscape) {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }

@@ -1,0 +1,61 @@
+:root {
+	--progress-indicator-color-complete: var(--clr-critical-100);
+	--progress-indicator-progress-stroke: var(--clr-active-700);
+	--progress-indicator-bg-stroke: var(--clr-neutral-100);
+}
+
+.progress-indicator {
+	font-family: var(--font-base);
+	line-height: 1.1;
+	color: var(--color-dark);
+	container-type: inline-size;
+	width: var(--progress-indicator-viewbox);
+	height: auto;
+}
+
+.progress-indicator__progress-circle {
+	stroke: var(--progress-indicator-progress-stroke, currentColor);
+	transition: stroke-dashoffset var(--transition);
+	/* ! Note: The transform-origin doesn't work in Safari, so I moved the rotation to the SVG */
+	/* rotate: -90deg;
+	transform-origin: 50% 50%; */
+}
+
+.progress-indicator__background-circle {
+	stroke: var(--progress-indicator-bg-stroke, gray);
+}
+
+.progress-indicator__check {
+	width: var(--progress-indicator-check-size, 60cqw);
+	height: auto;
+	display: none;
+}
+
+.progress-indicator__count {
+	font-size: var(--progress-indicator-count-size, max(25cqw, 1rem));
+	z-index: 1;
+}
+
+.progress-indicator__visual {
+	display: grid;
+	grid-template-areas: 'stack';
+	align-items: center;
+	place-items: center;
+}
+
+.progress-indicator__visual > * {
+	grid-area: stack;
+}
+
+/* Respond to data-progress-state change in JS */
+[data-progress-state='complete'] .progress-indicator__progress-circle {
+	fill: var(--progress-indicator-color-complete);
+}
+
+[data-progress-state='complete'] .progress-indicator__count {
+	display: none;
+}
+
+[data-progress-state='complete'] .progress-indicator__check {
+	display: revert;
+}
