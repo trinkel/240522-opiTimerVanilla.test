@@ -1,8 +1,10 @@
 import ProgressIndicator from '../components/progressIndicator';
+import teamSession from './team';
 
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
+console.dir(teamSession);
 interface IndicatorStatus {
 	modeValue: number;
 	maxValue: number;
