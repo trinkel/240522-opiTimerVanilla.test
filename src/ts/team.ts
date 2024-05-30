@@ -1,6 +1,13 @@
 // Time utilities
 import { addMinutes, setHours, setMinutes, setSeconds } from 'date-fns';
 
+import { practiceTimes } from '../data/practiceTimes';
+
+/**
+ * Sets the time of the given Date object based on a minimal time string.
+ * @param time A string representing the time in the format 'HH:MM:SS' or 'HH:MM'.
+ * @returns A Date object with the time set according to the input string.
+ */
 function setTime(time: string): Date {
 	let date = new Date();
 	if (time.split(':').length === 3) {
@@ -15,6 +22,7 @@ function setTime(time: string): Date {
 	return date;
 }
 
+// todo: deprecated by date-fns?
 interface timeMath {
 	days: number;
 	hours: number;
@@ -22,6 +30,7 @@ interface timeMath {
 	seconds: number;
 }
 
+// todo: deprecated by date-fns?
 const timeMath = {
 	days: 1000 * 60 * 60 * 24,
 	hours: 1000 * 60 * 60,
@@ -29,47 +38,42 @@ const timeMath = {
 	seconds: 1000,
 };
 
+type setup = {
+	name: string;
+	startTime: string;
+	sessionSpec: number;
+	endTime: string;
+}[];
+
 // Placeholder team setup
 const setup = [
 	{
 		name: 'Rhythm & Blades',
 		startTime: '12:00',
-		sessionSpec: 'eight',
+		sessionSpec: 8,
 		endTime: '12:08',
-	},
-	{
-		name: '',
-		startTime: '',
-		sessionSpec: '',
-		endTime: '',
 	},
 ];
 
-// Placeholder practice timetable
-const practiceTimes = {
-	eight: {
-		duration: 8,
-		firstMusic: 1.5,
-		firstWarning: 0.5,
-		secondMusic: 4.5,
-		secondWarning: 0.5,
-		endWarning: 1,
-	},
-};
-
+//todo: finish?
 interface teamSession {
 	name: string;
 	startTime: '';
 }
+const { name, startTime, sessionSpec, endTime } = setup[0];
 
 const teamSession = {
 	// Set team basics from ${setup}
-	name: setup[0].name || 'Rhythm & Blades',
 
-	startTime: setTime(setup[0].startTime),
+	// add a team name if none provided for demo purposes
+	// remove for PROD
+	name: name ? name : 'Rhythm & Blades',
+
+	startTime: setTime(startTime),
 
 	// reference to practice session spec
-	sessionSpec: practiceTimes[setup[0].sessionSpec],
+	// sessionSpec: practiceTimes[setup[0].sessionSpec],
+	sessionSpec: practiceTimes[sessionSpec],
 
 	// getters based on ${practiceTimes}
 	get current(): Date {
