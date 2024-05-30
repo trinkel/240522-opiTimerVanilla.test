@@ -103,6 +103,38 @@ timer(() => {
 });
 ```
 
+### Timing Functions
+
+**Theory of Operation**
+
+> ToDo: Test rate of 'tick'. Start at 500ms. See if less takes too much proc or makes any difference.
+
+`practiceGroup[]`: Array of team practice objects
+
+`teamSession{}`: Object of team practice session that includes name, time specs and control functions
+
+- On init (table)
+
+  - Start time (read from input)
+  - Duration (read from input)
+  - Stop time (calc or read? From source.)
+  - First music (time or duration from start? From source.)
+  - First warn (calc from first music From source.)
+  - Second music (time or duration from start? From source.)
+  - Second warn (calc from second music From source.)
+  - Overall time remaining (calc from end)
+  - End warn (calc from end)
+
+- On each tick
+
+  - get current time
+  - check time remaining to (all of above)
+
+- Controller
+  - End time
+  - Time remaining
+
+### Function for calculating time remaining
 ```
 
 ---
