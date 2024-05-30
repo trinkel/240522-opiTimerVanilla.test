@@ -135,6 +135,95 @@ timer(() => {
   - Time remaining
 
 ### Function for calculating time remaining
+
+```js
+// returns an object of unit values for date delta
+export function counterMath(targetDate, todaysDate) {
+	const countDown = {
+		seconds: 0,
+		secondsQuo: 1000,
+		minutes: 0,
+		minutesQuo: 1000 * 60,
+		hours: 0,
+		hoursQuo: 1000 * 60 * 60,
+		days: 0,
+		daysQuo: 1000 * 60 * 60 * 24,
+	};
+
+	const delta = targetDate - todaysDate;
+
+	// Days
+	countDown.days = Math.floor(delta / countDown.daysQuo);
+
+	// Hours
+	countDown.hours = Math.floor(
+		(delta % countDown.daysQuo) / countDown.hoursQuo
+	);
+
+	// Minutes
+	countDown.minutes = Math.floor(
+		(delta % countDown.hoursQuo) / countDown.minutesQuo
+	);
+
+	// Seconds
+	countDown.seconds = Math.round(
+		(delta % countDown.minutesQuo) / countDown.secondsQuo
+	);
+
+	return countDown;
+}
+```
+
+### [TypeScript] Typing an object (as `interface` with `export` for module)
+
+```ts
+export interface timeMath {
+	days: number;
+	hours: number;
+	minutes: number;
+	seconds: number;
+}
+
+const timeMath = {
+	days: 1000 * 60 * 60 * 24,
+	hours: 1000 * 60 * 60,
+	minutes: 1000 * 60,
+	seconds: 1000,
+};
+```
+
+### [TypeScript] Typing an array of objects (`type` with `export` for module)
+
+```ts
+export type practiceTimes = {
+	duration: number;
+	firstMusic: number;
+	firstWarning: number;
+	secondMusic: number;
+	secondWarning: number;
+	endWarning: number;
+}[];
+
+export const practiceTimes: practiceTimes = [];
+
+practiceTimes = [
+	{
+		duration: 6,
+		firstMusic: 1.25,
+		firstWarning: 0.25,
+		secondMusic: 3.75,
+		secondWarning: 0.25,
+		endWarning: 1,
+	},
+	{
+		duration: 7,
+		firstMusic: 1.5,
+		firstWarning: 0.25,
+		secondMusic: 4.5,
+		secondWarning: 0.25,
+		endWarning: 1,
+	},
+];
 ```
 
 ---
