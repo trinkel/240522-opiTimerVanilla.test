@@ -132,7 +132,23 @@ timer(() => {
 
 - Controller
   - End time
-  - Time remaining
+  - Time
+
+### Buttons (footer)
+
+**Theory of operation**
+
+- **Start button:**
+  - starts timers
+  - sets session start and session end clocks
+  - Swaps to pause button
+- **Pause button**
+
+  - stops timers
+  - Session end clock advances showing projected end time if session restarted.
+
+- **Forward and back buttons**
+  - shift team names in footer buttons
 
 ### Function for calculating time remaining
 
