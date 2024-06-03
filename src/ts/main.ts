@@ -36,7 +36,10 @@ init();
 
 function init() {
 	if (rounds <= 0) {
-		sessionStatus ? (sessionStatus.textContent = 'Group completed') : null;
+		sessionStatus
+			? (sessionStatus.textContent =
+					'Group completed' + teamSession.remainingTime)
+			: null;
 		return;
 	}
 	console.log(`initializing: ${rounds}`);

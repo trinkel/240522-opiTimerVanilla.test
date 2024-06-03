@@ -1,5 +1,11 @@
 // Time utilities
-import { addMinutes, setHours, setMinutes, setSeconds } from 'date-fns';
+import {
+	addMinutes,
+	intervalToDuration,
+	setHours,
+	setMinutes,
+	setSeconds,
+} from 'date-fns';
 
 import { practiceTimes } from '../data/practiceTimes';
 
@@ -49,13 +55,13 @@ type setup = {
 const setup = [
 	{
 		name: 'Rhythm & Blades',
-		startTime: '12:00',
+		startTime: '23:59',
 		sessionSpec: 8,
 		endTime: '12:08',
 	},
 ];
 
-//todo: finish?
+//todo: get time remaining to all times (intervalToDuration as separate function)?
 interface teamSession {
 	name: string;
 	startTime: '';
@@ -100,11 +106,27 @@ const teamSession = {
 		// return addMinutes(this.startTime, 1.5);
 		return addMinutes(this.startTime, this.sessionSpec.duration);
 	},
+
+	get remainingTime(): string {
+		let t = intervalToDuration({
+			start: this.current,
+			end: this.stopTime,
+		});
+
+		// build output
+		if (t.hasOwnProperty('hours')) {
+			t = Object.assign({ hours: 0, minutes: 0, seconds: 0 }, t);
+		} else {
+			t = Object.assign({ minutes: 0, seconds: 0 }, t);
+		}
+
+		const result: string = Object.values(t)
+			.map((unit) => unit.toString().padStart(2, '0'))
+			.join(':');
+		return result;
+	},
 };
 
-//ToDo (HERE): See DevNotes | **Function for calculating time remaining** for time remaining function.
-// should it be a getter or separate function?
-// replaces `timeMath` above?
-// also not how it is exported as it is defined. Do that for these functions as well
+console.dir(teamSession);
 
 export default teamSession;

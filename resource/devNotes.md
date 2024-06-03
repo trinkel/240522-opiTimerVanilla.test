@@ -59,6 +59,24 @@ Add configuration file: `postcss.config.cjs`. See links below for example config
 }
 ```
 
+**date-fns**
+
+Toolset for manipulating JavaScript dates.
+
+```bash
+pnpm add date-fns
+```
+
+```ts
+import {
+	addMinutes,
+	setHours,
+	setMinutes,
+	setSeconds,
+	intervalToDuration,
+} from 'date-fns';
+```
+
 ## Resources
 
 **Original source for progress meter**
