@@ -1,3 +1,5 @@
+// ToDo: Convert `teamSession` to a class
+
 // Time utilities
 import {
 	addMinutes,
