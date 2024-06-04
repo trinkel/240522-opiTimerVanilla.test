@@ -168,6 +168,25 @@ timer(() => {
 - **Forward and back buttons**
   - shift team names in footer buttons
 
+### `teamSession` Timer Calculations — Theory of Operation
+
+Class: `teamSession`
+
+- getters retrieve the Date object for each segment of the session
+
+  - first music
+  - first music warning
+  - second music
+  - second music warning
+  - time remaining in session
+  - end session warning
+  - end session
+
+- getter retrieves time remaining in session
+
+- Need getter to retrieve time remaining to each of the session segments. _?? Should that be returned as from the getter rather than the Date object or getted separately_
+- !! Probably need to set Date to a variable with getter and then run time remain against the variable so we're not constantly accessing the clock (or are we?).
+
 ### Function for calculating time remaining
 
 ```js
