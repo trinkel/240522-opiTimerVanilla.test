@@ -103,23 +103,7 @@ import {
 
 [Web Components in Astro](https://stevenwoodson.com/blog/web-components-in-astro/) A guy's attempt to use web components in Astro. Includes a solution for importing the JS and styles without getting errors. (resolves `HTMLElement undefined` error).
 
-## Scratchpad
-
-### Function with callback
-
-```js
-// Define the function
-function timer(callBack) {
-...
-callBack();
-
-// Call the function with anonymous callback
-timer(() => {
-	// Callback function: called after timer runs have completed
-	// decrement teams and restart timers until all teams run
-	teams ? init() : (sessionStatus.innerText = 'Group completed');
-});
-```
+## Coding notes: How the App Works
 
 ### Timing Functions
 
@@ -227,6 +211,24 @@ export function counterMath(targetDate, todaysDate) {
 }
 ```
 
+## Coding notes: Research and Explanations
+
+### Function with callback
+
+```js
+// Define the function
+function timer(callBack) {
+...
+callBack();
+
+// Call the function with anonymous callback
+timer(() => {
+	// Callback function: called after timer runs have completed
+	// decrement teams and restart timers until all teams run
+	teams ? init() : (sessionStatus.innerText = 'Group completed');
+});
+```
+
 ### [TypeScript] Typing an object (as `interface` with `export` for module)
 
 ```ts
@@ -277,6 +279,46 @@ practiceTimes = [
 		endWarning: 1,
 	},
 ];
+```
+
+### Destructuring Objects on Assignment
+
+I'm using this as input to the teamSession (or timer session) class (or at least that's what it is as of June 4). [How to Use Object Destructuring in JavaScript](https://dmitripavlutin.com/javascript-object-destructuring/), by Dmitri Pavlutin has a good walkthrough and straight forward examples of the different options. Basically its:
+
+_As JavaScript or TypeScript with inferred type_
+
+```js
+const hero = {
+	name: 'Batman',
+	realName: 'Bruce Wayne',
+};
+
+const { name, realName } = hero;
+
+console.log(name); // => 'Batman',
+console.log(realName); // => 'Bruce Wayne'
+```
+
+_Or in TypeScript with inline types (as opposed to an `interface` or `type`)_
+
+```ts
+// Source: [Mastering TypeScript Array of Object: A Comprehensive Guide: Inline Type Declaration in TypeScript](https://www.dhiwise.com/post/mastering-typescript-array-of-object-a-comprehensive-guide#inline-type-declaration-in-typescript)
+
+const hero: { name: string; realName: string } = {
+	name: 'Batman',
+	realName: 'Bruce Wayne',
+};
+```
+
+---
+
+_Or as array of objects_
+
+```ts
+const hero: { name: string; realName: string } = {
+	name: 'Batman',
+	realName: 'Bruce Wayne',
+}[];
 ```
 
 ---
