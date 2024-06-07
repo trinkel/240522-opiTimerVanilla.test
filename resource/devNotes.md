@@ -171,6 +171,10 @@ Class: `teamSession`
 - Need getter to retrieve time remaining to each of the session segments. _?? Should that be returned as from the getter rather than the Date object or getted separately_
 - !! Probably need to set Date to a variable with getter and then run time remain against the variable so we're not constantly accessing the clock (or are we?).
 
+- !! When looping through teams, use index to reference previous and next objects for previous and next team names. (As an alternative: Before looping through teams for actual use, loop through them to add previous and next team properties to each team object)
+
+- See **`teams.ts` class skeleton** below for more detail
+
 ### Function for calculating time remaining
 
 ```js
@@ -310,8 +314,6 @@ const hero: { name: string; realName: string } = {
 };
 ```
 
----
-
 _Or as array of objects_
 
 ```ts
@@ -320,6 +322,101 @@ const hero: { name: string; realName: string } = {
 	realName: 'Bruce Wayne',
 }[];
 ```
+
+## `teams.ts` class skeleton --------------
+
+\*\*COMPLEX SESSION !//
+
+**DATA APPLIED**
+**SESSION NOT STARTED**
+
+**SETUP**
+
+- Retrieve or build team object
+- Need to somehow acquire previous and next team names
+
+**List based run types**
+
+- Parameters acquired directly from list
+
+- build new array of objects for run. Add previous and next team to each object.
+
+- Anonymous run type (contents to list object)
+
+- Parameters plugged into list from form input so runtime uses same object.
+
+- teamName = ""
+
+  - in UI, if ""->button title replaces team name
+
+- level = "" (maybe have input for level in setup if we add that label to UI)
+
+- startTime =
+
+  - if entered in setup, get from start time
+  - if start button clicked, get from `new Date`
+
+- duration = duration entry
+
+- number of teams: repeat. Needs to somehow replace the number of objects in the parent array. Like, swap the forEach() loop with a while() loop or something like that.
+
+**Both run types**
+
+- select session specification from practiceTimes by duration (from team or setup setting)
+  const sessionSpec = practiceTimes[team.duration];
+
+- set variables for startTime and endTime for first team
+- Fill Session Start and Session End badges
+- Previous Team badge: empty
+- Current Team badge: change label to "On Deck" and fill with first team or fill with label. Activate start button
+- Next Team badge: fill with next team or fill with label if empty. Next icon inactive
+
+- get timeRemaining to startTime
+
+  - Run on timeRemaining timer (emphasize)
+  - Change label to "Time remaining to start of session"
+  - Other timers deemphasized
+
+- Reach startTime or start button pressed or next team
+- Initialize session
+
+- Init times
+
+  - [if first team]
+
+    - Activate Pause icon on current team badge
+    - Activate Next Team icon as appropriate
+
+  - [if not first team]
+    - set reset startTime and endTime for current team
+    - Fill Session Start and Session End badges
+    - Activate/Deactivate Previous and Next icons as appropriate
+    - Update Current and as applicable, Previous and Next Team badges. If no team names fill badges with badge labels.
+
+- set variables for
+
+  - firstMusic
+  - firstWarn
+  - secondMusic
+  - secondWarn
+
+- set firstMusic timer - emphasize (CSS)
+- set secondMusic timer - deemphasize (CSS)
+- set timeRemaining timer - deemphasize (CSS)
+
+**Reach end of session**
+
+- deemphasize all clocks (they should already be stopped)
+- clear start and stop time badges
+- clear team name badges
+- deactivate previous team icon (next team icon should already be deactivated)
+- switch pause icon to play in current team badge and activated
+
+**MANUAL SESSION**
+
+- Set a time in setup
+- Optional: set number of teams
+- Run until pause is clicked or number of teams is exhausted
 
 ---
 
