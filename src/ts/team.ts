@@ -11,6 +11,9 @@ import {
 
 import { practiceTimes } from '../data/practiceTimes';
 
+// sample data: remove or add a demo switch
+import { teams } from '../data/sampleData';
+
 /**
  * Sets the time of the given Date object based on a minimal time string.
  * @param time A string representing the time in the format 'HH:MM:SS' or 'HH:MM'.
@@ -30,27 +33,61 @@ function setTime(time: string): Date {
 	return date;
 }
 
-export class teamSession {
+export class TeamSession {
 
-	constructor(teams) {
-		this.teams = teams
+	teams: teams[]
+
+	constructor(teams: teams[], numStarts ?: number) {
+		this.teams = teams;
+		console.log(this.teams);
+
+		if ( numStarts ) {
+			// Do the thing `numStarts` times
+		} else {
+		teams.forEach((team) => {
+
+			// todo: Outline the timer process here, then replicate above for anonymous start
+			// Can we run the two setups then merge into a single run?
+
+			/** incoming: Team objects (from an array) includes
+			 * 	- teamName: string
+			 * 	- level: string
+			 * 	- startTime: string
+			 * 	- endTime: string
+			 * 	- duration: number
+			 *
+			 * imported: practiceTimes array of objects includes
+			 * 	- duration: number
+			 * 	- firstMusic: number
+			 *  - firstWarning: number
+			 *  - secondMusic: number
+			 *  - secondWarning: number
+			 *  - endWarning: number
+			*/
+
+
+
+
+
+		})
 	}
+}
 
-	this.teams.
 
 	// Set team basics from ${setup}
 
 	// add a team name if none provided for demo purposes
 	// remove for PROD
-	name: name ? name : 'Rhythm & Blades',
+	teamName ? teamName : 'Rhythm & Blades',
 
-	startTime: setTime(startTime),
+	startTime = setTime(startTime),
 
 	// reference to practice session spec
 	// sessionSpec: practiceTimes[setup[0].sessionSpec],
 	sessionSpec: practiceTimes[sessionSpec],
 
 	// getters based on ${practiceTimes}
+	// Runs each loop. Basis for time math
 	get current(): Date {
 		return new Date();
 	},
