@@ -1,5 +1,5 @@
-interface teams {
-	name: string;
+export interface teams {
+	teamName: string;
 	level: string;
 	startTime: string;
 	endTime: string;
@@ -8,37 +8,37 @@ interface teams {
 [];
 
 // Placeholder team teams
-const teams = [
+export const teams = [
 	{
-		name: 'Glenview Blades',
+		teamName: 'Glenview Blades',
 		level: 'Preliminary',
 		startTime: '12:00 PM',
 		endTime: '12:07 PM',
 		duration: 7,
 	},
 	{
-		name: 'Northernettes',
+		teamName: 'Northernettes',
 		level: 'Preliminary',
 		startTime: '12:07 PM',
 		endTime: '12:14 PM',
 		duration: 7,
 	},
 	{
-		name: 'Saint Louis Synergy',
+		teamName: 'Saint Louis Synergy',
 		level: 'Preliminary',
 		startTime: '12:14 PM',
 		endTime: '12:21 PM',
 		duration: 7,
 	},
 	{
-		name: 'Crystallettes',
+		teamName: 'Crystallettes',
 		level: 'Preliminary',
 		startTime: '12:21 PM',
 		endTime: '12:28 PM',
 		duration: 7,
 	},
 	{
-		name: 'Chicago Skates',
+		teamName: 'Chicago Skates',
 		level: 'Preliminary',
 		startTime: '12:28 PM',
 		endTime: '12:35 PM',
