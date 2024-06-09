@@ -6,10 +6,10 @@ export default ProgressIndicator;
 
 console.dir(teamSession);
 interface IndicatorStatus {
-	modeValue: number;
-	maxValue: number;
-	progressValueInit: number;
-	progressValue: number;
+	modeValue: number; // Count up or down
+	maxValue: number; // Maximum value
+	progressValueInit: number; // Initialization value
+	progressValue: number; // Current value
 }
 
 // Get the indicator elements and establish variables for their values
