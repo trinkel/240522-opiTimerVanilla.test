@@ -395,10 +395,12 @@ const hero: { name: string; realName: string } = {
 
 - set variables for
 
+  - startTime
   - firstMusic
   - firstWarn
   - secondMusic
   - secondWarn
+  - endTime
 
 - set firstMusic timer - emphasize (CSS)
 - set secondMusic timer - deemphasize (CSS)
