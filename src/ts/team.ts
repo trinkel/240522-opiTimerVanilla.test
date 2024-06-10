@@ -91,7 +91,7 @@ export class TeamSession {
 				// Initialize Session Duration
 				this.sessionSpec = practiceTimes[team.duration];
 
-				// Set variables
+				// Set variables: Date
 				this.startTime = setTime(team.startTime);
 				this.firstWarnTime = this.firstWarn;
 				this.firstMusicTime = this.firstMusic;
