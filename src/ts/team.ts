@@ -1,5 +1,3 @@
-// ToDo: Convert `teamSession` to a class
-
 // Time utilities
 import {
 	addMinutes,
@@ -88,7 +86,7 @@ export class TeamSession {
 				 *  - endWarning: number
 				 */
 
-				// Initialize Session Duration
+				// Select Session Duration object
 				this.sessionSpec = practiceTimes[team.duration];
 
 				// Set variables: Date
