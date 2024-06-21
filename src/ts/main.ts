@@ -11,6 +11,7 @@ export default ProgressIndicator;
 interface Indicators {
 	id: string; // element ID
 	element: Element; // progressIndicator custom element
+	timeProperty: string; // name of property with time for element (eg firstWarnTime)
 	modeValue: number; // Count up or down //! Don't need it but leave it in for posterity or 'just in case'
 	maxValue: number; // Maximum value
 	progressValueInit: number; // Initialization value
@@ -29,8 +30,9 @@ indicatorIds.forEach((id) => {
 	const indicatorElement = document.querySelector(`${id}`);
 	if (indicatorElement) {
 		indicators.push({
-			id: '',
+			id: id,
 			element: indicatorElement,
+			timeProperty: id.substring(0, id.length - 1), // used to access times from class such as firstMusicTime
 			modeValue: 1, // Count up or down
 			// Zero out properties to initialize then initialize in class)
 			maxValue: 0, // Maximum value
@@ -65,7 +67,8 @@ function init(): void {
 	}
 	indicators.forEach((indicator) => {
 		indicator.progressComplete = false; // Indicates progress complete (starts as false)
-		indicator.maxValue = // Here: How do we access values in the class?
+		// HereHere: How do we access values in the class? This will use the timeProperty as the name of the property holding the max time for the timer.
+		indicator.maxValue =
 		indicator.progressValueInit = indicator.modeValue ? indicator.maxValue : 0;
 		indicator.progressValue = indicator.progressValueInit;
 		indicator.element.setAttribute(
