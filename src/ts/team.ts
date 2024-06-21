@@ -56,7 +56,7 @@ export class TeamSession {
 	firstMusicTime: Date = new Date();
 	secondWarnTime: Date = new Date();
 	secondMusicTime: Date = new Date();
-	endTime: Date = new Date();
+	endSessionTime: Date = new Date();
 	timeRemaining: string = ''; // <- Not used?
 
 	constructor(teams: teams[], numStarts?: number) {
@@ -95,7 +95,7 @@ export class TeamSession {
 				this.firstMusicTime = this.firstMusic;
 				this.secondWarnTime = this.secondWarn;
 				this.secondMusicTime = this.secondMusic;
-				this.endTime = this.stopTime;
+				this.endSessionTime = this.stopTime;
 			});
 		}
 	}
