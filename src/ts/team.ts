@@ -51,7 +51,7 @@ export class TeamSession {
 		endWarning: 0,
 	};
 
-	startTime: Date = new Date();
+	startTime: Date = new Date(); //! Is this actually in parameters? 240620
 	firstWarnTime: Date = new Date();
 	firstMusicTime: Date = new Date();
 	secondWarnTime: Date = new Date();

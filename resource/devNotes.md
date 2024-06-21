@@ -323,7 +323,7 @@ const hero: { name: string; realName: string } = {
 }[];
 ```
 
-## `teams.ts` class skeleton --------------
+## `teams.ts` class skeleton -------------- //! This needs to be revisited after Setup revamp/think-through below (TR 240620)
 
 \*\*COMPLEX SESSION !//
 
@@ -422,6 +422,52 @@ const hero: { name: string; realName: string } = {
 
 ---
 
+## Outline initial setup
+
+### Inputs
+
+| Name             | Input Type                             | TS Type     | Function                                                                                                               | Options                                             | Default |
+| ---------------- | -------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------- |
+| Session Length   | Number input                           | `number`    | Length of each practice session (minutes). Currently all sessions are equal. Future enhancement to allow for variances |                                                     | 6       |
+| Pause            | Number input                           | `number`    | Length of pause between session (minutes). Currently all pauses are equal                                              |                                                     | 0       |
+| Start            | Switch                                 | `number`    | How group is started                                                                                                   | Automatic (0), Scheduled (1)                        | 0       |
+| Start Time       | Text input, hidden for Start:Automatic | `text`      | Time group starts if StartTime:Scheduled is selected                                                                   | Text converted to `Date` for object                 | `null`  |
+| pm               | Switch                                 | `boolean`   | am (false) or pm (true)                                                                                                | Add 12 to hour if true and hour not greater than 12 |
+| Teams Mode       | Toggle                                 | `number`    | How teams are shown                                                                                                    | Anonymous (0), List (1)                             | 0       |
+| Team List        | Text input, hidden for Teams:Anonymous | `text area` | CR delimited list of teams. Empty for Teams:Anonymous.                                                                 |                                                     | ""      |
+| Number of starts | Number input, hidden for Teams:List    | `number`    | If Teams:Anonymous, enter number of starts, 0 for infinite. If Teams:List, it's `teamList.length`                      |                                                     |         |
+| Warp             | Hidden selector                        | `selector`  | Speed factor for demo                                                                                                  | 1-8                                                 | 1       |
+
+### Object
+
+```ts
+export interface parameters {
+	sessionLength: number; // Length of each practice session.
+	sessionPause: number; // Length of pause between each session
+	groupStartType: number; // Automatic (0) or Scheduled (1)
+	groupStartTimeIn: Date;
+	pm: boolean; // am (false) or pm (true)
+	teamMode: number; // Anonymous (0), List (1)
+	teamList: [string]; // CR delimited text to array elements
+	numStarts: number; // if teamMode=0: get input; if teamMode=1: `teamList.length`
+	warp: number; // Speed factor for demos
+}
+
+export const parameters = {
+	// Set defaults
+	sessionLength: 6, // Length of each practice session.
+	sessionPause: 0, // Length of pause between each session.
+	groupStartType: 0, // Automatic (0) or Scheduled (1)
+	groupStartTime: null,
+	teamMode: 0, // Anonymous (0), List (1)
+	teamList: [], // CR delimited text to array elements
+	numStarts: 8, // if teamMode=0: get input; if teamMode=1: `teamList.length`
+	warp: 1, // Speed factor for demos
+};
+```
+
+---
+
 > This is the text for the original project.
 
 ## For timer
@@ -429,3 +475,7 @@ const hero: { name: string; realName: string } = {
 This progress meter is based on a percent. Both the `stroke-dashoffset` length and it's rotation progress around the circle are based on a percentage. I think to change it to a timer I may need a 60 based variable as well as a 100 based variable which is created from the progress of the 60 based variable.
 
 For example, distance within the circle and circle completion are based on 100%. At the interval, check the time remaining, determine it's percentage and apply it to the circle.
+
+```
+
+```

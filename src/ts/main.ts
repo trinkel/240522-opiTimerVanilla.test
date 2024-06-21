@@ -1,7 +1,7 @@
 import ProgressIndicator from '../components/progressIndicator';
 import TeamSession from './team';
 // sample data: remove or add a demo switch
-import { parameters } from '../components/setup';
+import { parameters } from '../components/parameters';
 import { teams } from '../data/sampleData';
 
 // Passthrough component module
