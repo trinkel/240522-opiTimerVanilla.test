@@ -10,6 +10,7 @@ This is a resource for announcers running an IJS official practice ice session f
 **Local:** `/Users/trinkel/Development/DevOps/USFS/Projects/opiTimer/240522-opiTimerVanilla.stack`<br>
 **My Repository**:<br>
 [**AI Conversation**](https://#) https://#
+[**Notion Notes**](https://www.notion.so/opiTimer-1dd28742e2cf455d83518dd407ffb010?pvs=4)
 
 A fork of `240512-opiTimerAstro.stack` moving to vanilla JS on Vite.
 
