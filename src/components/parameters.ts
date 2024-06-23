@@ -42,7 +42,7 @@ export class parameters {
 		// sessionLength: future enhancement option to set different lengths in `teamList`
 
 		// Set group start time
-		if (this.groupStartTimeIn) {
+		if (this.groupStartType && this.groupStartTimeIn) {
 			let timeString = this.groupStartTimeIn.split(':');
 			if (timeString.length === 2) {
 				timeString.push('00');
