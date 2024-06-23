@@ -21,7 +21,7 @@
 // 	numStarts: -1,
 // };
 
-export class parameters {
+export class Parameters {
 	// Set defaults
 	sessionLength: number = 6; // Length of each practice session.
 	sessionPause: number = 0; // Length of pause between sessions
