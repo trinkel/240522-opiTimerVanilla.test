@@ -9,9 +9,6 @@ import {
 
 import { practiceTimes } from '../data/practiceTimes';
 
-// sample data: remove or add a demo switch
-import { teams } from '../data/sampleData';
-
 interface sessionSpec {
 	duration: number;
 	firstMusic: number;
@@ -26,6 +23,7 @@ interface sessionSpec {
  * @param time A string representing the time in the format 'HH:MM:SS' or 'HH:MM'.
  * @returns A Date object with the time set according to the input string.
  */
+// Whoever used this disappeared. It may need to go elsewhere. `ComponentController`?
 function setTime(time: string): Date {
 	let date = new Date();
 	if (time.split(':').length === 3) {
@@ -40,8 +38,8 @@ function setTime(time: string): Date {
 	return date;
 }
 
-export class TeamSession {
-	teams: teams[];
+export class TimeController {
+	// teams: teams[];
 	sessionSpec: sessionSpec = {
 		duration: 0,
 		firstMusic: 0,
@@ -51,7 +49,7 @@ export class TeamSession {
 		endWarning: 0,
 	};
 
-	startTime: Date = new Date(); //! Is this actually in parameters? 240620
+	// startTime: Date = new Date(); //! This is actually in parameters? 240620
 	firstWarnTime: Date = new Date();
 	firstMusicTime: Date = new Date();
 	secondWarnTime: Date = new Date();
@@ -59,45 +57,47 @@ export class TeamSession {
 	endSessionTime: Date = new Date();
 	timeRemaining: string = ''; // <- Not used?
 
-	constructor(teams: teams[], numStarts?: number) {
-		this.teams = teams;
-		console.log(this.teams);
+	constructor(
+		public duration: number,
+		public startTime: Date,
+		public idle = true
+	) {
+		// this.teams = teams;
+		// console.log(this.teams);
 
-		if (numStarts) {
-			// Do the thing `numStarts` times
-		} else {
-			teams.forEach((team) => {
-				// todo: Outline the timer process here, then replicate above for anonymous start
-				// Can we run the two setups then merge into a single run?
+		// if (numStarts) {
+		// 	// Do the thing `numStarts` times
+		// } else {
+		// teams.forEach((team) => {
+		//	// todo: Outline the timer process here, then replicate above for anonymous start
+		// Can we run the two setups then merge into a single run?
 
-				/** incoming: Team objects (from an array) includes
-				 * 	- teamName: string
-				 * 	- level: string
-				 * 	- startTime: string
-				 * 	- endTime: string
-				 * 	- duration: number
-				 *
-				 * imported: practiceTimes array of objects includes
-				 * 	- duration: number
-				 * 	- firstMusic: number
-				 *  - firstWarning: number
-				 *  - secondMusic: number
-				 *  - secondWarning: number
-				 *  - endWarning: number
-				 */
+		/** incoming: Team objects (from an array) includes
+		 * 	- teamName: string
+		 * 	- level: string
+		 * 	- startTime: string
+		 * 	- endTime: string
+		 * 	- duration: number
+		 *
+		 * imported: practiceTimes array of objects includes
+		 * 	- duration: number
+		 * 	- firstMusic: number
+		 *  - firstWarning: number
+		 *  - secondMusic: number
+		 *  - secondWarning: number
+		 *  - endWarning: number
+		 */
 
-				// Select Session Duration object
-				this.sessionSpec = practiceTimes[team.duration];
+		// Select Session Duration object
+		this.sessionSpec = practiceTimes[this.duration];
 
-				// Set variables: Date
-				this.startTime = setTime(team.startTime);
-				this.firstWarnTime = this.firstWarn;
-				this.firstMusicTime = this.firstMusic;
-				this.secondWarnTime = this.secondWarn;
-				this.secondMusicTime = this.secondMusic;
-				this.endSessionTime = this.stopTime;
-			});
-		}
+		// Set variables: Date
+		this.firstWarnTime = this.firstWarn;
+		this.firstMusicTime = this.firstMusic;
+		this.secondWarnTime = this.secondWarn;
+		this.secondMusicTime = this.secondMusic;
+		this.endSessionTime = this.stopTime;
+		// });
 	}
 
 	// reference to practice session spec
@@ -149,7 +149,3 @@ export class TeamSession {
 		return result;
 	}
 }
-
-console.dir(TeamSession);
-
-export default TeamSession;
