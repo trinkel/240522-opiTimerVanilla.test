@@ -25,7 +25,7 @@ export class Parameters {
 	// Set defaults
 	sessionLength: number = 6; // Length of each practice session.
 	sessionPause: number = 0; // Length of pause between sessions
-	groupStartType: number = 0; // Automatic (0) or Scheduled (1)
+	groupStartType: number = 0; // Manual (0) or Scheduled (1)
 	groupStartTimeIn: string = ''; // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 	pm: boolean = false;
 	teamMode: number = 0; // Anonymous (0), List (1)
