@@ -54,6 +54,10 @@ export class Parameters {
 			this.groupStartTime.setMinutes(Number(timeString[1]));
 			this.groupStartTime.setSeconds(Number(timeString[2]));
 		}
+
+		if (this.teamMode && this.teamList) {
+			this.numStarts = this.teamList.length;
+		}
 	}
 }
 
