@@ -3,15 +3,19 @@ import ProgressIndicator from '../components/progressIndicator';
 // sample data: remove or add a demo switch
 import { Parameters } from '../components/parameters';
 import { teams } from '../data/sampleData';
+import { ComponentController } from './componentController';
 
 // Passthrough component module
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
 const parameters = new Parameters();
-const numStarts = teams.length > 0 ? teams.length : parameters.numStarts;
 
-const sessionStatus = document.querySelector('[data-session-status]'); // Temporary status label at bottom of page
+//! numStarts (static vs number of teams) resolved in params and available as `parameters.numStarts`
+
+const sessionStatus = document.querySelector('[data-session-status]'); // Temporary status label at bottom of page --- //! Now it's in ComponentController.ts?
+
+const componentController = new ComponentController(parameters.numStarts);
 
 teams.forEach((team) => {
 	//Todo: Really need to make the names associated with this class more alike
@@ -31,7 +35,7 @@ end of loop of classes
 //! OK, so here's the deal
 /*
  * Instantiate a new instance of Parameters
- * Instantiate a new instance of ComponentController passing it numStarts (see wrangling above. Should that be changing params.numStart rather than a new var?)
+ * Instantiate a new instance of ComponentController passing it numStarts (instead of looping on number of teams?) (see wrangling above. Should that be changing params.numStart rather than a new var?)
  * Instantiate a new instance of TimeController passing it params[sessionLength,groupStartTime(?)]
  *     // Actually, do we need to call this before we have a startTime, or even before startTime arrives?
  *     // groupStartTime is already a Date object
