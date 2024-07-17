@@ -21,5 +21,5 @@
     - `duration` set in advance in parameters
     - `starttime` - known in advance (set by start time in parameters)
       or - on demand (press start button)
-  - When application starts (and parameters are set) `timeController` is activated but may be in: - a ready or primed state either counting down to defined start time at which point timers are started and run for `numStarts` times (or until stopped)
-    or - idly waiting for start button to be pushed at which point timers are started and run for `numStarts` times (or until stopped)
+  - When application starts (and parameters are set) `timeController` is activated but may be in: - a ready or primed state either counting down to defined start time at which point timers are started and runs for `numStarts` times (or until stopped)
+    or - idly waiting for start button to be pushed at which point timers are started and runs for `numStarts` times (or until stopped)
