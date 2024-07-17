@@ -4,6 +4,7 @@ import ProgressIndicator from '../components/progressIndicator';
 import { Parameters } from '../components/parameters';
 import { teams } from '../data/sampleData';
 import { ComponentController } from './componentController';
+import { TimeController } from './timeController';
 
 // Passthrough component module
 export * from '../components/progressIndicator';
@@ -17,6 +18,14 @@ const sessionStatus = document.querySelector('[data-session-status]'); // Tempor
 
 const componentController = new ComponentController(parameters.numStarts);
 
+//TODO: [240716]: •Figure out loop •Figure out how `groupStartTime` works
+//TODO: I think this is where the loop goes
+const timeController = new TimeController(
+	parameters.sessionLength,
+	parameters.groupStartTime
+);
+
+//! This probably gets deleted [240716]
 teams.forEach((team) => {
 	//Todo: Really need to make the names associated with this class more alike
 	//! PASS parameters.numStarts
