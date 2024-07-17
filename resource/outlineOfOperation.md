@@ -23,3 +23,8 @@
       or - on demand (press start button)
   - When application starts (and parameters are set) `timeController` is activated but may be in: - a ready or primed state either counting down to defined start time at which point timers are started and runs for `numStarts` times (or until stopped)
     or - idly waiting for start button to be pushed at which point timers are started and runs for `numStarts` times (or until stopped)
+
+[240717] \\TODO & \\ HERE
+(from ProgressIndicator project)
+
+- Need to call init() and timer() somehow to start the clock
