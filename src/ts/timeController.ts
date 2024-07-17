@@ -24,6 +24,8 @@ interface sessionSpec {
  * @returns A Date object with the time set according to the input string.
  */
 // Whoever used this disappeared. It may need to go elsewhere. `ComponentController`?
+//! If it is actually used, should this function be with utilities or should it be a property in the class?
+
 function setTime(time: string): Date {
 	let date = new Date();
 	if (time.split(':').length === 3) {
