@@ -98,6 +98,6 @@ export class ComponentController {
 			}
 		});
 
-		//! Timeout and progress complete were here. Where do they go now?
+		//! Timeout and progress complete were here. Where do they go now? ----- Loop should be handled in `main.ts`?
 	}
 }
