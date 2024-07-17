@@ -2,7 +2,6 @@ import ProgressIndicator from '../components/progressIndicator';
 
 // sample data: remove or add a demo switch
 import { Parameters } from '../components/parameters';
-import { teams } from '../data/sampleData';
 import { ComponentController } from './componentController';
 import { TimeController } from './timeController';
 
@@ -26,18 +25,17 @@ const timeController = new TimeController(
 );
 
 //! This probably gets deleted [240716]
-teams.forEach((team) => {
+/* teams.forEach((team) => {
 	//Todo: Really need to make the names associated with this class more alike
 	//! PASS parameters.numStarts
 	const session = new TeamSession(teams);
 
 	// Timers go here
 
-	/*
 
-end of loop of classes
- */
+ //end of loop of classes
 });
+ */
 
 // here: Working out of main-old.ts. Convert vars to new indicator object. Then do timer() function Maybe move to file once it's figured out.
 
