@@ -99,5 +99,20 @@ export class ComponentController {
 		});
 
 		//! Timeout and progress complete were here. Where do they go now? ----- Loop should be handled in `main.ts`?
+			// Pause and repeat until all timers complete
+
+	// HERE Work in progress 240720
+	// HERE Call init and timer in loop from main. Restart timer in `timer()` function below (needs to be finished)
+	// HERE Also need to commit:
+	// HERE - Remove comments from main
+	// HERE - Loop to start init and timer
+	// HERE - Time starter in `timer()` in `controllerComponent`
+			!progressComplete.reduce((accumulator, current) =>
+		current ? accumulator : current
+	)
+		? setTimeout(() => timer(), 500)
+		: rounds-- && init();
+}
+
 	}
 }

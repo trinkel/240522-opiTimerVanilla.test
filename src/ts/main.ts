@@ -11,11 +11,7 @@ export default ProgressIndicator;
 
 const parameters = new Parameters();
 
-//! numStarts (static vs number of teams) resolved in params and available as `parameters.numStarts`
-
 const sessionStatus = document.querySelector('[data-session-status]'); // Temporary status label at bottom of page --- //! Now it's in ComponentController.ts?
-
-const componentController = new ComponentController(parameters.numStarts);
 
 //TODO: [240716]: •Figure out loop •Figure out how `groupStartTime` works
 //TODO: I think this is where the loop goes
@@ -24,20 +20,15 @@ const timeController = new TimeController(
 	parameters.groupStartTime
 );
 
-//! This probably gets deleted [240716]
-/* teams.forEach((team) => {
-	//Todo: Really need to make the names associated with this class more alike
-	//! PASS parameters.numStarts
-	const session = new TeamSession(teams);
+const componentController = new ComponentController(parameters.numStarts);
 
-	// Timers go here
+for (var i = 0; i < parameters.numStarts; i++) {
+	// Initial the timers
+	componentController.init();
 
-
- //end of loop of classes
-});
- */
-
-// here: Working out of main-old.ts. Convert vars to new indicator object. Then do timer() function Maybe move to file once it's figured out.
+	// Run the timers
+	componentController.timer();
+}
 
 //! OK, so here's the deal
 /*
