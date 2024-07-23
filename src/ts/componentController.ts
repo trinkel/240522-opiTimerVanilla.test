@@ -18,7 +18,8 @@ export interface Indicators {
 export class ComponentController {
 	indicators: Indicators[] = [];
 	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
-	constructor(public numStarts: number) {
+	numStarts: number = 0;
+	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
 		const indicatorIds = ['first-music', 'second-music', 'end-session'];
 		indicatorIds.forEach((id) => {
@@ -42,7 +43,8 @@ export class ComponentController {
 		});
 	}
 
-	init(): void {
+	init(numStarts: number): void {
+		this.numStarts = numStarts;
 		if (this.numStarts <= 0) {
 			this.sessionStatus
 				? (this.sessionStatus.textContent = 'Group completed')
@@ -62,6 +64,8 @@ export class ComponentController {
 			);
 			indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 		});
+
+		this.timer();
 	}
 
 	timer(): void {
@@ -98,21 +102,14 @@ export class ComponentController {
 			}
 		});
 
-		//! Timeout and progress complete were here. Where do they go now? ----- Loop should be handled in `main.ts`?
-			// Pause and repeat until all timers complete
-
-	// HERE Work in progress 240720
-	// HERE Call init and timer in loop from main. Restart timer in `timer()` function below (needs to be finished)
-	// HERE Also need to commit:
-	// HERE - Remove comments from main
-	// HERE - Loop to start init and timer
-	// HERE - Time starter in `timer()` in `controllerComponent`
-			!progressComplete.reduce((accumulator, current) =>
-		current ? accumulator : current
-	)
-		? setTimeout(() => timer(), 500)
-		: rounds-- && init();
-}
-
+		// Loop to test for end of team practice session
+		this.indicators.forEach((indicator) => {
+			console.log('processComplete test');
+			// If session is not complete, wait x ms then recall `timer()`
+			// If session complete, decrement `numStarts` and call `init()`
+			!indicator.progressComplete
+				? setTimeout(() => this.timer(), 500)
+				: this.numStarts-- && this.init(this.numStarts);
+		});
 	}
 }
