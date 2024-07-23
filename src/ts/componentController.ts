@@ -24,7 +24,7 @@ export class ComponentController {
 		const indicatorIds = ['first-music', 'second-music', 'end-session'];
 		indicatorIds.forEach((id) => {
 			const dashIdx = id.indexOf('-');
-			const indicatorElement = document.querySelector(`${id}`);
+			const indicatorElement = document.querySelector(`#${id}`);
 			if (indicatorElement) {
 				this.indicators.push({
 					id: id,
