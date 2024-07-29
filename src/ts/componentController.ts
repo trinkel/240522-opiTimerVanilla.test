@@ -54,7 +54,11 @@ export class ComponentController {
 		this.indicators.forEach((indicator) => {
 			indicator.progressComplete = false; // Indicates progress complete (starts as false)
 			// HereHere: How do we access values in the class? This will use the timeProperty as the name of the property holding the max time for the timer.
-			indicator.maxValue = indicator.progressValueInit = indicator.modeValue
+			// Set timer start value:
+			//  Countdown = max value
+			//  Count-up = 0
+			indicator.maxValue = Number(indicator.element.getAttribute('value-max'));
+			indicator.progressValueInit = indicator.modeValue
 				? indicator.maxValue
 				: 0;
 			indicator.progressValue = indicator.progressValueInit;
