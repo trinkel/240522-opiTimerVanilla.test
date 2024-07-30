@@ -19,6 +19,7 @@ export class ComponentController {
 	indicators: Indicators[] = [];
 	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
 	numStarts: number = 0;
+	progressComplete: boolean = true;
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
 		const indicatorIds = ['first-music', 'second-music', 'end-session'];
@@ -73,6 +74,7 @@ export class ComponentController {
 	}
 
 	timer(): void {
+		this.progressComplete = true; // initialize progress complete test for each loop
 		this.sessionStatus
 			? (this.sessionStatus.textContent = this.numStarts.toString())
 			: null; //! Display group number. Do we want it?
@@ -80,7 +82,9 @@ export class ComponentController {
 			if (indicator.modeValue) {
 				if (indicator.progressValue > 0) {
 					indicator.progressValue -= 1; //todo: Figure out what this needs to be for percent, seconds or whatever we're using
-					if (indicator.progressValue <= 0) {
+					if (indicator.progressValue > 0) {
+						this.progressComplete = false;
+					} else {
 						indicator.progressValue = 0;
 						indicator.progressComplete = true;
 					}
@@ -93,7 +97,9 @@ export class ComponentController {
 			} else {
 				if (indicator.progressValue < Number(indicator.maxValue)) {
 					indicator.progressValue += 1;
-					if (indicator.progressValue >= Number(indicator.maxValue)) {
+					if (indicator.progressValue < Number(indicator.maxValue)) {
+						this.progressComplete = false;
+					} else {
 						indicator.progressValue = Number(indicator.maxValue);
 						indicator.progressComplete = true;
 					}
@@ -121,7 +127,20 @@ export class ComponentController {
 					? (this.sessionStatus.textContent = 'Group completed')
 					: null;
 			}
-		});
+		if (!this.progressComplete) {
+			if (this.numStarts > 0) {
+				setTimeout(() => this.timer(), 200);
+			}
+		} else {
+			this.numStarts--;
+			if (this.numStarts > 0) {
+				this.init(this.numStarts);
+			} else {
+				console.log(`---Process Complete: ${this.numStarts}`);
+				this.sessionStatus
+					? (this.sessionStatus.textContent = 'Group completed')
+					: null;
+			}
+		}
 	}
-
 }
