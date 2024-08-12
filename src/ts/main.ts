@@ -20,15 +20,10 @@ const timeController = new TimeController(
 	parameters.groupStartTime
 );
 
-const componentController = new ComponentController(parameters.numStarts);
+const componentController = new ComponentController();
 
-for (var i = 0; i < parameters.numStarts; i++) {
-	// Initial the timers
-	componentController.init();
-
-	// Run the timers
-	componentController.timer();
-}
+// Initial the timers
+componentController.init(parameters.numStarts);
 
 //! OK, so here's the deal
 /*

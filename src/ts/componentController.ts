@@ -143,4 +143,9 @@ export class ComponentController {
 			}
 		}
 	}
+
+	complete(): void {
+		console.log(`---Process Complete: ${this.numStarts}`);
+	}
+
 }
