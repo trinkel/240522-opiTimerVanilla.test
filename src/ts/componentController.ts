@@ -112,21 +112,6 @@ export class ComponentController {
 			}
 		});
 
-		// Loop to test for end of team practice session
-		this.indicators.forEach((indicator) => {
-			this.numStarts--;
-			// If session is not complete, wait x ms then recall `timer()`
-			// If session complete, decrement `numStarts` and call `init()`
-			if (!indicator.progressComplete) {
-				setTimeout(() => this.timer(), 500);
-			} else if (this.numStarts > 0) {
-				this.init(this.numStarts);
-			} else {
-				console.log(`---Process Complete: ${this.numStarts}`);
-				this.sessionStatus
-					? (this.sessionStatus.textContent = 'Group completed')
-					: null;
-			}
 		if (!this.progressComplete) {
 			if (this.numStarts > 0) {
 				setTimeout(() => this.timer(), 200);
