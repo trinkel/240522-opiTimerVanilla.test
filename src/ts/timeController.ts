@@ -61,7 +61,7 @@ export class TimeController {
 
 	constructor(
 		public duration: number, // sessionLength
-		public idle = true
+		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
 		// this.teams = teams;
 		// console.log(this.teams);
