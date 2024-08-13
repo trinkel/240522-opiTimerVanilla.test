@@ -26,12 +26,13 @@ export class Parameters {
 	sessionLength: number = 6; // Length of each practice session.
 	sessionPause: number = 0; // Length of pause between sessions
 	groupStartType: number = 0; // Manual (0) or Scheduled (1)
-	groupStartTimeIn: string = ''; // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
+	groupStartTimeString: string = ''; // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 	pm: boolean = false;
 	teamMode: number = 0; // Anonymous (0), List (1)
 	teamList: [string] = ['']; // CR delimited text to array elements
 	numStarts: number = 8; // if teamMode=0: get input; if teamMode=1: `teamList.length`
 	warp: number = 1; // Speed factor for demos (1-8)
+	tick: number = 200; // Component timeout interval in milliseconds
 
 	// Set start time
 	groupStartTime: Date = new Date();
@@ -42,8 +43,8 @@ export class Parameters {
 		// sessionLength: future enhancement option to set different lengths in `teamList`
 
 		// Set group start time
-		if (this.groupStartType && this.groupStartTimeIn) {
-			let timeString = this.groupStartTimeIn.split(':');
+		if (this.groupStartType && this.groupStartTimeString) {
+			let timeString = this.groupStartTimeString.split(':');
 			if (timeString.length === 2) {
 				timeString.push('00');
 			}
