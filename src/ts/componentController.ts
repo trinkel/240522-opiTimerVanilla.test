@@ -1,3 +1,5 @@
+import { TimeController } from './timeController';
+
 export interface Indicators {
 	id: string; // element ID
 	element: Element; // progressIndicator custom element
@@ -44,14 +46,15 @@ export class ComponentController {
 		});
 	}
 
-	init(numStarts: number): void {
-		this.numStarts = numStarts;
-		if (this.numStarts <= 0) {
-			this.sessionStatus
-				? (this.sessionStatus.textContent = 'Group completed')
-				: null;
-			return;
-		}
+	init(timeController: TimeController): void {
+		//! Was a numStarts routine which is moving to main.ts
+		// this.numStarts = numStarts;
+		// if (this.numStarts <= 0) {
+		// 	this.sessionStatus
+		// 		? (this.sessionStatus.textContent = 'Group completed')
+		// 		: null;
+		// 	return;
+		// }
 		this.indicators.forEach((indicator) => {
 			indicator.progressComplete = false; // Indicates progress complete (starts as false)
 			// HereHere: How do we access values in the class? This will use the timeProperty as the name of the property holding the max time for the timer.

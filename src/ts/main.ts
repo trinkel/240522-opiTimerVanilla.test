@@ -20,7 +20,7 @@ const timeController = new TimeController(parameters.sessionLength);
 const componentController = new ComponentController();
 
 // Initial the timers
-componentController.init(parameters.numStarts);
+componentController.init(timeController);
 
 //! OK, so here's the deal
 /*
