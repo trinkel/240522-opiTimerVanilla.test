@@ -15,10 +15,7 @@ const sessionStatus = document.querySelector('[data-session-status]'); // Tempor
 
 //TODO: [240716]: •Figure out loop •Figure out how `groupStartTime` works
 //TODO: I think this is where the loop goes
-const timeController = new TimeController(
-	parameters.sessionLength,
-	parameters.groupStartTime
-);
+const timeController = new TimeController(parameters.sessionLength);
 
 const componentController = new ComponentController();
 

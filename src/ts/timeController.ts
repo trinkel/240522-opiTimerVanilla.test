@@ -51,7 +51,7 @@ export class TimeController {
 		endWarning: 0,
 	};
 
-	// startTime: Date = new Date(); //! This is actually in parameters? 240620
+	startTime: Date = new Date();
 	firstWarnTime: Date = new Date();
 	firstMusicTime: Date = new Date();
 	secondWarnTime: Date = new Date();
@@ -60,8 +60,7 @@ export class TimeController {
 	timeRemaining: string = ''; // <- Not used?
 
 	constructor(
-		public duration: number,
-		public startTime: Date,
+		public duration: number, // sessionLength
 		public idle = true
 	) {
 		// this.teams = teams;
