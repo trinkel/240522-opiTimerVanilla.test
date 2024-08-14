@@ -34,7 +34,7 @@ export class Parameters {
 	warp: number = 1; // Speed factor for demos (1-8)
 	tick: number = 200; // Component timeout interval in milliseconds
 
-	// Set start time
+	// Set start time. Default to now
 	groupStartTime: Date = new Date();
 
 	constructor() {
