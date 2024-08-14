@@ -46,7 +46,8 @@ export class ComponentController {
 		});
 	}
 
-	init(timeController: TimeController): void {
+
+	init(timeController: TimeController, run: boolean = true): void {
 		//! Was a numStarts routine which is moving to main.ts
 		// this.numStarts = numStarts;
 		// if (this.numStarts <= 0) {
@@ -73,7 +74,7 @@ export class ComponentController {
 			indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 		});
 
-		this.timer();
+		run ? this.timer() : null;
 	}
 
 	timer(): void {
