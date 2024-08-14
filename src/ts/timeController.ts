@@ -158,10 +158,14 @@ export class TimeController {
 		}
 
 		this.timeRemaining.display = Object.values(t)
-			.map((unit) => unit.toString().padStart(2, '0'))
+			.map((unit, i) =>
+				i ? unit.toString().padStart(2, '0') : unit.toString().padStart(1, '0')
+			)
 			.join(':');
 
-		this.timeRemaining.progress = differenceInSeconds(target, this.current);
+		this.timeRemaining.progress = differenceInSeconds(target, now, {
+			roundingMethod: 'ceil',
+		});
 
 		return this.timeRemaining;
 	}
