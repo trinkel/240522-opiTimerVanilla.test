@@ -119,6 +119,7 @@ export class TimeController {
 	// getters based on ${practiceTimes}
 	// Runs each loop. Basis for time math
 	get current(): Date {
+		// updater, used in remainingTime function
 		return new Date();
 	}
 
