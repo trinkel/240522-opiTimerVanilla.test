@@ -22,6 +22,8 @@
 // };
 
 export class Parameters {
+	// Debugging flag
+	dBugg: number = 1;
 	// Set defaults
 	sessionLength: number = 6; // Length of each practice session.
 	sessionPause: number = 0; // Length of pause between sessions
@@ -36,8 +38,12 @@ export class Parameters {
 
 	// Set start time. Default to now
 	groupStartTime: Date = new Date();
-
+	// Set start time now plus 1 minute (Testing Mode)
 	constructor() {
+		if (this.dBugg === 1) {
+			// force delay of starting timer run
+			this.groupStartTime.setSeconds(this.groupStartTime.getSeconds() + 30);
+		}
 		// get input from form (future)
 
 		// sessionLength: future enhancement option to set different lengths in `teamList`
