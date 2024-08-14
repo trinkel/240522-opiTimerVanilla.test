@@ -1,6 +1,7 @@
 // Time utilities
 import {
 	addMinutes,
+	differenceInSeconds,
 	intervalToDuration,
 	setHours,
 	setMinutes,
@@ -16,6 +17,11 @@ interface sessionSpec {
 	secondMusic: number;
 	secondWarning: number;
 	endWarning: number;
+}
+
+interface timeRemaining {
+	display: string;
+	progress: number;
 }
 
 /**
@@ -41,6 +47,7 @@ function setTime(time: string): Date {
 }
 
 export class TimeController {
+	[key: string]: any; // used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
 	// teams: teams[];
 	sessionSpec: sessionSpec = {
 		duration: 0,
@@ -49,6 +56,11 @@ export class TimeController {
 		secondMusic: 0,
 		secondWarning: 0,
 		endWarning: 0,
+	};
+
+	timeRemaining: timeRemaining = {
+		display: '',
+		progress: 0,
 	};
 
 	startTime: Date = new Date();
@@ -131,7 +143,7 @@ export class TimeController {
 		return addMinutes(this.startTime, this.sessionSpec.duration);
 	}
 
-	remainingTime(target: Date): string {
+	remainingTime(target: Date): timeRemaining {
 		let t = intervalToDuration({
 			start: this.current,
 			end: target,
@@ -144,9 +156,12 @@ export class TimeController {
 			t = Object.assign({ minutes: 0, seconds: 0 }, t);
 		}
 
-		const result: string = Object.values(t)
+		this.timeRemaining.display = Object.values(t)
 			.map((unit) => unit.toString().padStart(2, '0'))
 			.join(':');
-		return result;
+
+		this.timeRemaining.progress = differenceInSeconds(target, this.current);
+
+		return this.timeRemaining;
 	}
 }
