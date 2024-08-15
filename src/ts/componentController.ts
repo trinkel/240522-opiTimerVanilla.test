@@ -128,6 +128,11 @@ export class ComponentController {
 					indicator.progressValue.toString()
 				);
 
+				indicator.element.setAttribute(
+					'data-progress-count',
+					timeController.remainingTime(timeController[key]).display
+				);
+
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 
 				console.log(`CURRENT TEST: ${indicator.maxValue}`);

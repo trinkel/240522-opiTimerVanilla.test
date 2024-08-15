@@ -83,7 +83,6 @@ export default class ProgressIndicator extends HTMLElement {
 		this.setAttribute('aria-valuenow', progress.toString());
 
 		const circle = this.querySelector('[data-progress-circle]') as HTMLElement;
-		const progressCount = this.querySelector('[data-progress-count]');
 
 		// Calculate a dash offset value based on the calculated circumference and the current percentage
 		circle
@@ -91,11 +90,6 @@ export default class ProgressIndicator extends HTMLElement {
 					this.calculatedCircumference -
 					(progress / this.valueMax) * this.calculatedCircumference
 			  ).toString())
-			: null;
-
-		// A human readable version for the text label
-		progressCount
-			? (progressCount.textContent = `${progress}${this.unit}`)
 			: null;
 
 		//  Set a complete or pending state base on progress
@@ -114,13 +108,24 @@ export default class ProgressIndicator extends HTMLElement {
 		}
 	}
 
+	setText(display: string) {
+		const progressCount = this.querySelector('[data-progress-count]');
+		// A human readable version for the text label
+		progressCount
+			? (progressCount.textContent = `${display}${this.unit}`)
+			: null;
+	}
+
 	static get observedAttributes() {
-		return ['progress'];
+		return ['progress', 'data-progress-count'];
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
 		if (name === 'progress') {
 			this.setProgress(Number(newValue));
+		}
+		if (name === 'data-progress-count') {
+			this.setText(newValue);
 		}
 	}
 
