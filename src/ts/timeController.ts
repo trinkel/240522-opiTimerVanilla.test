@@ -19,9 +19,14 @@ interface sessionSpec {
 	endWarning: number;
 }
 
+/**
+ * Establishes values for timer display
+ * @property display string The value for the text-value attribute of the progress-indicator element
+ * @property progress number The value for the progress attribute of the progress-indicator element
+ */
 interface timeRemaining {
-	display: string;
-	progress: number;
+	display: string; // text value
+	progress: number; // progress meter
 }
 
 /**
