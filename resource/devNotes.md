@@ -175,6 +175,16 @@ Class: `teamSession`
 
 - See **`teams.ts` class skeleton** below for more detail
 
+### ProgressIndicator Component
+
+#### Functional Attributes
+
+**`value-max`** Maximum value of the timer. Set by the `maxValue` variable which is in turn set by `sessionSpec.duration` by way of the initial value of `timeController.remainingTime[].progress`
+
+**`progress`** Controls timer graphic (circle). `maxValue` indicates 100% and is used to determine percentage position of the progress meter graphic given the `progress` value. `progress` is set by the `progressValue` variable. It is not allowed to exceed `maxValue` or go below 0
+
+**`data-progress-count`** Controls the human readable text label. It is set by the `timeController.remainingTime[].display` variable.
+
 ### Function for calculating time remaining
 
 ```js
