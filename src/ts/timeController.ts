@@ -63,13 +63,24 @@ export class TimeController {
 		progress: 0,
 	};
 
+	//TODO: Do we need anything besides startTime (loose the rest)?
+	// Starting time for team. Used in init
+	// ! Watch this in the case of team list. Loop works on flow of time allotted each team. It we also have scheduled times, make sure the alloted times stay in synch with the scheduled times. (Time/math sanity check)
 	startTime: Date = new Date();
-	firstWarnTime: Date = new Date();
-	firstMusicTime: Date = new Date();
-	secondWarnTime: Date = new Date();
-	secondMusicTime: Date = new Date();
-	endSessionTime: Date = new Date();
-	timeRemaining: string = ''; // <- Not used?
+
+	//! Time remaining variable inits (don't need?)
+	// firstWarnTimeRemain: timeRemaining = this.timeRemaining;
+	// firstMusicTimeRemain: timeRemaining = this.timeRemaining;
+	// secondWarnTimeRemain: timeRemaining = this.timeRemaining;
+	// secondMusicTimeRemain: timeRemaining = this.timeRemaining;
+	// endSessionTimeRemain: timeRemaining = this.timeRemaining;
+
+	//! Time set variable inits (don't need?)
+	// firstWarnTime: Date = new Date();
+	// firstMusicTime: Date = new Date();
+	// secondWarnTime: Date = new Date();
+	// secondMusicTime: Date = new Date();
+	// endSessionTime: Date = new Date();
 
 	constructor(
 		public duration: number, // sessionLength
@@ -145,8 +156,9 @@ export class TimeController {
 	}
 
 	remainingTime(target: Date): timeRemaining {
+		const now = this.current; //TODO Move to timer() loop
 		let t = intervalToDuration({
-			start: this.current,
+			start: now,
 			end: target,
 		});
 
@@ -163,9 +175,7 @@ export class TimeController {
 			)
 			.join(':');
 
-		this.timeRemaining.progress = differenceInSeconds(target, now, {
-			roundingMethod: 'ceil',
-		});
+		this.timeRemaining.progress = differenceInSeconds(target, now);
 
 		return this.timeRemaining;
 	}
