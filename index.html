@@ -24,12 +24,13 @@
 			<clock-badge id="stop-time">Clock</clock-badge>
 		</section>
 		<section id="time_block" class="wrapper">
-			<progress-indicator id="first-music" mode="1" value-max="90" stroke="14"
+			<progress-indicator id="first-music" label="Time until first music begins"
+				mode="1" stroke="14" viewbox="1000">Timer</progress-indicator>
+			<progress-indicator id="second-music"
+				label="Time until second music begins" mode="1" stroke="14"
 				viewbox="1000">Timer</progress-indicator>
-			<progress-indicator id="second-music" mode="1" value-max="90" stroke="14"
-				viewbox="1000">Timer</progress-indicator>
-			<progress-indicator id="end-session" mode="1" value-max="60" stroke="14"
-				viewbox="1000">Timer</progress-indicator>
+			<progress-indicator id="end-session" label="Time until session ends"
+				mode="1" stroke="14" viewbox="1000">Timer</progress-indicator>
 			<p data-session-status></p>
 		</section>
 		<section id="team_block" class="wrapper">
