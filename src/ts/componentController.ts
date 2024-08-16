@@ -44,6 +44,27 @@ export class ComponentController {
 				});
 			}
 		});
+
+		this.flatline();
+	}
+
+	/**
+	 * Draws all indicators in their initial state (zeroed out).
+	 */
+	flatline(): void {
+		this.indicators.forEach((indicator) => {
+			// don't need this?:
+
+			indicator.element.setAttribute('progress', '0');
+
+			indicator.element.setAttribute('data-progress-count', '0:00');
+
+			indicator.progressComplete = false;
+
+			indicator.element.setAttribute('data-progress-state', 'pending');
+
+			console.log(`ZERO: ${indicator.element.getAttribute('progress')}`);
+		});
 	}
 
 	//TODO [240812 Start integrating practice time data]
