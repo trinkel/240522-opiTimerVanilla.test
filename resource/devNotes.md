@@ -177,13 +177,84 @@ Class: `teamSession`
 
 ### ProgressIndicator Component
 
-#### Functional Attributes
+#### Dynamic/Functional Attributes
 
-**`value-max`** Maximum value of the timer. Set by the `maxValue` variable which is in turn set by `sessionSpec.duration` by way of the initial value of `timeController.remainingTime[].progress`
+Initial values are set on application load as a starting point for animation to session start values which are set by user parameters when using the application.
 
-**`progress`** Controls timer graphic (circle). `maxValue` indicates 100% and is used to determine percentage position of the progress meter graphic given the `progress` value. `progress` is set by the `progressValue` variable. It is not allowed to exceed `maxValue` or go below 0
+**`aria-valuemax`**
 
-**`data-progress-count`** Controls the human readable text label. It is set by the `timeController.remainingTime[].display` variable.
+Maximum value of the timer. Set by the `maxValue` variablein `ComponentController` class which is in turn set by `sessionSpec.duration` by way of the initial value of `timeController.remainingTime[].progress` Initial `progress` value is set by this if mode is `1`
+
+Initial value: 100 (set by XX in `progressIndicator` component) then set to `maxValue` or `0` depending on `mode` attribute when session is defined.
+
+**`progress`**
+
+Controls timer graphic (circle). `maxValue` indicates 100% and is used to determine percentage position of the progress meter graphic given the `progress` value. `progress` is set by the `progressValue` variable. It is not allowed to exceed `maxValue` or go below 0
+
+Initial value: 0 (set by XX in `progressIndicator`)
+
+**`aria-valuenow`**
+
+The current value of the progress meter for screen readers. Set to value of `progress` attribute/variable in `progressIndicator`
+Initial value: 0 set in `progressIndicator` then set to initial `progress` value when session is defined.
+
+**`data-progress-state`**
+
+Current state of the progress meters: 'pending' (running) or 'complete'. Used to flag the completion of a timer.
+
+Initial value: 'pending'. Set by `setProgress()` in `progressIndicator`.
+
+**`data-progress-count`**
+
+Controls the human readable text label. It is set by the `timeController.remainingTime[].display` variable.
+
+Initial value: 0 (set by )
+
+#### Static Attributes
+
+**`id`**
+
+Identifies the element for script handling. Set in HTML element.
+
+Set in HTML. For our purpose:
+
+- 'first-music'
+- 'second-music'
+- 'end-session'
+
+**`label` `aria-label`**
+
+Identifies element primarily for accessibility. For our purpose:
+
+- 'Time until first time music plays'
+- 'Time until second time music plays'
+- 'Time until session ends'
+
+`label` is set in HTML element. `aria-label` is set to the value of `label` in the `ProgressIndicator` component/class.
+
+**`mode`**
+
+Sets timer mode: countdown (1) or count-up (0).
+
+Set in HTML element. For our purpose, generally `1`
+
+**`stroke`**
+
+Thickness of progress bar in px.
+
+Set in HTML element. Example: '14'
+
+**`viewbox`**
+
+Sets the 'viewbox' of the SVG that is the timer graphic (single value/square) thereby setting the width and height of timer. Actual width is determined by CSS. This is effectively a max width.
+
+Set in HTML element. Example: '1000'.
+
+**`role`**
+
+Sets the semantic role of the custom component.
+
+Set in HTML element to 'progressbar'.
 
 ### Function for calculating time remaining
 
