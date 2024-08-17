@@ -18,8 +18,6 @@ export default class ProgressIndicator extends HTMLElement {
 		// Set the default aria role states
 		this.setAttribute('aria-label', this.label);
 		this.setAttribute('role', 'progressbar');
-		this.setAttribute('aria-valuemax', this.valueMax.toString());
-
 		//  Render the component with all the data ready
 		this.innerHTML = `
 			<div class="progress-indicator">
@@ -117,7 +115,7 @@ export default class ProgressIndicator extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['progress', 'data-progress-count'];
+		return ['progress', 'data-progress-count', 'value-max'];
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -126,6 +124,10 @@ export default class ProgressIndicator extends HTMLElement {
 		}
 		if (name === 'data-progress-count') {
 			this.setText(newValue);
+		}
+
+		if (name === 'value-max') {
+			this.setAttribute('aria-valuemax', this.valueMax.toString());
 		}
 	}
 

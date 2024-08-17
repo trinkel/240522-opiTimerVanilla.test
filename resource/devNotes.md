@@ -181,9 +181,9 @@ Class: `teamSession`
 
 Initial values are set on application load as a starting point for animation to session start values which are set by user parameters when using the application.
 
-**`aria-valuemax`**
+**`aria-valuemax` `max-value`**
 
-Maximum value of the timer. Set by the `maxValue` variable in `ComponentController` class which is in turn set by `sessionSpec.duration` by way of the initial value of `timeController.remainingTime[].progress` Initial `progress` value is set by this if mode is `1`
+Maximum value of the timer. `aria-valuemax` is set when `max-value` is changed by the `maxValue` getter method in `ComponentController` class which is in turn set by `sessionSpec.duration` by way of the initial value of `timeController.remainingTime[].progress` Initial `progress` value is set by this if mode is `1`
 
 Initial value: 100 (set by XX in `progressIndicator` component) then set to `maxValue` or `0` depending on `mode` attribute when session is defined.
 

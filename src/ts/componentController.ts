@@ -37,7 +37,7 @@ export class ComponentController {
 						.toUpperCase()}${id.substring(dashIdx + 2)}`, // used to access times from class such as firstMusicTime
 					modeValue: 1, // Count up or down
 					// Zero out properties to initialize then initialize in class)
-					maxValue: 0, // Maximum value
+					maxValue: 100, // Maximum value
 					progressValueInit: 0, // Initialization value
 					progressValue: 0, // Placeholder - reinitialize in first init
 					progressComplete: false,
@@ -58,6 +58,11 @@ export class ComponentController {
 			indicator.element.setAttribute('progress', '0');
 
 			indicator.element.setAttribute('data-progress-count', '0:00');
+
+			indicator.element.setAttribute(
+				'value-max',
+				indicator.maxValue.toString()
+			);
 
 			indicator.progressComplete = false;
 
