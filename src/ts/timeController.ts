@@ -125,7 +125,8 @@ export class TimeController {
 		this.firstMusicTime = this.firstMusic;
 		this.secondWarnTime = this.secondWarn;
 		this.secondMusicTime = this.secondMusic;
-		this.endSessionTime = this.stopTime;
+		this.endWarnTime = this.endWarn;
+		this.endSessionTime = this.endTime;
 		// });
 	}
 
@@ -155,13 +156,16 @@ export class TimeController {
 		return addMinutes(this.secondMusic, this.sessionSpec.secondWarning * -1);
 	}
 
-	get stopTime(): Date {
+	get endTime(): Date {
 		// return addMinutes(this.startTime, 1.5);
 		return addMinutes(this.startTime, this.sessionSpec.duration);
 	}
 
-	remainingTime(target: Date): timeRemaining {
-		const now = this.current; //TODO Move to timer() loop
+	get endWarn(): Date {
+		return addMinutes(this.secondMusic, this.sessionSpec.secondWarning * -1);
+	}
+
+	//! NOW: (After commit cleanup): Remove this.current and pass it with target date. There are two real calls that need to be fixed in init plus multiple console.logs. Maybe default it to running this.current.
 		let t = intervalToDuration({
 			start: now,
 			end: target,
