@@ -136,6 +136,12 @@ export class ComponentController {
 					timeController[key]
 				).progress;
 
+				// Set the value-max attribute
+				indicator.element.setAttribute(
+					'value-max',
+					indicator.maxValue.toString()
+				);
+
 				// Pick initial progressValue based on timer mode (count up or down)
 				indicator.progressValueInit = indicator.modeValue
 					? indicator.maxValue
