@@ -214,6 +214,47 @@ export class ComponentController {
 		if (now > this.before) {
 			console.log(`RunMe`);
 
+			this.indicators.forEach((indicator) => {
+				// Manage timer--not using decrement that was developed with the component. We check the time every loop.
+
+				/**
+				 * @var target
+				 * @description To satisfy TypeScript when used as object property index.
+				 * @example #first-music becomes firstMusicTime
+				 * @use timeController[target]
+				 *      points at timeController->get firstMusic(): Date
+				 */
+				const target = `${indicator.timeProperty}Time`;
+
+				/**
+				 * @var warn
+				 * @description To satisfy TypeScript when used as object property index. Gets the warning time for the current indicator.
+				 * @example #first-music becomes firstWarnTime
+				 * @use timeController[warn]
+				 *      points at timeController->get firstWarn(): Date
+				 */
+				const warn = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warn'
+				)}Time`;
+
+				/**
+				 * @var currentTarget
+				 * @description Find time remaining to target for each timer. Returns and object of {progressValue:, displayValue:}
+				 */
+				const currentTarget = timeController.remainingTime(
+					timeController[target],
+					now
+				);
+
+				/**
+				 * @var currentWarn
+				 * @description Find time remaining to warning for each timer. Returns and object of {progressValue:, displayValue:}
+				 */
+				const currentWarn = timeController.remainingTime(
+					timeController[warn],
+					now
+				);
 
 					indicator.element.setAttribute(
 						'progress',
@@ -230,13 +271,7 @@ export class ComponentController {
 						indicator.progressComplete = true;
 					}
 
-					indicator.element.setAttribute(
-						'progress',
-						indicator.progressValue.toString()
-					);
-				}
-			}
-		});
+		this.before = now;
 
 		if (!this.progressComplete) {
 			if (this.numStarts > 0) {
