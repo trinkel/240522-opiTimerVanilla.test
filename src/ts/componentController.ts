@@ -78,7 +78,7 @@ export class ComponentController {
 	//TODO  Routine to route element name to data name (first-warn to firstWarn) is above
 	//TODO [DO THIS FIRST]  So, in each indicator below, we need to test for data. If it's there, setAttribute to data, otherwise set it to value-max (which we have now). Or do we eliminate the fallback on the element?
 
-	init(timeController: TimeController, run: boolean = true): void {
+	init(timeController: TimeController): void {
 		//! Was a numStarts routine which is moving to main.ts
 		// this.numStarts = numStarts;
 		// if (this.numStarts <= 0) {
@@ -195,8 +195,8 @@ export class ComponentController {
 		run ? this.timer() : null;
 	}
 
-	timer(): void {
-		this.progressComplete = true; // initialize progress complete test for each loop
+	timer(timeController: TimeController): void {
+		// Get the current
 		this.sessionStatus
 			? (this.sessionStatus.textContent = this.numStarts.toString())
 			: null; //! Display group number. Do we want it?

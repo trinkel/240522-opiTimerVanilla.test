@@ -17,6 +17,8 @@ const sessionStatus = document.querySelector('[data-session-status]'); // Tempor
 //TODO: I think this is where the loop goes
 const timeController = new TimeController(parameters.sessionLength);
 
+// Instantiate main control loop
+// Start based on parameters.groupStartTime or a start button
 const componentController = new ComponentController();
 
 // Initialize the timers, wait for start time
@@ -34,7 +36,14 @@ const waitTimer = (): void => {
 	}
 };
 
-waitTimer();
+componentController.init(timeController);
+
+for (let i = 0; i < parameters.numStarts; i++) {
+	componentController.init(timeController);
+	componentController.timer(timeController);
+}
+
+componentController.complete();
 
 //! OK, so here's the deal
 /*
