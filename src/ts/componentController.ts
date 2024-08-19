@@ -22,6 +22,8 @@ export class ComponentController {
 	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
 	numStarts: number = 0;
 	progressComplete: boolean = true;
+	before: Date = new Date();
+
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
 		const indicatorIds = ['first-music', 'second-music', 'end-session'];
@@ -197,19 +199,21 @@ export class ComponentController {
 
 	timer(timeController: TimeController): void {
 		// Get the current
+		const now = timeController.current;
+
+		// initialize progress complete test for each loop
+		//! Use the status attribute?
+		this.progressComplete = true;
+
+		// This may be unused
 		this.sessionStatus
 			? (this.sessionStatus.textContent = this.numStarts.toString())
 			: null; //! Display group number. Do we want it?
-		this.indicators.forEach((indicator) => {
-			if (indicator.modeValue) {
-				if (indicator.progressValue > 0) {
-					indicator.progressValue -= 1; //todo: Figure out what this needs to be for percent, seconds or whatever we're using
-					if (indicator.progressValue > 0) {
-						this.progressComplete = false;
-					} else {
-						indicator.progressValue = 0;
-						indicator.progressComplete = true;
-					}
+
+		// Run the logic only if the time has changed
+		if (now > this.before) {
+			console.log(`RunMe`);
+
 
 					indicator.element.setAttribute(
 						'progress',

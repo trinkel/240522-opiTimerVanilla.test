@@ -166,6 +166,7 @@ export class TimeController {
 	}
 
 	//! NOW: (After commit cleanup): Remove this.current and pass it with target date. There are two real calls that need to be fixed in init plus multiple console.logs. Maybe default it to running this.current.
+	remainingTime(target: Date, now: Date = this.current): timeRemaining {
 		let t = intervalToDuration({
 			start: now,
 			end: target,
