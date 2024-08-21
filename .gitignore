@@ -25,3 +25,6 @@ dist-ssr
 
 # oversize resources like original image files
 bigResource/
+
+# Playground and contents
+Playground/
