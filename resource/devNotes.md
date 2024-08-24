@@ -298,6 +298,10 @@ export function counterMath(targetDate, todaysDate) {
 
 ## Coding notes: Research and Explanations
 
+### Loops, Timeouts, Promises and Synchronicity
+
+See `On Loops, Timeouts, Promises and Synchronicity.md` here and in Notion. Mostly a conversation with the Pieces guy.
+
 ### Function with callback
 
 ```js
