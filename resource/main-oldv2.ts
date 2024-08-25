@@ -59,7 +59,6 @@ end of loop of classes
  */
 });
 
-// here: Working out of main-old.ts. Convert vars to new indicator object. Then do timer() function Maybe move to file once it's figured out.
 function init(): void {
 	if (numStarts <= 0) {
 		sessionStatus ? (sessionStatus.textContent = 'Group completed') : null;
@@ -67,7 +66,7 @@ function init(): void {
 	}
 	indicators.forEach((indicator) => {
 		indicator.progressComplete = false; // Indicates progress complete (starts as false)
-		// HereHere: How do we access values in the class? This will use the timeProperty as the name of the property holding the max time for the timer.
+		// How do we access values in the class? This will use the timeProperty as the name of the property holding the max time for the timer.
 		indicator.maxValue =
 		indicator.progressValueInit = indicator.modeValue ? indicator.maxValue : 0;
 		indicator.progressValue = indicator.progressValueInit;
