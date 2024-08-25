@@ -1,6 +1,7 @@
 import ProgressIndicator from '../components/progressIndicator';
 
 // sample data: remove or add a demo switch
+import { isBefore } from 'date-fns';
 import { Parameters } from '../components/parameters';
 import { ComponentController } from './componentController';
 import { TimeController } from './timeController';
