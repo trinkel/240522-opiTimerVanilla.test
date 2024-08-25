@@ -162,7 +162,7 @@ export class TimeController {
 	}
 
 	get endWarn(): Date {
-		return addMinutes(this.secondMusic, this.sessionSpec.secondWarning * -1);
+		return addMinutes(this.endTime, this.sessionSpec.endWarning * -1);
 	}
 
 	//! NOW: (After commit cleanup): Remove this.current and pass it with target date. There are two real calls that need to be fixed in init plus multiple console.logs. Maybe default it to running this.current.
