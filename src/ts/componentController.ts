@@ -12,11 +12,9 @@ export interface Indicators {
 }
 [];
 
-// Create array of indicators (timers): Get the indicator elements and establish variables for their values. This only has to happen once. (this is not the init)
-// Then inside of loop with class:
-// Initialize
-// Run timers
-
+/**
+ * @Description Create array of indicators (timers): Get the indicator elements and establish variables for their values. This only has to happen once. (this is not the init)Then inside of loop with class: - Initialize - Run timers
+ */
 export class ComponentController {
 	indicators: Indicators[] = [];
 	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
@@ -240,7 +238,7 @@ export class ComponentController {
 
 				/**
 				 * @var currentTarget
-				 * @description Find time remaining to target for each timer. Returns and object of {progressValue:, displayValue:}
+				 * @description Find time remaining to target for each timer. Returns an object of {progressValue:, displayValue:}
 				 */
 				const currentTarget = timeController.remainingTime(
 					timeController[target],
