@@ -21,6 +21,7 @@ export class ComponentController {
 	numStarts: number = 0;
 	progressComplete: boolean = true;
 	before: Date = new Date();
+	iterator: number = 0;
 
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
@@ -79,6 +80,8 @@ export class ComponentController {
 	//TODO [DO THIS FIRST]  So, in each indicator below, we need to test for data. If it's there, setAttribute to data, otherwise set it to value-max (which we have now). Or do we eliminate the fallback on the element?
 
 	init(timeController: TimeController): void {
+		this.iterator = 0;
+
 		//! Was a numStarts routine which is moving to main.ts
 		// this.numStarts = numStarts;
 		// if (this.numStarts <= 0) {
@@ -281,22 +284,9 @@ export class ComponentController {
 				);
 			});
 		this.before = now;
+		// Reference value
+		this.iterator++;
 
-		if (!this.progressComplete) {
-			if (this.numStarts > 0) {
-				setTimeout(() => this.timer(), 200);
-			}
-		} else {
-			this.numStarts--;
-			if (this.numStarts > 0) {
-				this.init(this.numStarts);
-			} else {
-				console.log(`---Process Complete: ${this.numStarts}`);
-				this.sessionStatus
-					? (this.sessionStatus.textContent = 'Group completed')
-					: null;
-			}
-		}
 	}
 
 	complete(): void {
