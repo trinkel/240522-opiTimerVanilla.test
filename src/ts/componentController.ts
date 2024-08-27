@@ -279,12 +279,30 @@ export class ComponentController {
 						'progress',
 						indicator.progressValue.toString()
 					);
+					indicator.element.setAttribute(
+						'data-progress-count',
+						currentTarget.display
+					);
+				} else {
+					// Count-up timers (future use)
+				}
+
+				if (
+					(indicator.element.getAttribute('data-progress-state') as string) !==
+					'complete'
+				) {
+					this.progressComplete = false;
+				}
+
 				console.log(
 					`[294] data-progress-state [${target}]: ${indicator.element.getAttribute(
 						'data-progress-state'
 					)}`
 				);
 			});
+		}
+
+		// Hold value of current time for next loop
 		this.before = now;
 		// Reference value
 		this.iterator++;
