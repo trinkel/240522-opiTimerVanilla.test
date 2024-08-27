@@ -124,7 +124,7 @@ export class ComponentController {
 				);
 
 				// end
-				console.log(`Team Stop Time: ${timeController.stopTime}`);
+				console.log(`Team End Time: ${timeController.endTime}`);
 
 				/* 	 				`${indicator.element.id} | ${timeController.duration} | ${
 						indicator.timeProperty
@@ -167,7 +167,7 @@ export class ComponentController {
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 
-				console.log(`CURRENT TEST: ${indicator.maxValue}`);
+				console.log(`CURRENT TEST: ${indicator.progressValue.toString()}`);
 
 				//! We may not need this. Control passed to timeController
 				/* 				indicator.progressValueInit = indicator.modeValue
@@ -210,7 +210,7 @@ export class ComponentController {
 
 		// Run the logic only if the time has changed
 		if (now > this.before) {
-			console.log(`RunMe`);
+			console.log(`${now}---RUN TIMER LOOP ${this.iterator}---${this.before}`);
 
 			this.indicators.forEach((indicator) => {
 				// Manage timer--not using decrement that was developed with the component. We check the time every loop.
@@ -244,6 +244,10 @@ export class ComponentController {
 					timeController[target],
 					now
 				);
+				console.log(
+					`--RUNNING Target [1] ${indicator.timeProperty}[${target}]:`
+				);
+				console.dir(currentTarget);
 
 				/**
 				 * @var currentWarn
@@ -254,21 +258,28 @@ export class ComponentController {
 					now
 				);
 
+				// Debugging
+				console.log(`--RUNNING Warn ${indicator.timeProperty}:[${warn}]`);
+				console.dir(currentWarn);
+
+				console.log(`--RUNNING Target ${indicator.timeProperty}:[${target}]`);
+				console.dir(currentTarget);
+				// End Debugging
+
+				if (indicator.modeValue) {
+					console.log(
+						`[278] progressValue [${target}]: ${indicator.progressValue.toString()}`
+					);
 					indicator.element.setAttribute(
 						'progress',
 						indicator.progressValue.toString()
 					);
-				}
-			} else {
-				if (indicator.progressValue < Number(indicator.maxValue)) {
-					indicator.progressValue += 1;
-					if (indicator.progressValue < Number(indicator.maxValue)) {
-						this.progressComplete = false;
-					} else {
-						indicator.progressValue = Number(indicator.maxValue);
-						indicator.progressComplete = true;
-					}
-
+				console.log(
+					`[294] data-progress-state [${target}]: ${indicator.element.getAttribute(
+						'data-progress-state'
+					)}`
+				);
+			});
 		this.before = now;
 
 		if (!this.progressComplete) {
