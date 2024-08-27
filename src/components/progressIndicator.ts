@@ -91,12 +91,12 @@ export default class ProgressIndicator extends HTMLElement {
 			: null;
 
 		//  Set a complete or pending state base on progress
-		if (progress <= 0) {
-			this.setAttribute('data-progress-state', 'complete');
-		} else {
-			this.setAttribute('data-progress-state', 'pending');
-		}
 		if (this.mode) {
+			if (progress <= 0) {
+				this.setAttribute('data-progress-state', 'complete');
+			} else {
+				this.setAttribute('data-progress-state', 'pending');
+			}
 		} else {
 			if (progress >= this.valueMax) {
 				this.setAttribute('data-progress-state', 'complete');
