@@ -37,13 +37,43 @@ const waitTimer = (): void => {
 	}
 };
 
-componentController.init(timeController);
+// Start a group of teams
+async function startPracticeGroup(timeController: TimeController) {
+	try {
+		for (let i = 0; i < parameters.numStarts; i++) {
+			// console.log(
+			// 	`---START TEAM NUMBER ${i + 1} out of ${parameters.numStarts}---`
+			// );
+			componentController.init(timeController);
+			await componentController.startTimer(timeController);
+		}
+	} catch (error) {
+		console.log((error as Error).message);
+	}
 
-for (let i = 0; i < parameters.numStarts; i++) {
-	componentController.init(timeController);
-	componentController.timer(timeController);
+	//! This one will be held back
+	console.log(`---End of Async function---`);
 }
 
+//! Call waitTimer
+// waitTimer();
+
+// Call appRunner (Replaces waitTimer)
+startPracticeGroup(timeController);
+
+//! Original appRunner (until 240826-AsyncAwait)
+/* componentController.init(timeController);
+
+for (let i = 0; i < parameters.numStarts; i++) {
+	console.log(
+		`---START TEAM NUMBER ${i + 1} out of ${parameters.numStarts}---`
+	);
+	componentController.init(timeController);
+	componentController.startTimer(timeController); //async? startTimer (can have .then)?
+}
+ */
+
+//! This one will not be held back
 componentController.complete();
 
 //! OK, so here's the deal

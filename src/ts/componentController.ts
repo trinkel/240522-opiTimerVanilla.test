@@ -194,8 +194,6 @@ export class ComponentController {
  */
 			}
 		});
-
-		run ? this.timer() : null;
 	}
 
 	timer(timeController: TimeController): void {
@@ -261,6 +259,9 @@ export class ComponentController {
 					now
 				);
 
+				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
+				indicator.progressValue = currentTarget.progress;
+
 				// Debugging
 				console.log(`--RUNNING Warn ${indicator.timeProperty}:[${warn}]`);
 				console.dir(currentWarn);
@@ -270,6 +271,7 @@ export class ComponentController {
 				// End Debugging
 
 				if (indicator.modeValue) {
+					// Countdown timers
 					console.log(
 						`[278] progressValue [${target}]: ${indicator.progressValue.toString()}`
 					);
@@ -287,6 +289,17 @@ export class ComponentController {
 		// Reference value
 		this.iterator++;
 
+	startTimer(timeController: TimeController) {
+		return new Promise<void>((resolve, reject) => {
+			this.progressComplete = true;
+			const intervalId = setInterval(() => {
+				this.timer(timeController);
+				if (this.progressComplete) {
+					clearInterval(intervalId);
+					resolve();
+				}
+			}, 2000);
+		});
 	}
 
 	complete(): void {
