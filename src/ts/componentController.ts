@@ -315,14 +315,13 @@ export class ComponentController {
 
 	startTimer(timeController: TimeController) {
 		return new Promise<void>((resolve, reject) => {
-			this.progressComplete = true;
 			const intervalId = setInterval(() => {
 				this.timer(timeController);
 				if (this.progressComplete) {
 					clearInterval(intervalId);
 					resolve();
 				}
-			}, 2000);
+			}, timeController.tick);
 		});
 	}
 

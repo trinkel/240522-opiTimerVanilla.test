@@ -19,6 +19,7 @@ const sessionStatus = document.querySelector('[data-session-status]'); // Tempor
 
 const timeController = new TimeController(
 	parameters.sessionLength,
+	parameters.tick,
 	parameters.warp
 );
 

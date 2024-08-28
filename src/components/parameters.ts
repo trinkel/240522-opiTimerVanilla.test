@@ -33,8 +33,8 @@ export class Parameters {
 	teamMode: number = 0; // Anonymous (0), List (1)
 	teamList: [string] = ['']; // CR delimited text to array elements
 	numStarts: number = 8; // if teamMode=0: get input; if teamMode=1: `teamList.length`
-	warp: number = 1; // Speed factor for demos (1-8)
-	tick: number = 200; // Component timeout interval in milliseconds
+	warp: number = 10; // Speed factor for demos (1-8)
+	tick: number = 100; // Component timeout interval in milliseconds
 
 	// Set start time. Default to now
 	groupStartTime: Date = new Date();
