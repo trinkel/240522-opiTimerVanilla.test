@@ -15,9 +15,14 @@ const parameters = new Parameters();
 const sessionStatus = document.querySelector('[data-session-status]'); // Temporary status label at bottom of page --- //! Now it's in ComponentController.ts?
 
 //TODO: [240716]: •Figure out loop •Figure out how `groupStartTime` works
-//TODO: I think this is where the loop goes
-const timeController = new TimeController(parameters.sessionLength);
+//TODO: ANSWER: groupStartTime isn't passed to timeController (as I originally had it). It is used for the initial start of the session. startTime inside of timeController is set to current time on instantiation (beginning of each team) and is the basis for the timing of each team--[rewrite this as a permanent comment of explanation rather than explaining change]--
 
+const timeController = new TimeController(
+	parameters.sessionLength,
+	parameters.warp
+);
+
+//TODO [240812 Start integrating practice time data]
 // Instantiate main control loop
 // Start based on parameters.groupStartTime or a start button
 const componentController = new ComponentController();

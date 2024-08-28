@@ -194,8 +194,17 @@ export class ComponentController {
 	}
 
 	timer(timeController: TimeController): void {
-		// Get the current
-		const now = timeController.current;
+		/**
+		 * @Description Get the current time. If `warp` is defined, manipulate time for debug or demo purposes.
+		 * @parameters for `warpJump`: current time and previous time.
+		 */
+		console.log(`[TIMER] WWWWWWWWWWWARP: ${timeController.warp}`);
+		const now =
+			timeController.warp === 1
+				? timeController.current
+				: timeController.warpJump(timeController.current, this.before);
+
+		// DELETE
 
 		// initialize progress complete test for each loop
 		//! Use the status attribute?
