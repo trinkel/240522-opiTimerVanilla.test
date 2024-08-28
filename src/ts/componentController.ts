@@ -65,8 +65,6 @@ export class ComponentController {
 				indicator.maxValue.toString()
 			);
 
-			indicator.progressComplete = false;
-
 			indicator.element.setAttribute('data-progress-state', 'pending');
 
 			console.log(`ZERO: ${indicator.element.getAttribute('progress')}`);
@@ -91,7 +89,6 @@ export class ComponentController {
 		// 	return;
 		// }
 		this.indicators.forEach((indicator) => {
-			indicator.progressComplete = false; // Indicates progress complete (starts as false)
 			// This will use the timeProperty as the name of the property holding the max time for the timer.
 			// Set timer start value:
 			//  Countdown = max value
