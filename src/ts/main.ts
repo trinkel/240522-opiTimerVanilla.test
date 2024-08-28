@@ -30,7 +30,7 @@ const componentController = new ComponentController();
 
 // Initialize the timers, wait for start time
 // TODO [240813 (soon)] init on app launch (or param set) to set duration in timers. Start timer functions on groupStartTime or start button
-componentController.init(timeController, false);
+componentController.init(timeController);
 
 //! TODO Initial attempt at initializing and then waiting to run timers. Make this prettier.
 // Initialize and run the timers
