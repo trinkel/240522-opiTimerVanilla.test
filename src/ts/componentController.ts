@@ -19,7 +19,7 @@ export class ComponentController {
 	indicators: Indicators[] = [];
 	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
 	numStarts: number = 0;
-	progressComplete: boolean = true;
+	progressComplete: boolean = false;
 	before: Date = new Date();
 	iterator: number = 0;
 
