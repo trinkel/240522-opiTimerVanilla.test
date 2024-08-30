@@ -69,24 +69,9 @@ export class TimeController {
 		progress: 0,
 	};
 
-	//TODO: Do we need anything besides startTime (loose the rest)?
 	// Starting time for team. Used in init
 	// ! Watch this in the case of team list. Loop works on flow of time allotted each team. It we also have scheduled times, make sure the alloted times stay in synch with the scheduled times. (Time/math sanity check)
 	startTime: Date = new Date();
-
-	//! Time remaining variable inits (don't need?)
-	// firstWarnTimeRemain: timeRemaining = this.timeRemaining;
-	// firstMusicTimeRemain: timeRemaining = this.timeRemaining;
-	// secondWarnTimeRemain: timeRemaining = this.timeRemaining;
-	// secondMusicTimeRemain: timeRemaining = this.timeRemaining;
-	// endSessionTimeRemain: timeRemaining = this.timeRemaining;
-
-	//! Time set variable inits (don't need?)
-	// firstWarnTime: Date = new Date();
-	// firstMusicTime: Date = new Date();
-	// secondWarnTime: Date = new Date();
-	// secondMusicTime: Date = new Date();
-	// endSessionTime: Date = new Date();
 
 	constructor(
 		public duration: number, // sessionLength
@@ -94,32 +79,6 @@ export class TimeController {
 		public warp: number = 1,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
-		// this.teams = teams;
-		// console.log(this.teams);
-
-		// if (numStarts) {
-		// 	// Do the thing `numStarts` times
-		// } else {
-		// teams.forEach((team) => {
-		//	// todo: Outline the timer process here, then replicate above for anonymous start
-		// Can we run the two setups then merge into a single run?
-
-		/** incoming: Team objects (from an array) includes
-		 * 	- teamName: string
-		 * 	- level: string
-		 * 	- startTime: string
-		 * 	- endTime: string
-		 * 	- duration: number
-		 *
-		 * imported: practiceTimes array of objects includes
-		 * 	- duration: number
-		 * 	- firstMusic: number
-		 *  - firstWarning: number
-		 *  - secondMusic: number
-		 *  - secondWarning: number
-		 *  - endWarning: number
-		 */
-
 		// Select Session Duration object
 		this.sessionSpec = practiceTimes[this.duration];
 
@@ -132,17 +91,9 @@ export class TimeController {
 		this.secondMusicTime = this.secondMusic;
 		this.endWarnTime = this.endWarn;
 		this.endSessionTime = this.endTime;
-
-		console.log(`[timeControllerConstruct] FirstMusicTime:`);
-		// });
 	}
 
-	// reference to practice session spec
-	// sessionSpec: practiceTimes[setup[0].sessionSpec],
-
-	// getters based on ${practiceTimes}
-	// Runs each loop. Basis for time math
-	//! Getters set initial times. remainingTime() does the work during control loop.
+	//Getters set initial times. remainingTime() does the work during control loop.
 	get current(): Date {
 		// updater, used in remainingTime function
 		return new Date();
@@ -165,7 +116,6 @@ export class TimeController {
 	}
 
 	get endTime(): Date {
-		// return addMinutes(this.startTime, 1.5);
 		return addMinutes(this.startTime, this.sessionSpec.duration);
 	}
 
@@ -173,7 +123,6 @@ export class TimeController {
 		return addMinutes(this.endTime, this.sessionSpec.endWarning * -1);
 	}
 
-	//! NOW: (After commit cleanup): Remove this.current and pass it with target date. There are two real calls that need to be fixed in init plus multiple console.logs. Maybe default it to running this.current.
 	remainingTime(target: Date, now: Date = this.current): timeRemaining {
 		console.log(
 			`[tContoller.remainingTime] Now Epoch: ${now.getTime()} | Target Epoch: ${target.getTime()}`
@@ -203,14 +152,12 @@ export class TimeController {
 	}
 
 	/**
-	 * Performs a warp jump by calculating the time difference between two dates
-	 * and then applying a warp factor to that difference.
+	 * Performs a warp jump by calculating the time difference between two dates and then applying a warp factor to that difference. Used to speed up timers for testing and demos.
 	 *
 	 * @param {Date} now - The current date and time.
 	 * @param {Date} before - The date and time before the warp jump.
 	 * @returns {Date} - The new date and time after the warp jump.
 	 */
-	//TODO We do need to factor in the iteration number or it will keep backing up to the real current time. Also, are we getting into this function twice in a loop according to the log?
 	warpJump(before: Date): Date {
 		const diff = (this.tick / 1000) * this.warp;
 		console.log(
