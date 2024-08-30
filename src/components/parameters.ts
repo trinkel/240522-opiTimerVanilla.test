@@ -68,4 +68,4 @@ export class Parameters {
 	}
 }
 
-// Here: Figure out if this works. Does the stuff outside of the constructor work? Does the stuff inside? What's the difference?
+// ToDo: [Follow up eventually-I think we're good] Figure out if this works. Does the stuff outside of the constructor work? Does the stuff inside? What's the difference?

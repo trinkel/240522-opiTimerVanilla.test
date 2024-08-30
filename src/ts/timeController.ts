@@ -1,7 +1,8 @@
 // Time utilities
 import {
 	addMinutes,
-	differenceInSeconds,
+	addSeconds,
+	differenceInMilliseconds,
 	intervalToDuration,
 	setHours,
 	setMinutes,
@@ -89,6 +90,8 @@ export class TimeController {
 
 	constructor(
 		public duration: number, // sessionLength
+		public tick: number, // loop interval
+		public warp: number = 1,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
 		// this.teams = teams;
@@ -120,6 +123,8 @@ export class TimeController {
 		// Select Session Duration object
 		this.sessionSpec = practiceTimes[this.duration];
 
+		// TODO: [240813] (turn into explainer comment) getters return an array or object of a string ([hours]:minutes:seconds) and a number (seconds) until that goal. Initial defs above should change to that.
+		// TODOcont: First, we do need a date/time for each goal set on init. Then, in each loop, we need to get the array/object to set the timer. I think the getters (set times) and methods (run timers) are already set up below, they just need to be used.
 		// Set variables: Date
 		this.firstWarnTime = this.firstWarn;
 		this.firstMusicTime = this.firstMusic;
@@ -127,6 +132,8 @@ export class TimeController {
 		this.secondMusicTime = this.secondMusic;
 		this.endWarnTime = this.endWarn;
 		this.endSessionTime = this.endTime;
+
+		console.log(`[timeControllerConstruct] FirstMusicTime:`);
 		// });
 	}
 
@@ -135,6 +142,7 @@ export class TimeController {
 
 	// getters based on ${practiceTimes}
 	// Runs each loop. Basis for time math
+	//! Getters set initial times. remainingTime() does the work during control loop.
 	get current(): Date {
 		// updater, used in remainingTime function
 		return new Date();
@@ -167,6 +175,9 @@ export class TimeController {
 
 	//! NOW: (After commit cleanup): Remove this.current and pass it with target date. There are two real calls that need to be fixed in init plus multiple console.logs. Maybe default it to running this.current.
 	remainingTime(target: Date, now: Date = this.current): timeRemaining {
+		console.log(
+			`[tContoller.remainingTime] Now Epoch: ${now.getTime()} | Target Epoch: ${target.getTime()}`
+		);
 		let t = intervalToDuration({
 			start: now,
 			end: target,
@@ -185,8 +196,29 @@ export class TimeController {
 			)
 			.join(':');
 
-		this.timeRemaining.progress = differenceInSeconds(target, now);
+		// this.timeRemaining.progress = differenceInSeconds(target, now);
+		this.timeRemaining.progress = differenceInMilliseconds(target, now) / 1000;
 
 		return this.timeRemaining;
+	}
+
+	/**
+	 * Performs a warp jump by calculating the time difference between two dates
+	 * and then applying a warp factor to that difference.
+	 *
+	 * @param {Date} now - The current date and time.
+	 * @param {Date} before - The date and time before the warp jump.
+	 * @returns {Date} - The new date and time after the warp jump.
+	 */
+	//TODO We do need to factor in the iteration number or it will keep backing up to the real current time. Also, are we getting into this function twice in a loop according to the log?
+	warpJump(before: Date): Date {
+		const diff = (this.tick / 1000) * this.warp;
+		console.log(
+			`[WARP JUMP] WWWWWWWWARP --Before: ${before} --New ${addSeconds(
+				before,
+				diff
+			)}`
+		);
+		return addSeconds(before, diff);
 	}
 }

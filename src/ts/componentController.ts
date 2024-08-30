@@ -1,3 +1,4 @@
+import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
 export interface Indicators {
@@ -18,10 +19,14 @@ export interface Indicators {
 export class ComponentController {
 	indicators: Indicators[] = [];
 	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
+
 	numStarts: number = 0;
 	progressComplete: boolean = false;
 	before: Date = new Date();
 	iterator: number = 0;
+
+	deleteCurrent = document.getElementById('current-time') as HTMLElement;
+	deleteBefore = document.getElementById('start-time') as HTMLElement;
 
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
@@ -53,6 +58,8 @@ export class ComponentController {
 	 * Draws all indicators in their initial state (zeroed out).
 	 */
 	flatline(): void {
+		this.deleteCurrent.textContent = '';
+		this.deleteBefore.textContent = '';
 		this.indicators.forEach((indicator) => {
 			// don't need this?:
 
@@ -79,6 +86,7 @@ export class ComponentController {
 
 	init(timeController: TimeController): void {
 		this.iterator = 0;
+		const now = timeController.current;
 
 		//! Was a numStarts routine which is moving to main.ts
 		// this.numStarts = numStarts;
@@ -103,37 +111,44 @@ export class ComponentController {
 				const key = `${indicator.timeProperty}Time`;
 
 				// now (Not used in init)
-				console.log(`Team Start Time: ${timeController.startTime}`);
+				console.log(
+					`[INIT] Team Start Time: ${
+						timeController.startTime
+					} (Epoch: ${timeController.startTime.getTime()})`
+				);
 
 				// Timer target date/time
 				console.log(
-					`Element ${indicator.element.id} target date/time: ${timeController[key]}`
+					`[INIT] Element ${indicator.element.id} target date/time: ${
+						timeController[key]
+					} (Epoch: ${timeController[key].getTime()})`
 				);
 
 				// Timer timeRemaining (display)
 				console.log(
-					`Element ${indicator.element.id} timeRemaining (display): ${
-						timeController.remainingTime(timeController[key]).display
+					`[INIT] Element ${indicator.element.id} timeRemaining (display): ${
+						timeController.remainingTime(timeController[key], now).display
 					}`
 				);
 				// timer timeRemaining (progress)
 				console.log(
-					`Element ${indicator.element.id} timeRemaining (progress): ${
-						timeController.remainingTime(timeController[key]).progress
+					`[INIT] Element ${indicator.element.id} timeRemaining (progress): ${
+						timeController.remainingTime(timeController[key], now).progress
 					}`
 				);
 
 				// end
-				console.log(`Team End Time: ${timeController.endTime}`);
+				console.log(`[INIT] Team End Time: ${timeController.endTime}`);
 
 				/* 	 				`${indicator.element.id} | ${timeController.duration} | ${
 						indicator.timeProperty
 					} | ${timeController[key]} | ${
-						timeController.remainingTime(timeController[key]).display
-					} | ${timeController.remainingTime(timeController[key]).progress}`
+						timeController.remainingTime(timeController[key],now).display
+					} | ${timeController.remainingTime(timeController[key],now).progress}`
  */
 				indicator.maxValue = timeController.remainingTime(
-					timeController[key]
+					timeController[key],
+					now
 				).progress;
 
 				// Set the value-max attribute
@@ -162,12 +177,14 @@ export class ComponentController {
 
 				indicator.element.setAttribute(
 					'data-progress-count',
-					timeController.remainingTime(timeController[key]).display
+					timeController.remainingTime(timeController[key], now).display
 				);
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 
-				console.log(`CURRENT TEST: ${indicator.progressValue.toString()}`);
+				console.log(
+					`[INIT] CURRENT TEST: ${indicator.progressValue.toString()}`
+				);
 
 				//! We may not need this. Control passed to timeController
 				/* 				indicator.progressValueInit = indicator.modeValue
@@ -202,9 +219,11 @@ export class ComponentController {
 		const now =
 			timeController.warp === 1
 				? timeController.current
-				: timeController.warpJump(timeController.current, this.before);
+				: timeController.warpJump(this.before);
 
 		// DELETE
+		this.deleteCurrent.textContent = format(now, 'h:mm:ss');
+		this.deleteBefore.textContent = format(this.before, 'h:mm:ss');
 
 		// initialize progress complete test for each loop
 		//! Use the status attribute?
@@ -216,8 +235,12 @@ export class ComponentController {
 			: null; //! Display group number. Do we want it?
 
 		// Run the logic only if the time has changed
-		if (now > this.before) {
-			console.log(`${now}---RUN TIMER LOOP ${this.iterator}---${this.before}`);
+		//! Decide if you want this to only run after full second delay as originally written or just let it go.
+		// if (now > this.before) {
+		if (true) {
+			console.log(
+				`[TIMER] ${now}---RUN TIMER LOOP ${this.iterator}---${this.before}`
+			);
 
 			this.indicators.forEach((indicator) => {
 				// Manage timer--not using decrement that was developed with the component. We check the time every loop.
@@ -252,7 +275,7 @@ export class ComponentController {
 					now
 				);
 				console.log(
-					`--RUNNING Target [1] ${indicator.timeProperty}[${target}]:`
+					`[TIMER] --RUNNING Target [1] ${indicator.timeProperty}[${target}]:`
 				);
 				console.dir(currentTarget);
 
@@ -269,17 +292,21 @@ export class ComponentController {
 				indicator.progressValue = currentTarget.progress;
 
 				// Debugging
-				console.log(`--RUNNING Warn ${indicator.timeProperty}:[${warn}]`);
+				console.log(
+					`[TIMER] --RUNNING Warn ${indicator.timeProperty}:[${warn}]`
+				);
 				console.dir(currentWarn);
 
-				console.log(`--RUNNING Target ${indicator.timeProperty}:[${target}]`);
+				console.log(
+					`[TIMER] --RUNNING Target ${indicator.timeProperty}:[${target}]`
+				);
 				console.dir(currentTarget);
 				// End Debugging
 
 				if (indicator.modeValue) {
 					// Countdown timers
 					console.log(
-						`[278] progressValue [${target}]: ${indicator.progressValue.toString()}`
+						`[TIMER 302] progressValue [${target}]: ${indicator.progressValue.toString()}`
 					);
 					indicator.element.setAttribute(
 						'progress',
@@ -301,9 +328,9 @@ export class ComponentController {
 				}
 
 				console.log(
-					`[294] data-progress-state [${target}]: ${indicator.element.getAttribute(
+					`[TIMER 324] data-progress-state [${target}]: ${indicator.element.getAttribute(
 						'data-progress-state'
-					)}`
+					)} | timer.progressComplete: ${this.progressComplete}`
 				);
 			});
 		}
@@ -312,6 +339,10 @@ export class ComponentController {
 		this.before = now;
 		// Reference value
 		this.iterator++;
+
+		//HERE [240826] Looping seems to work to a certain extent. Count and display work. First progressComplete works. Does not go into next team. Continues counting down into negative numbers. I also think the clocks start at target values and switch to warning values on first tick. Init starts one second short.
+		//! But it's a start!
+	}
 
 	startTimer(timeController: TimeController) {
 		return new Promise<void>((resolve, reject) => {
@@ -326,7 +357,11 @@ export class ComponentController {
 	}
 
 	complete(): void {
-		console.log(`---Process Complete: ${this.numStarts}`);
+		console.log(`[COMPLETE] ---Process Complete: ${this.numStarts}`);
 	}
-
 }
+
+// Referencing Notion: On Loops, Timeouts and Promises
+// function writeToLog() = timer
+// function writeToLogRepeatedly() = new function
+// async function logEveryTwoSecondsForOneMinute() = startTimer

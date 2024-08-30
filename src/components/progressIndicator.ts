@@ -78,6 +78,7 @@ export default class ProgressIndicator extends HTMLElement {
 		}
 
 		//  Set the aria role value for screen readers
+		//! This works after timer starts, but needs and initial setting.
 		this.setAttribute('aria-valuenow', progress.toString());
 
 		const circle = this.querySelector('[data-progress-circle]') as HTMLElement;

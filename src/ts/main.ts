@@ -1,5 +1,4 @@
 import ProgressIndicator from '../components/progressIndicator';
-
 // sample data: remove or add a demo switch
 import { isBefore } from 'date-fns';
 import { Parameters } from '../components/parameters';
@@ -13,7 +12,6 @@ export default ProgressIndicator;
 const parameters = new Parameters();
 
 const sessionStatus = document.querySelector('[data-session-status]'); // Temporary status label at bottom of page --- //! Now it's in ComponentController.ts?
-
 //TODO: [240716]: •Figure out loop •Figure out how `groupStartTime` works
 //TODO: ANSWER: groupStartTime isn't passed to timeController (as I originally had it). It is used for the initial start of the session. startTime inside of timeController is set to current time on instantiation (beginning of each team) and is the basis for the timing of each team--[rewrite this as a permanent comment of explanation rather than explaining change]--
 
@@ -24,6 +22,11 @@ const timeController = new TimeController(
 );
 
 //TODO [240812 Start integrating practice time data]
+//TODO Should timeController instantiate here and pass to componentController or instantiate in componentController? At this point, yes. See pseudo code at bottom of file
+
+//TODO [240812 (later)] add method to timer component to rewind clock at team complete
+
+console.log(`Group Start Time: ${parameters.groupStartTime}`);
 // Instantiate main control loop
 // Start based on parameters.groupStartTime or a start button
 const componentController = new ComponentController();
@@ -47,10 +50,13 @@ const waitTimer = (): void => {
 async function startPracticeGroup(timeController: TimeController) {
 	try {
 		for (let i = 0; i < parameters.numStarts; i++) {
-			// console.log(
-			// 	`---START TEAM NUMBER ${i + 1} out of ${parameters.numStarts}---`
-			// );
+			console.log(
+				`[START PRACTICE GROUP] ---START TEAM NUMBER ${i + 1} out of ${
+					parameters.numStarts
+				}---`
+			);
 			componentController.init(timeController);
+			//! The time is off because first time through delays the tick amount?
 			await componentController.startTimer(timeController);
 		}
 	} catch (error) {
@@ -91,4 +97,23 @@ componentController.complete();
  *     // groupStartTime is already a Date object
  *     // There has to be a start time. If session hasn't started and it's manual, start is now and duration is 0? Then call with duration on start click?
  *     // constructor needs to be rewritten to do what it's doing, but without the loop.
+ */
+
+//! Timer Loop
+/* const componentController = new ComponentController(parameters);
+
+for (let i = 0; i <= parameters.numStarts; i++) {
+	// if teamMode = list
+	//teams[i].duration
+	let timeController = new TimeController(
+		parameters.sessionLength,
+		parameters.groupStartTime
+	)
+
+	componentController.init(timeController)
+}
+
+
+//export class ComponentController
+constructor(parmeters.tick) {
  */
