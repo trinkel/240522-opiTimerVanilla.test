@@ -31,7 +31,7 @@ interface timeRemaining {
 }
 
 /**
- * Sets the time of the given Date object based on a minimal time string.
+ * Sets the time of the given Date object based on a minimal time string. Used to manipulate string input from Parameters form.
  * @param time A string representing the time in the format 'HH:MM:SS' or 'HH:MM'.
  * @returns A Date object with the time set according to the input string.
  */
