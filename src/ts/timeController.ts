@@ -123,6 +123,13 @@ export class TimeController {
 		return addMinutes(this.endTime, this.sessionSpec.endWarning * -1);
 	}
 
+	/**
+	 * Calculates the remaining time between the current time and a target time.
+	 *
+	 * @param {Date} target - The target date and time.
+	 * @param {Date} [now=this.current] - The current date and time. Defaults to the current time if not provided.
+	 * @returns {timeRemaining} An object containing the formatted display of the remaining time and the progress in seconds.
+	 */
 	remainingTime(target: Date, now: Date = this.current): timeRemaining {
 		console.log(
 			`[tContoller.remainingTime] Now Epoch: ${now.getTime()} | Target Epoch: ${target.getTime()}`
