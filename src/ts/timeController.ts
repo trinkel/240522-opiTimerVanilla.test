@@ -2,14 +2,13 @@
 import {
 	addMinutes,
 	addSeconds,
-	differenceInMilliseconds,
-	intervalToDuration,
 	setHours,
 	setMinutes,
 	setSeconds,
 } from 'date-fns';
 
 import { practiceTimes } from '../data/practiceTimes';
+import { timeUnits } from './timeUnits';
 
 interface sessionSpec {
 	duration: number;
@@ -134,28 +133,31 @@ export class TimeController {
 		console.log(
 			`[tContoller.remainingTime] Now Epoch: ${now.getTime()} | Target Epoch: ${target.getTime()}`
 		);
-		let t = intervalToDuration({
-			start: now,
-			end: target,
-		});
 
-		// build output
-		if (t.hasOwnProperty('hours')) {
-			t = Object.assign({ hours: 0, minutes: 0, seconds: 0 }, t);
-		} else {
-			t = Object.assign({ minutes: 0, seconds: 0 }, t);
-		}
-
-		this.timeRemaining.display = Object.values(t)
-			.map((unit, i) =>
-				i ? unit.toString().padStart(2, '0') : unit.toString().padStart(1, '0')
-			)
-			.join(':');
-
-		// this.timeRemaining.progress = differenceInSeconds(target, now);
-		this.timeRemaining.progress = differenceInMilliseconds(target, now) / 1000;
+		const interval: number = target.getTime() - now.getTime();
+		console.log(
+			`The interval: ${interval} | ${Math.round(interval / timeUnits.millies)}`
+		);
+		this.timeRemaining.progress = interval;
+		this.timeRemaining.display = this.formatTime(interval);
 
 		return this.timeRemaining;
+	}
+
+	formatTime(timeStamp: number): string {
+		let totalSeconds = Math.round(timeStamp / timeUnits.millies);
+		const hours = Math.floor(totalSeconds / timeUnits.hours);
+		totalSeconds %= timeUnits.hours;
+		const minutes = Math.floor(totalSeconds / timeUnits.minutes);
+		const seconds = totalSeconds % timeUnits.minutes;
+
+		if (hours) {
+			return `${hours.toString()}:${minutes
+				.toString()
+				.padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+		} else {
+			return `${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
+		}
 	}
 
 	/**
@@ -166,7 +168,7 @@ export class TimeController {
 	 * @returns {Date} - The new date and time after the warp jump.
 	 */
 	warpJump(before: Date): Date {
-		const diff = (this.tick / 1000) * this.warp;
+		const diff = (this.tick / timeUnits.millies) * this.warp;
 		console.log(
 			`[WARP JUMP] WWWWWWWWARP --Before: ${before} --New ${addSeconds(
 				before,
