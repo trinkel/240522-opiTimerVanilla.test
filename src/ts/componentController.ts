@@ -73,79 +73,20 @@ export class ComponentController {
 			);
 
 			indicator.element.setAttribute('data-progress-state', 'pending');
-
-			console.log(`ZERO: ${indicator.element.getAttribute('progress')}`);
 		});
 	}
-
-	//TODO [240812 Start integrating practice time data]
-	//TODO  if teamMode=list: get duration/start-time from date else if teamMode=anonymous: get duration/start-time from parameters (all duration will be the same, start-time will be from form or from button)
-	//TODO  Need to change getting duration from element to getting duration of each timer from data or parameters. Should be able to use element name ("indicator") from loop.
-	//TODO  Routine to route element name to data name (first-warn to firstWarn) is above
-	//TODO [DO THIS FIRST]  So, in each indicator below, we need to test for data. If it's there, setAttribute to data, otherwise set it to value-max (which we have now). Or do we eliminate the fallback on the element?
 
 	init(timeController: TimeController): void {
 		this.iterator = 0;
 		const now = timeController.current;
 
-		//! Was a numStarts routine which is moving to main.ts
-		// this.numStarts = numStarts;
-		// if (this.numStarts <= 0) {
-		// 	this.sessionStatus
-		// 		? (this.sessionStatus.textContent = 'Group completed')
-		// 		: null;
-		// 	return;
-		// }
 		this.indicators.forEach((indicator) => {
-			// This will use the timeProperty as the name of the property holding the max time for the timer.
-			// Set timer start value:
-			//  Countdown = max value
-			//  Count-up = 0
+			// Uses the timeProperty as the name of the property holding the max time for the timer.
 
-			// HERE: [240812] Replace console.log with time string for timer the keep filling this component with input from timeController. Remove outer loop (numStarts)  and move to init call in main.ts. See note at bottom of main.ts file
-			// TODO: [240813] See note in timeController for getters. (Afternoon:) The function seems to work for the console.log now. Apply to the element.
-			// TODO: [240813] NEXT: Assign times to timers and compare to console.logs
-			// TODO: [240813] THINK: Maybe we just need to add one second for the init round instead of futzing in timeRemaining method to hack the way the date function is rounding down one second to at the start?
 			if (timeController.duration) {
 				// To satisfy TypeScript when used as object property index
 				const key = `${indicator.timeProperty}Time`;
 
-				// now (Not used in init)
-				console.log(
-					`[INIT] Team Start Time: ${
-						timeController.startTime
-					} (Epoch: ${timeController.startTime.getTime()})`
-				);
-
-				// Timer target date/time
-				console.log(
-					`[INIT] Element ${indicator.element.id} target date/time: ${
-						timeController[key]
-					} (Epoch: ${timeController[key].getTime()})`
-				);
-
-				// Timer timeRemaining (display)
-				console.log(
-					`[INIT] Element ${indicator.element.id} timeRemaining (display): ${
-						timeController.remainingTime(timeController[key], now).display
-					}`
-				);
-				// timer timeRemaining (progress)
-				console.log(
-					`[INIT] Element ${indicator.element.id} timeRemaining (progress): ${
-						timeController.remainingTime(timeController[key], now).progress
-					}`
-				);
-
-				// end
-				console.log(`[INIT] Team End Time: ${timeController.endTime}`);
-
-				/* 	 				`${indicator.element.id} | ${timeController.duration} | ${
-						indicator.timeProperty
-					} | ${timeController[key]} | ${
-						timeController.remainingTime(timeController[key],now).display
-					} | ${timeController.remainingTime(timeController[key],now).progress}`
- */
 				indicator.maxValue = timeController.remainingTime(
 					timeController[key],
 					now
@@ -164,12 +105,8 @@ export class ComponentController {
 
 				// Set initial progress value as current progress value (for start)
 				indicator.progressValue = indicator.progressValueInit;
-				//! need an indicator.someThing (indicator.textValue) here for time text
 
 				// Set progress attribute of timer
-				//HERE [240814] Fix this to set timeRemaining text. (I think the timers are working right, but the visuals aren't reflecting the status. Be sure ARIA is updated too.)
-				//! [240814 Last thing] When this attribute changes, progressIndicator component sets bar and text. We will need to split this into two elements
-				//! [FUTURE REFERENCE] The clock can work the same way assigning the same attribute. (Clock change: newTime > oldTime ? update : don't; so it doesn't flash with same number)
 				indicator.element.setAttribute(
 					'progress',
 					indicator.progressValue.toString()
@@ -185,27 +122,6 @@ export class ComponentController {
 				console.log(
 					`[INIT] CURRENT TEST: ${indicator.progressValue.toString()}`
 				);
-
-				//! We may not need this. Control passed to timeController
-				/* 				indicator.progressValueInit = indicator.modeValue
-					? indicator.maxValue
-					: 0;
-				indicator.maxValue = Number(
-					indicator.element.getAttribute('value-max')
-				);
-
-				indicator.progressValueInit = indicator.modeValue
-					? indicator.maxValue
-					: 0;
-
-				indicator.progressValue = indicator.progressValueInit;
-
-				indicator.element.setAttribute(
-					'progress',
-					indicator.progressValue.toString()
-				);
-				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
- */
 			}
 		});
 	}
@@ -215,7 +131,7 @@ export class ComponentController {
 		 * @Description Get the current time. If `warp` is defined, manipulate time for debug or demo purposes.
 		 * @parameters for `warpJump`: current time and previous time.
 		 */
-		console.log(`[TIMER] WWWWWWWWWWWARP: ${timeController.warp}`);
+
 		const now =
 			timeController.warp === 1
 				? timeController.current
@@ -226,7 +142,6 @@ export class ComponentController {
 		this.deleteBefore.textContent = format(this.before, 'h:mm:ss');
 
 		// initialize progress complete test for each loop
-		//! Use the status attribute?
 		this.progressComplete = true;
 
 		// This may be unused
@@ -238,10 +153,6 @@ export class ComponentController {
 		//! Decide if you want this to only run after full second delay as originally written or just let it go.
 		// if (now > this.before) {
 		if (true) {
-			console.log(
-				`[TIMER] ${now}---RUN TIMER LOOP ${this.iterator}---${this.before}`
-			);
-
 			this.indicators.forEach((indicator) => {
 				// Manage timer--not using decrement that was developed with the component. We check the time every loop.
 
@@ -274,10 +185,6 @@ export class ComponentController {
 					timeController[target],
 					now
 				);
-				console.log(
-					`[TIMER] --RUNNING Target [1] ${indicator.timeProperty}[${target}]:`
-				);
-				console.dir(currentTarget);
 
 				/**
 				 * @var currentWarn
@@ -291,23 +198,8 @@ export class ComponentController {
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
 				indicator.progressValue = currentTarget.progress;
 
-				// Debugging
-				console.log(
-					`[TIMER] --RUNNING Warn ${indicator.timeProperty}:[${warn}]`
-				);
-				console.dir(currentWarn);
-
-				console.log(
-					`[TIMER] --RUNNING Target ${indicator.timeProperty}:[${target}]`
-				);
-				console.dir(currentTarget);
-				// End Debugging
-
 				if (indicator.modeValue) {
 					// Countdown timers
-					console.log(
-						`[TIMER 302] progressValue [${target}]: ${indicator.progressValue.toString()}`
-					);
 					indicator.element.setAttribute(
 						'progress',
 						indicator.progressValue.toString()
@@ -326,12 +218,6 @@ export class ComponentController {
 				) {
 					this.progressComplete = false;
 				}
-
-				console.log(
-					`[TIMER 324] data-progress-state [${target}]: ${indicator.element.getAttribute(
-						'data-progress-state'
-					)} | timer.progressComplete: ${this.progressComplete}`
-				);
 			});
 		}
 
@@ -339,9 +225,6 @@ export class ComponentController {
 		this.before = now;
 		// Reference value
 		this.iterator++;
-
-		//HERE [240826] Looping seems to work to a certain extent. Count and display work. First progressComplete works. Does not go into next team. Continues counting down into negative numbers. I also think the clocks start at target values and switch to warning values on first tick. Init starts one second short.
-		//! But it's a start!
 	}
 
 	startTimer(timeController: TimeController) {
