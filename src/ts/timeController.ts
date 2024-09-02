@@ -130,14 +130,7 @@ export class TimeController {
 	 * @returns {timeRemaining} An object containing the formatted display of the remaining time and the progress in seconds.
 	 */
 	remainingTime(target: Date, now: Date = this.current): timeRemaining {
-		console.log(
-			`[tContoller.remainingTime] Now Epoch: ${now.getTime()} | Target Epoch: ${target.getTime()}`
-		);
-
 		const interval: number = target.getTime() - now.getTime();
-		console.log(
-			`The interval: ${interval} | ${Math.round(interval / timeUnits.millies)}`
-		);
 		this.timeRemaining.progress = interval;
 		this.timeRemaining.display = this.formatTime(interval);
 
@@ -169,12 +162,6 @@ export class TimeController {
 	 */
 	warpJump(before: Date): Date {
 		const diff = (this.tick / timeUnits.millies) * this.warp;
-		console.log(
-			`[WARP JUMP] WWWWWWWWARP --Before: ${before} --New ${addSeconds(
-				before,
-				diff
-			)}`
-		);
 		return addSeconds(before, diff);
 	}
 }

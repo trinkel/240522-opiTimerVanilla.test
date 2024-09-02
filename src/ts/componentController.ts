@@ -118,10 +118,6 @@ export class ComponentController {
 				);
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
-
-				console.log(
-					`[INIT] CURRENT TEST: ${indicator.progressValue.toString()}`
-				);
 			}
 		});
 	}
@@ -181,19 +177,26 @@ export class ComponentController {
 				 * @var currentTarget
 				 * @description Find time remaining to target for each timer. Returns an object of {progressValue:, displayValue:}
 				 */
-				const currentTarget = timeController.remainingTime(
-					timeController[target],
-					now
+				const currentTarget = {};
+				Object.assign(
+					currentTarget,
+					timeController.remainingTime(timeController[target], now)
 				);
 
 				/**
 				 * @var currentWarn
 				 * @description Find time remaining to warning for each timer. Returns and object of {progressValue:, displayValue:}
 				 */
-				const currentWarn = timeController.remainingTime(
-					timeController[warn],
-					now
+				const currentWarn = {};
+				Object.assign(
+					currentWarn,
+					timeController.remainingTime(timeController[warn], now)
 				);
+
+				console.log(`Target: ${target} | ${timeController[target]}`);
+				console.log(`Warn: ${warn} | ${timeController[warn]}`);
+				console.log(`Current Target: ${currentTarget.display}`);
+				console.log(`Current Warn: ${currentWarn.display}\n`);
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
 				indicator.progressValue = currentTarget.progress;
