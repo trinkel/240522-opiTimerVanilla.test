@@ -24,7 +24,7 @@ interface sessionSpec {
  * @property display string The value for the text-value attribute of the progress-indicator element
  * @property progress number The value for the progress attribute of the progress-indicator element
  */
-interface timeRemaining {
+export interface timeRemaining {
 	display: string; // text value
 	progress: number; // progress meter
 }
