@@ -1,6 +1,8 @@
 import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
+import { timeRemaining } from './timeController';
+
 export interface Indicators {
 	id: string; // element ID
 	element: Element; // progressIndicator custom element
@@ -174,20 +176,20 @@ export class ComponentController {
 				)}Time`;
 
 				/**
-				 * @var currentTarget
+				 * @var currentTarget: timeRemaining
 				 * @description Find time remaining to target for each timer. Returns an object of {progressValue:, displayValue:}
 				 */
-				const currentTarget = {};
+				const currentTarget: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentTarget,
 					timeController.remainingTime(timeController[target], now)
 				);
 
 				/**
-				 * @var currentWarn
+				 * @var currentWarn: timeRemaining
 				 * @description Find time remaining to warning for each timer. Returns and object of {progressValue:, displayValue:}
 				 */
-				const currentWarn = {};
+				const currentWarn: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentWarn,
 					timeController.remainingTime(timeController[warn], now)
