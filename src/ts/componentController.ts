@@ -122,6 +122,8 @@ export class ComponentController {
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 			}
+
+			this.before = timeController.current;
 		});
 	}
 
