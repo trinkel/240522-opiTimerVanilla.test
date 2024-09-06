@@ -80,6 +80,7 @@ export class ComponentController {
 
 	init(timeController: TimeController): void {
 		this.iterator = 0;
+		console.log(`[init] Iteration: ${this.iterator}`);
 		const now = timeController.current;
 
 		this.indicators.forEach((indicator) => {
@@ -195,10 +196,12 @@ export class ComponentController {
 					timeController.remainingTime(timeController[warn], now)
 				);
 
-				console.log(`Target: ${target} | ${timeController[target]}`);
-				console.log(`Warn: ${warn} | ${timeController[warn]}`);
-				console.log(`Current Target: ${currentTarget.display}`);
-				console.log(`Current Warn: ${currentWarn.display}\n`);
+				console.log(
+					`currentTarget: ${target} | ${timeController[target]} | Time Remaining ${currentTarget.display}`
+				);
+				console.log(
+					`Warn: ${warn} | ${timeController[warn]} | Time Remaining ${currentWarn.display}`
+				);
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
 				indicator.progressValue = currentTarget.progress;
@@ -230,6 +233,7 @@ export class ComponentController {
 		this.before = now;
 		// Reference value
 		this.iterator++;
+		this.sessionStatus.textContent = this.iterator.toString();
 	}
 
 	startTimer(timeController: TimeController) {
