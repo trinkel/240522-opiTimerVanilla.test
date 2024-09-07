@@ -45,19 +45,7 @@ pnpm add -D autoprefixer postcss-preset-env cssnano postcss-import
 
 Add configuration file: `postcss.config.cjs`. See links below for example config files. The Astro doc shows a minimal one line export config. The Rodney Lab page show a more verbose expanded that allows for verbose configuration of the plugins.
 
-### Additional packages to check out
-
-[postcss-font-magician](https://github.com/csstools/postcss-font-magician): automatically builds `@font-face` rules.
-
-[postcss-utopia](https://www.npmjs.com/package/postcss-utopia): Utopia fluid type generator (beta? but it's past v1)
-
-[postcss-assets](https://github.com/borodean/postcss-assets): Lots of stuff you can do with images such as easy referencing. Get size and other information. For example, you can set the size of a `<div>` based on the width of an image:
-
-```css
-.card {
-	width: width('images/foobar.png');
-}
-```
+````
 
 **date-fns**
 
@@ -65,7 +53,7 @@ Toolset for manipulating JavaScript dates.
 
 ```bash
 pnpm add date-fns
-```
+````
 
 ```ts
 import {
@@ -76,6 +64,52 @@ import {
 	intervalToDuration,
 } from 'date-fns';
 ```
+
+**Shoelace**
+
+Web component library.
+
+- [Home and documentation](https://shoelace.style)
+- [Using Shoelace with Vite bundler](https://willschenk.com/labnotes/2024/shoelace_and_vite/)
+
+Installation:
+
+```bash
+pnpm add @shoelace-style/shoelace
+```
+
+Usage
+
+```ts
+// Import styles (Is this actually in CSS?)
+import '@shoelace-style/shoelace/dist/themes/light.css';
+
+// Import components
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@shoelace-style/shoelace/dist/components/input/input.js';
+import '@shoelace-style/shoelace/dist/components/rating/rating.js';
+
+// Import utility to set the base path to Shoelace stuff
+import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+
+// Set the base path to the folder you copied Shoelace's assets to
+setBasePath('/path/to/shoelace/dist');
+```
+
+### Additional packages to check out
+
+[postcss-font-magician](https://github.com/csstools/postcss-font-magician): automatically builds `@font-face` rules.
+
+[postcss-utopia](https://www.npmjs.com/package/postcss-utopia): Utopia fluid type generator (beta? but it's past v1)
+
+[postcss-assets](https://github.com/borodean/postcss-assets): Lots of stuff you can do with images such as easy referencing. Get size and other information. For example, you can set the size of a `<div>` based on the width of an image:
+
+````css
+.card {
+	width: width('images/foobar.png');
+}
+
 
 ## Resources
 
@@ -294,7 +328,7 @@ export function counterMath(targetDate, todaysDate) {
 
 	return countDown;
 }
-```
+````
 
 ## Coding notes: Research and Explanations
 
