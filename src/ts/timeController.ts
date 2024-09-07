@@ -130,7 +130,13 @@ export class TimeController {
 	 * @returns {timeRemaining} An object containing the formatted display of the remaining time and the progress in seconds.
 	 */
 	remainingTime(target: Date, now: Date = this.current): timeRemaining {
-		const interval: number = target.getTime() - now.getTime();
+		let interval: number;
+		if (target.getTime() <= now.getTime()) {
+			interval = 0;
+		} else {
+			interval = target.getTime() - now.getTime();
+		}
+
 		this.timeRemaining.progress = interval;
 		this.timeRemaining.display = this.formatTime(interval);
 
