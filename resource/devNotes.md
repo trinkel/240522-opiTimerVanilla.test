@@ -72,15 +72,57 @@ Web component library.
 - [Home and documentation](https://shoelace.style)
 - [Using Shoelace with Vite bundler](https://willschenk.com/labnotes/2024/shoelace_and_vite/)
 
-Installation:
+Installation for Vite (from Will Schenk article overriding Shoelace info):
 
 ```bash
-pnpm add @shoelace-style/shoelace
+pnpm add npm i @shoelace-style/shoelace vite-plugin-static-copy vite
+```
+
+```js
+//vite.cfg.js
+import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+
+const iconsPath = 'node_modules/@shoelace-style/shoelace/dist/assets/icons';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+	resolve: {
+		alias: [
+			{
+				find: /\/assets\/icons\/(.+)/,
+				replacement: `${iconsPath}/$1`,
+			},
+		],
+	},
+	build: {
+		rollupOptions: {
+			// external: /^lit/,
+			plugins: [],
+		},
+	},
+	plugins: [
+		viteStaticCopy({
+			targets: [
+				{
+					src: iconsPath,
+					dest: 'assets',
+				},
+			],
+		}),
+	],
+});
 ```
 
 Usage
 
 ```ts
+// import everything (Schenk article)
+import '@shoelace-style/shoelace';
+```
+
+```ts
+// Cherry picking (Shoelace article)
 // Import styles (Is this actually in CSS?)
 import '@shoelace-style/shoelace/dist/themes/light.css';
 
