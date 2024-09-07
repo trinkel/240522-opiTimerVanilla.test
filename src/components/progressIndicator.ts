@@ -22,7 +22,10 @@ export default class ProgressIndicator extends HTMLElement {
 		this.innerHTML = `
 			<div class="progress-indicator">
 				<div class="progress-indicator__visual">
-					<div data-progress-count="" class="progress-indicator__count"></div>
+					<div class="progress-indicator__count-container">
+						<div data-progress-count="" class="progress-indicator__count"></div>
+						<sl-badge pill data-progress-warn class="progress-indicator__warning-badge">Test</sl-badge>
+					</div>
 					<svg
 						fill='none'
 						viewBox="0 0 ${this.viewBox} ${this.viewBox}"
@@ -116,7 +119,12 @@ export default class ProgressIndicator extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['progress', 'data-progress-count', 'value-max'];
+		return [
+			'progress',
+			'data-progress-count',
+			'value-max',
+			'data-progress-warn',
+		];
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
