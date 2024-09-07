@@ -49,6 +49,11 @@ async function startPracticeGroup(timeController: TimeController) {
 					parameters.numStarts
 				}---`
 			);
+			timeController = new TimeController(
+				parameters.sessionLength,
+				parameters.tick,
+				parameters.warp
+			);
 			componentController.init(timeController);
 			await componentController.startTimer(timeController);
 		}
