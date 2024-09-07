@@ -114,6 +114,17 @@ export default defineConfig({
 });
 ```
 
+VSCode code completion
+
+```json
+//.vscode/settings
+{
+	"html.customData": [
+		"./node_modules/@shoelace-style/shoelace/dist/vscode.html-custom-data.json"
+	]
+}
+```
+
 Usage
 
 ```ts
