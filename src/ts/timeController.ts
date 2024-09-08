@@ -8,7 +8,7 @@ import {
 } from 'date-fns';
 
 import { practiceTimes } from '../data/practiceTimes';
-import { timeUnits } from './timeUnits';
+import { timeUnits } from './timeUtilities';
 
 interface sessionSpec {
 	duration: number;
