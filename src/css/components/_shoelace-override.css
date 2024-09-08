@@ -1,0 +1,5 @@
+.progress-indicator__count-container {
+	.progress-indicator__warning-badge {
+		font-size: max(9cqw, 0.75rem);
+	}
+}

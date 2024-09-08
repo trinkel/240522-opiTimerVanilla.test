@@ -31,6 +31,12 @@
 	display: none;
 }
 
+.progress-indicator__count-container {
+	display: grid;
+	align-items: center;
+	place-items: center;
+}
+
 .progress-indicator__count {
 	font-size: var(--progress-indicator-count-size, max(25cqw, 1rem));
 	z-index: 1;
