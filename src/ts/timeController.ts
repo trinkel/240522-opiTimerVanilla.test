@@ -145,6 +145,12 @@ export class TimeController {
 		return this.timeRemaining;
 	}
 
+	/**
+	 * formatTime: converts timestamp to hours: seconds:minutes time string format 00:00:00 (hours optional)
+	 *
+	 * @param {number} timeStamp
+	 * @returns {string}
+	 */
 	formatTime(timeStamp: number): string {
 		let totalSeconds = Math.round(timeStamp / timeUnits.millies);
 		const hours = Math.floor(totalSeconds / timeUnits.hours);
