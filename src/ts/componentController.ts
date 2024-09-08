@@ -4,10 +4,19 @@ import { TimeController } from './timeController';
 import { timeRemaining } from './timeController';
 import { stringifySeconds, timeUnits } from './timeUtilities';
 
+/**
+ * Indicators - array of indicator element objects
+ *
+ * @export
+ * @interface Indicators
+ * @typedef {Indicators}
+ */
 export interface Indicators {
 	id: string; // element ID
 	element: Element; // progressIndicator custom element
 	timeProperty: string; // name of property with time for element (eg firstWarnTime)
+	targetKey: string; // key for use with timeController for target time reference
+	warnKey: string; // key for use with timeController for warning time reference
 	modeValue: number; // Count up or down //! Don't need it but leave it in for posterity or 'just in case'
 	maxValue: number; // Maximum value
 	progressValueInit: number; // Initialization value
@@ -45,6 +54,8 @@ export class ComponentController {
 					timeProperty: `${id.substring(0, dashIdx)}${id
 						.charAt(dashIdx + 1)
 						.toUpperCase()}${id.substring(dashIdx + 2)}`, // used to access times from class such as firstMusicTime
+					targetKey: '', // key for use with timeController for target time reference
+					warnKey: '', // key for use with timeController for warning time reference
 					modeValue: 1, // Count up or down
 					// Zero out properties to initialize then initialize in class)
 					maxValue: 100, // Maximum value
@@ -66,7 +77,12 @@ export class ComponentController {
 		this.deleteCurrent.textContent = '';
 		this.deleteBefore.textContent = '';
 		this.indicators.forEach((indicator) => {
-			// don't need this?:
+			// To satisfy TypeScript when used as object property index
+			indicator.targetKey = `${indicator.timeProperty}Time`; // key for use with timeController for target time reference
+			indicator.warnKey = `${indicator.timeProperty.replace(
+				/Music|Session/,
+				'Warning'
+			)}`; // key for use with timeController for warning time reference
 
 			indicator.element.setAttribute('progress', '0');
 
@@ -90,15 +106,8 @@ export class ComponentController {
 			// Uses the timeProperty as the name of the property holding the max time for the timer.
 
 			if (timeController.duration) {
-				// To satisfy TypeScript when used as object property index
-				const targetKey = `${indicator.timeProperty}Time`;
-				const warnKey = `${indicator.timeProperty.replace(
-					/Music|Session/,
-					'Warning'
-				)}`;
-
 				indicator.maxValue = timeController.remainingTime(
-					timeController[targetKey],
+					timeController[indicator.targetKey],
 					now
 				).progress;
 
@@ -124,14 +133,15 @@ export class ComponentController {
 
 				indicator.element.setAttribute(
 					'data-progress-count',
-					timeController.remainingTime(timeController[targetKey], now).display
+					timeController.remainingTime(timeController[indicator.targetKey], now)
+						.display
 				);
 
 				// set warning badge
 				indicator.element.setAttribute(
 					'data-progress-warn',
 					`(${stringifySeconds(
-						timeController.sessionSpec[warnKey] * timeUnits.minutes,
+						timeController.sessionSpec[indicator.warnKey] * timeUnits.minutes,
 						false
 					)} warning)`
 				);
@@ -174,34 +184,13 @@ export class ComponentController {
 				// Manage timer--not using decrement that was developed with the component. We check the time every loop.
 
 				/**
-				 * @var target
-				 * @description To satisfy TypeScript when used as object property index.
-				 * @example #first-music becomes firstMusicTime
-				 * @use timeController[target]
-				 *      points at timeController->get firstMusic(): Date
-				 */
-				const targetKey = `${indicator.timeProperty}Time`;
-
-				/**
-				 * @var warn
-				 * @description To satisfy TypeScript when used as object property index. Gets the warning time for the current indicator.
-				 * @example #first-music becomes firstWarnTime
-				 * @use timeController[warn]
-				 *      points at timeController->get firstWarn(): Date
-				 */
-				const warnKey = `${indicator.timeProperty.replace(
-					/Music|Session/,
-					'Warn'
-				)}Time`;
-
-				/**
 				 * @var currentTarget: timeRemaining
 				 * @description Find time remaining to target for each timer. Returns an object of {progressValue:, displayValue:}
 				 */
 				const currentTarget: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentTarget,
-					timeController.remainingTime(timeController[targetKey], now)
+					timeController.remainingTime(timeController[indicator.targetKey], now)
 				);
 
 				/**
@@ -211,14 +200,18 @@ export class ComponentController {
 				const currentWarn: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentWarn,
-					timeController.remainingTime(timeController[warnKey], now)
+					timeController.remainingTime(timeController[indicator.warnKey], now)
 				);
 
 				console.log(
-					`currentTarget: ${targetKey} | ${timeController[targetKey]} | Time Remaining ${currentTarget.display}`
+					`currentTarget: ${indicator.targetKey} | ${
+						timeController[indicator.targetKey]
+					} | Time Remaining ${currentTarget.display}`
 				);
 				console.log(
-					`Warn: ${warnKey} | ${timeController[warnKey]} | Time Remaining ${currentWarn.display}`
+					`Warn: ${indicator.warnKey} | ${
+						timeController[indicator.warnKey]
+					} | Time Remaining ${currentWarn.display}`
 				);
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
