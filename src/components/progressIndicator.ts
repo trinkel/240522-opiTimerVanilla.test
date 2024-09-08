@@ -23,8 +23,8 @@ export default class ProgressIndicator extends HTMLElement {
 			<div class="progress-indicator">
 				<div class="progress-indicator__visual">
 					<div class="progress-indicator__count-container">
-						<div data-progress-count="" class="progress-indicator__count"></div>
-						<sl-badge pill data-progress-warn class="progress-indicator__warning-badge">Test</sl-badge>
+						<div data-progress-count-el="" class="progress-indicator__count"></div>
+						<sl-badge pill data-progress-warn-el class="progress-indicator__warning-badge">Test</sl-badge>
 					</div>
 					<svg
 						fill='none'
@@ -111,7 +111,7 @@ export default class ProgressIndicator extends HTMLElement {
 	}
 
 	setText(display: string) {
-		const progressCount = this.querySelector('[data-progress-count]');
+		const progressCount = this.querySelector('[data-progress-count-el]');
 		// A human readable version for the text label
 		progressCount
 			? (progressCount.textContent = `${display}${this.unit}`)
@@ -119,7 +119,7 @@ export default class ProgressIndicator extends HTMLElement {
 	}
 
 	setWarn(display: string) {
-		const progressWarn = this.querySelector('[data-progress-warn]');
+		const progressWarn = this.querySelector('[data-progress-warn-el]');
 		progressWarn ? (progressWarn.textContent = `${display}`) : null;
 	}
 
