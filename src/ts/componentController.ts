@@ -78,12 +78,6 @@ export class ComponentController {
 		this.deleteBefore.textContent = '';
 		this.indicators.forEach((indicator) => {
 			// To satisfy TypeScript when used as object property index
-			indicator.targetKey = `${indicator.timeProperty}Time`; // key for use with timeController for target time reference
-			indicator.warnKey = `${indicator.timeProperty.replace(
-				/Music|Session/,
-				'Warning'
-			)}`; // key for use with timeController for warning time reference
-
 			indicator.element.setAttribute('progress', '0');
 
 			indicator.element.setAttribute('data-progress-count', '0:00');
@@ -106,6 +100,21 @@ export class ComponentController {
 			// Uses the timeProperty as the name of the property holding the max time for the timer.
 
 			if (timeController.duration) {
+				// key for use with timeController for target time reference
+				indicator.targetKey = `${indicator.timeProperty}Time`;
+
+				// key for use with timeController for warning time reference
+				indicator.warnKey = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warning'
+				)}`;
+
+				// String of warning time for the timer
+				indicator.warnTime = `${stringifySeconds(
+					timeController.sessionSpec[indicator.warnKey] * timeUnits.minutes,
+					false
+				)}`;
+
 				indicator.maxValue = timeController.remainingTime(
 					timeController[indicator.targetKey],
 					now
