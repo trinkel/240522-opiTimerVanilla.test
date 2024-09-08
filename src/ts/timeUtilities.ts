@@ -127,20 +127,20 @@ export function stringifySeconds(
 			let result = objectifySeconds(seconds);
 			str += result.hours
 				? `${result.hours} ${
-						result.hours === 1 && plural === false ? 'hour' : 'hours'
+						result.hours === 1 || plural === false ? 'hour' : 'hours'
 				  }`
 				: '';
 			str += result.hours && (result.minutes || result.seconds) ? `, ` : '';
 			str +=
 				result.minutes || (result.hours && result.seconds)
 					? `${result.minutes} ${
-							result.minutes === 1 && plural === false ? 'minute' : 'minutes'
+							result.minutes === 1 || plural === false ? 'minute' : 'minutes'
 					  }`
 					: '';
 			str += (result.hours || result.minutes) && result.seconds ? `, ` : '';
 			str += result.seconds
 				? `${result.seconds} ${
-						result.seconds === 1 && plural === false ? 'second' : 'seconds'
+						result.seconds === 1 || plural === false ? 'second' : 'seconds'
 				  }`
 				: '';
 	}
