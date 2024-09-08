@@ -11,6 +11,8 @@ import { practiceTimes } from '../data/practiceTimes';
 import { timeUnits } from './timeUtilities';
 
 interface sessionSpec {
+	[specKey: string]: any; // Index Signature (Parameter): used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
+
 	duration: number;
 	firstMusic: number;
 	firstWarning: number;
@@ -52,7 +54,7 @@ function setTime(time: string): Date {
 }
 
 export class TimeController {
-	[key: string]: any; // used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
+	[timeKey: string]: any; //Index Signature (Parameter): used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
 	// teams: teams[];
 	sessionSpec: sessionSpec = {
 		duration: 0,
