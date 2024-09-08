@@ -13,6 +13,7 @@ export interface Indicators {
 	progressValueInit: number; // Initialization value
 	progressValue: number; // Current value
 	progressComplete: boolean;
+	warnState: boolean;
 }
 [];
 
@@ -50,6 +51,7 @@ export class ComponentController {
 					progressValueInit: 0, // Initialization value
 					progressValue: 0, // Placeholder - reinitialize in first init
 					progressComplete: false,
+					warnState: false,
 				});
 			}
 		});
