@@ -118,6 +118,11 @@ export default class ProgressIndicator extends HTMLElement {
 			: null;
 	}
 
+	setWarn(display: string) {
+		const progressWarn = this.querySelector('[data-progress-warn]');
+		progressWarn ? (progressWarn.textContent = `${display}`) : null;
+	}
+
 	static get observedAttributes() {
 		return [
 			'progress',
@@ -137,6 +142,10 @@ export default class ProgressIndicator extends HTMLElement {
 
 		if (name === 'value-max') {
 			this.setAttribute('aria-valuemax', this.valueMax.toString());
+		}
+
+		if (name === 'data-progress-warn') {
+			this.setWarn(newValue);
 		}
 	}
 

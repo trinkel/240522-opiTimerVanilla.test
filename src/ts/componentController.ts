@@ -2,6 +2,7 @@ import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
 import { timeRemaining } from './timeController';
+import { stringifySeconds, timeUnits } from './timeUtilities';
 
 export interface Indicators {
 	id: string; // element ID
@@ -88,10 +89,14 @@ export class ComponentController {
 
 			if (timeController.duration) {
 				// To satisfy TypeScript when used as object property index
-				const key = `${indicator.timeProperty}Time`;
+				const targetKey = `${indicator.timeProperty}Time`;
+				const warnKey = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warning'
+				)}`;
 
 				indicator.maxValue = timeController.remainingTime(
-					timeController[key],
+					timeController[targetKey],
 					now
 				).progress;
 
@@ -117,7 +122,16 @@ export class ComponentController {
 
 				indicator.element.setAttribute(
 					'data-progress-count',
-					timeController.remainingTime(timeController[key], now).display
+					timeController.remainingTime(timeController[targetKey], now).display
+				);
+
+				// set warning badge
+				indicator.element.setAttribute(
+					'data-progress-warn',
+					`(${stringifySeconds(
+						timeController.sessionSpec[warnKey] * timeUnits.minutes,
+						false
+					)} warning)`
 				);
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
@@ -164,7 +178,7 @@ export class ComponentController {
 				 * @use timeController[target]
 				 *      points at timeController->get firstMusic(): Date
 				 */
-				const target = `${indicator.timeProperty}Time`;
+				const targetKey = `${indicator.timeProperty}Time`;
 
 				/**
 				 * @var warn
@@ -173,7 +187,7 @@ export class ComponentController {
 				 * @use timeController[warn]
 				 *      points at timeController->get firstWarn(): Date
 				 */
-				const warn = `${indicator.timeProperty.replace(
+				const warnKey = `${indicator.timeProperty.replace(
 					/Music|Session/,
 					'Warn'
 				)}Time`;
@@ -185,7 +199,7 @@ export class ComponentController {
 				const currentTarget: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentTarget,
-					timeController.remainingTime(timeController[target], now)
+					timeController.remainingTime(timeController[targetKey], now)
 				);
 
 				/**
@@ -195,14 +209,14 @@ export class ComponentController {
 				const currentWarn: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentWarn,
-					timeController.remainingTime(timeController[warn], now)
+					timeController.remainingTime(timeController[warnKey], now)
 				);
 
 				console.log(
-					`currentTarget: ${target} | ${timeController[target]} | Time Remaining ${currentTarget.display}`
+					`currentTarget: ${targetKey} | ${timeController[targetKey]} | Time Remaining ${currentTarget.display}`
 				);
 				console.log(
-					`Warn: ${warn} | ${timeController[warn]} | Time Remaining ${currentWarn.display}`
+					`Warn: ${warnKey} | ${timeController[warnKey]} | Time Remaining ${currentWarn.display}`
 				);
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
