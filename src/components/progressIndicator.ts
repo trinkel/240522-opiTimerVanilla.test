@@ -65,6 +65,10 @@ export default class ProgressIndicator extends HTMLElement {
 						/>
 					</svg>
 				</div>
+				<div data-progress-title>
+					<h2>${this.title}</h2>
+					<p data-progress-warn-el></p>
+				</div>
 			</div>
 		`;
 	}
