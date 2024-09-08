@@ -249,6 +249,8 @@ export class ComponentController {
 		this.before = now;
 		// Reference value
 		this.iterator++;
+
+		//! This is a dBugg statement so we're ignoring the error
 		this.sessionStatus.textContent = this.iterator.toString();
 	}
 
