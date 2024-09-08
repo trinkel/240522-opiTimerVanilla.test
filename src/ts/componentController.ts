@@ -17,12 +17,14 @@ export interface Indicators {
 	timeProperty: string; // name of property with time for element (eg firstWarnTime)
 	targetKey: string; // key for use with timeController for target time reference
 	warnKey: string; // key for use with timeController for warning time reference
+	warnSpecKey: string; // key for use with timeController for warning time length
 	modeValue: number; // Count up or down //! Don't need it but leave it in for posterity or 'just in case'
 	maxValue: number; // Maximum value
 	progressValueInit: number; // Initialization value
 	progressValue: number; // Current value
 	progressComplete: boolean;
 	warnState: boolean;
+	warnTime: string;
 }
 [];
 
@@ -56,6 +58,7 @@ export class ComponentController {
 						.toUpperCase()}${id.substring(dashIdx + 2)}`, // used to access times from class such as firstMusicTime
 					targetKey: '', // key for use with timeController for target time reference
 					warnKey: '', // key for use with timeController for warning time reference
+					warnSpecKey: '', // key for use with timeController for warning time length
 					modeValue: 1, // Count up or down
 					// Zero out properties to initialize then initialize in class)
 					maxValue: 100, // Maximum value
@@ -63,6 +66,7 @@ export class ComponentController {
 					progressValue: 0, // Placeholder - reinitialize in first init
 					progressComplete: false,
 					warnState: false,
+					warnTime: '0',
 				});
 			}
 		});
@@ -107,11 +111,18 @@ export class ComponentController {
 				indicator.warnKey = `${indicator.timeProperty.replace(
 					/Music|Session/,
 					'Warning'
+				)}Time`;
+
+				// key for use with timeController for warning time length
+				indicator.warnSpecKey = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warning'
 				)}`;
 
 				// String of warning time for the timer
 				indicator.warnTime = `${stringifySeconds(
-					timeController.sessionSpec[indicator.warnKey] * timeUnits.minutes,
+					timeController.sessionSpec[`${indicator.warnSpecKey}`] *
+						timeUnits.minutes,
 					false
 				)}`;
 
@@ -149,10 +160,7 @@ export class ComponentController {
 				// set warning badge
 				indicator.element.setAttribute(
 					'data-progress-warn',
-					`(${stringifySeconds(
-						timeController.sessionSpec[indicator.warnKey] * timeUnits.minutes,
-						false
-					)} warning)`
+					`(${indicator.warnTime} warning)`
 				);
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
