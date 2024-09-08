@@ -103,8 +103,19 @@ export function objectifySeconds(totalSeconds: number) {
  * @param {string} format
  * @returns {string}
  */
+
+/**
+ * Description placeholder
+ *
+ * @export
+ * @param {number} seconds
+ * @param {boolean} [plural=true]
+ * @param {string} [format='text']
+ * @returns {string}
+ */
 export function stringifySeconds(
 	seconds: number,
+	plural: boolean = true,
 	format: string = 'text'
 ): string {
 	let str = '';
@@ -115,16 +126,22 @@ export function stringifySeconds(
 		default:
 			let result = objectifySeconds(seconds);
 			str += result.hours
-				? `${result.hours} ${result.hours === 1 ? 'hour' : 'hours'}`
+				? `${result.hours} ${
+						result.hours === 1 && plural === false ? 'hour' : 'hours'
+				  }`
 				: '';
 			str += result.hours && (result.minutes || result.seconds) ? `, ` : '';
 			str +=
 				result.minutes || (result.hours && result.seconds)
-					? `${result.minutes} ${result.minutes === 1 ? 'minute' : 'minutes'}`
+					? `${result.minutes} ${
+							result.minutes === 1 && plural === false ? 'minute' : 'minutes'
+					  }`
 					: '';
 			str += (result.hours || result.minutes) && result.seconds ? `, ` : '';
 			str += result.seconds
-				? `${result.seconds} ${result.seconds === 1 ? 'second' : 'seconds'}`
+				? `${result.seconds} ${
+						result.seconds === 1 && plural === false ? 'second' : 'seconds'
+				  }`
 				: '';
 	}
 	return str;
