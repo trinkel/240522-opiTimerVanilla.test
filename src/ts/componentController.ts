@@ -2,7 +2,7 @@ import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
 import { timeRemaining } from './timeController';
-import { stringifySeconds, timeUnits } from './timeUtilities';
+import { timeUnits } from './timeUtilities';
 
 /**
  * Indicators - array of indicator element objects
@@ -23,7 +23,7 @@ export interface Indicators {
 	progressValueInit: number; // Initialization value
 	progressValue: number; // Current value
 	progressComplete: boolean;
-	warnState: boolean;
+	warnState: 'false' | 'pending' | 'true';
 	warnTime: string;
 }
 [];
@@ -65,7 +65,7 @@ export class ComponentController {
 					progressValueInit: 0, // Initialization value
 					progressValue: 0, // Placeholder - reinitialize in first init
 					progressComplete: false,
-					warnState: false,
+					warnState: 'false',
 					warnTime: '0',
 				});
 			}
@@ -95,6 +95,13 @@ export class ComponentController {
 		});
 	}
 
+	setWarnState(indicator: Indicators) {
+		if (indicator.warnState !== 'true') {
+			indicator.element.setAttribute('data-progress-warn-state', 'true');
+			indicator.warnState = 'true';
+		}
+	}
+
 	init(timeController: TimeController): void {
 		this.iterator = 0;
 		console.log(`[init] Iteration: ${this.iterator}`);
@@ -119,12 +126,11 @@ export class ComponentController {
 					'Warning'
 				)}`;
 
-				// String of warning time for the timer
-				indicator.warnTime = `${stringifySeconds(
+				// String of warning time for the timer in seconds
+				indicator.warnTime = `${
 					timeController.sessionSpec[`${indicator.warnSpecKey}`] *
-						timeUnits.minutes,
-					false
-				)}`;
+					timeUnits.minutes
+				}`;
 
 				indicator.maxValue = timeController.remainingTime(
 					timeController[indicator.targetKey],
@@ -160,8 +166,10 @@ export class ComponentController {
 				// set warning badge
 				indicator.element.setAttribute(
 					'data-progress-warn',
-					`(${indicator.warnTime} warning)`
+					`${indicator.warnTime}`
 				);
+
+				indicator.warnState = 'false';
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 			}
@@ -236,6 +244,8 @@ export class ComponentController {
 
 				if (indicator.modeValue) {
 					// Countdown timers
+
+					// Wrangle counter
 					indicator.element.setAttribute(
 						'progress',
 						indicator.progressValue.toString()
@@ -244,6 +254,11 @@ export class ComponentController {
 						'data-progress-count',
 						currentTarget.display
 					);
+
+					// Wrangle warning badge
+					if (currentWarn.progress <= 0) {
+						this.setWarnState(indicator);
+					}
 				} else {
 					// Count-up timers (future use)
 				}

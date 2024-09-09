@@ -1,3 +1,5 @@
+import { stringifySeconds } from '../ts/timeUtilities';
+
 export default class ProgressIndicator extends HTMLElement {
 	calculatedCircumference: number;
 	constructor() {
@@ -67,7 +69,7 @@ export default class ProgressIndicator extends HTMLElement {
 				</div>
 				<div data-progress-title>
 					<h2>${this.title}</h2>
-					<p data-progress-warn-el></p>
+					<p data-progress-title-warn></p>
 				</div>
 			</div>
 		`;
@@ -98,16 +100,18 @@ export default class ProgressIndicator extends HTMLElement {
 			  ).toString())
 			: null;
 
-		//  Set a complete or pending state base on progress
+		//  Set a complete or pending state based on progress. If complete, set warning to false
 		if (this.mode) {
 			if (progress <= 0) {
 				this.setAttribute('data-progress-state', 'complete');
+				this.setAttribute('data-progress-warn-state', 'false');
 			} else {
 				this.setAttribute('data-progress-state', 'pending');
 			}
 		} else {
 			if (progress >= this.valueMax) {
 				this.setAttribute('data-progress-state', 'complete');
+				this.setAttribute('data-progress-warn-state', 'false');
 			} else {
 				this.setAttribute('data-progress-state', 'pending');
 			}
@@ -122,10 +126,52 @@ export default class ProgressIndicator extends HTMLElement {
 			: null;
 	}
 
-	setWarn(display: string) {
-		const progressWarn = this.querySelector('[data-progress-warn-el]');
-		progressWarn ? (progressWarn.textContent = `${display}`) : null;
+	setWarnState(display: string) {
+		const progressWarnElement = this.querySelector('[data-progress-warn-el]');
+
+		if (display === 'false') {
+			progressWarnElement
+				? (progressWarnElement.textContent = `${stringifySeconds(
+						Number(display)
+				  )} warning`)
+				: null;
+		} else {
+			if (display === 'true') {
+				progressWarnElement
+					? (progressWarnElement.textContent = `"Music starts in ${stringifySeconds(
+							Number(this.getAttribute('data-progress-warn'))
+					  )}"`)
+					: null;
+			}
+		}
 	}
+
+	setWarn(display: string) {
+		const progressWarnElement = this.querySelector('[data-progress-warn-el]');
+		const progressTitleWarn = this.querySelector('[data-progress-title-warn]');
+
+		progressTitleWarn
+			? (progressTitleWarn.textContent = `${stringifySeconds(
+					Number(display),
+					false
+			  )} warning`)
+			: null;
+		progressWarnElement
+			? (progressWarnElement.textContent = `${stringifySeconds(
+					Number(display),
+					false
+			  )} warning`)
+			: null;
+	}
+
+	// setWarnLabel(display: string) {
+	// 	const progressWarnLabel = this.querySelector('[data-progress-warn-label]');
+	// 	const warnTime = stringifySeconds(
+	// 		Number(this.getAttribute('data-progress-warn')),
+	// 		false
+	// 	);
+	// 	progressWarnLabel ? (progressWarnLabel.textContent = `${warnTime}`) : null;
+	// }
 
 	static get observedAttributes() {
 		return [
@@ -133,6 +179,7 @@ export default class ProgressIndicator extends HTMLElement {
 			'data-progress-count',
 			'value-max',
 			'data-progress-warn',
+			'data-progress-warn-state',
 		];
 	}
 
@@ -150,6 +197,10 @@ export default class ProgressIndicator extends HTMLElement {
 
 		if (name === 'data-progress-warn') {
 			this.setWarn(newValue);
+		}
+
+		if (name === 'data-progress-warn-state') {
+			this.setWarnState(newValue);
 		}
 	}
 
@@ -175,6 +226,10 @@ export default class ProgressIndicator extends HTMLElement {
 
 	get label(): string {
 		return this.getAttribute('label') || 'Current progress';
+	}
+
+	get title(): string {
+		return this.getAttribute('title') || '';
 	}
 }
 
