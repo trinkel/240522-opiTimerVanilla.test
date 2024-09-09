@@ -137,11 +137,19 @@ export default class ProgressIndicator extends HTMLElement {
 				: null;
 		} else {
 			if (display === 'true') {
-				progressWarnElement
-					? (progressWarnElement.textContent = `"Music starts in ${stringifySeconds(
-							Number(this.getAttribute('data-progress-warn'))
-					  )}"`)
-					: null;
+				if (this.label.search('Music') >= 0) {
+					progressWarnElement
+						? (progressWarnElement.textContent = `"Music starts in ${stringifySeconds(
+								Number(this.getAttribute('data-progress-warn'))
+						  )}"`)
+						: null;
+				} else if (this.label.search('ends') >= 0) {
+					progressWarnElement
+						? (progressWarnElement.textContent = `"Session ends in ${stringifySeconds(
+								Number(this.getAttribute('data-progress-warn'))
+						  )}"`)
+						: null;
+				}
 			}
 		}
 	}
