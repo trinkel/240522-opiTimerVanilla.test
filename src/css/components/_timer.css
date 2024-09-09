@@ -65,3 +65,11 @@
 [data-progress-state='complete'] .progress-indicator__check {
 	display: revert;
 }
+
+[data-progress-warn-el] {
+	visibility: hidden;
+}
+
+[data-progress-warn-state='true'] [data-progress-warn-el] {
+	visibility: visible;
+}
