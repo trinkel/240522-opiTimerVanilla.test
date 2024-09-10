@@ -66,10 +66,13 @@
 	display: revert;
 }
 
-[data-progress-warn-el] {
+[data-progress-warn-state='false'] [data-progress-warn-el] {
 	visibility: hidden;
 }
 
-[data-progress-warn-state='true'] [data-progress-warn-el] {
-	visibility: visible;
+[data-progress-warn-state='pending'],
+[data-progress-warn-state='true'] {
+	[data-progress-warn-el] {
+		visibility: visible;
+	}
 }

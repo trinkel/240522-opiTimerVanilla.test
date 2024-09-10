@@ -95,10 +95,20 @@ export class ComponentController {
 		});
 	}
 
-	setWarnState(indicator: Indicators) {
-		if (indicator.warnState !== 'true') {
-			indicator.element.setAttribute('data-progress-warn-state', 'true');
-			indicator.warnState = 'true';
+	setWarnState(indicator: Indicators, state: string) {
+		switch (state) {
+			case 'pending':
+				if (indicator.warnState !== 'pending') {
+					indicator.element.setAttribute('data-progress-warn-state', 'pending');
+					indicator.warnState = 'pending';
+				}
+				break;
+			case 'true':
+				if (indicator.warnState !== 'true') {
+					indicator.element.setAttribute('data-progress-warn-state', 'true');
+					indicator.warnState = 'true';
+				}
+				break;
 		}
 	}
 
@@ -255,9 +265,18 @@ export class ComponentController {
 						currentTarget.display
 					);
 
-					// Wrangle warning badge
-					if (currentWarn.progress <= 0) {
-						this.setWarnState(indicator);
+					// Wrangle warning badge pending
+					if (
+						currentWarn.progress <= 0 + timeController.pendingWarn &&
+						indicator.warnState !== 'pending' &&
+						indicator.warnState !== 'true'
+					) {
+						this.setWarnState(indicator, 'pending');
+					}
+
+					// Wrangle warning badge on
+					if (currentWarn.progress <= 0 && indicator.warnState !== 'true') {
+						this.setWarnState(indicator, 'true');
 					}
 				} else {
 					// Count-up timers (future use)

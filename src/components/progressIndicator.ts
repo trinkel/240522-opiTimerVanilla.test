@@ -26,7 +26,7 @@ export default class ProgressIndicator extends HTMLElement {
 				<div class="progress-indicator__visual">
 					<div class="progress-indicator__count-container">
 						<div data-progress-count-el="" class="progress-indicator__count"></div>
-						<sl-badge pill data-progress-warn-el class="progress-indicator__warning-badge">Test</sl-badge>
+						<sl-badge pill data-progress-warn-el class="progress-indicator__warning-badge"></sl-badge>
 					</div>
 					<svg
 						fill='none'
@@ -129,15 +129,23 @@ export default class ProgressIndicator extends HTMLElement {
 	setWarnState(display: string) {
 		const progressWarnElement = this.querySelector('[data-progress-warn-el]');
 
-		if (display === 'false') {
-			progressWarnElement
-				? (progressWarnElement.textContent = `${stringifySeconds(
-						Number(display)
-				  )} warning`)
-				: null;
-		} else {
-			if (display === 'true') {
-				if (this.label.search('Music') >= 0) {
+		switch (display) {
+			case 'false':
+				progressWarnElement
+					? progressWarnElement.removeAttribute('pulse')
+					: null;
+				// progressWarnElement
+				// 	? (progressWarnElement.textContent = `${stringifySeconds(
+				// 			Number(display)
+				// 	  )} warning`)
+				// 	: null;
+				break;
+
+			case 'true':
+				progressWarnElement
+					? progressWarnElement.removeAttribute('pulse')
+					: null;
+				if (this.label.search('music') >= 0) {
 					progressWarnElement
 						? (progressWarnElement.textContent = `"Music starts in ${stringifySeconds(
 								Number(this.getAttribute('data-progress-warn'))
@@ -150,7 +158,12 @@ export default class ProgressIndicator extends HTMLElement {
 						  )}"`)
 						: null;
 				}
-			}
+				break;
+
+			case 'pending':
+				progressWarnElement
+					? progressWarnElement.setAttribute('pulse', '')
+					: null;
 		}
 	}
 
@@ -164,12 +177,12 @@ export default class ProgressIndicator extends HTMLElement {
 					false
 			  )} warning`)
 			: null;
-		progressWarnElement
-			? (progressWarnElement.textContent = `${stringifySeconds(
-					Number(display),
-					false
-			  )} warning`)
-			: null;
+		// progressWarnElement
+		// 	? (progressWarnElement.textContent = `${stringifySeconds(
+		// 			Number(display),
+		// 			false
+		// 	  )} warning`)
+		// 	: null;
 	}
 
 	// setWarnLabel(display: string) {

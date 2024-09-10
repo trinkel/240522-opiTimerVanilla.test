@@ -77,6 +77,8 @@ export class TimeController {
 	constructor(
 		public duration: number, // sessionLength
 		public tick: number, // loop interval
+		public pendingWarn: number, //Time before warning time to flash badge
+		public pendingEndSession: number, // Time before end to display "leave the ice"
 		public warp: number = 1,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
