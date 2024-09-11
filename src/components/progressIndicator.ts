@@ -100,18 +100,19 @@ export default class ProgressIndicator extends HTMLElement {
 			  ).toString())
 			: null;
 
-		//  Set a complete or pending state based on progress. If complete, set warning to false
+		//  Set a complete or pending state based on progress.
+		////If complete, set warning to false (Now it will be 'end' set elsewhere)
 		if (this.mode) {
 			if (progress <= 0) {
 				this.setAttribute('data-progress-state', 'complete');
-				this.setAttribute('data-progress-warn-state', 'false');
+				// this.setAttribute('data-progress-warn-state', 'false');
 			} else {
 				this.setAttribute('data-progress-state', 'pending');
 			}
 		} else {
 			if (progress >= this.valueMax) {
 				this.setAttribute('data-progress-state', 'complete');
-				this.setAttribute('data-progress-warn-state', 'false');
+				// this.setAttribute('data-progress-warn-state', 'false');
 			} else {
 				this.setAttribute('data-progress-state', 'pending');
 			}
@@ -126,22 +127,12 @@ export default class ProgressIndicator extends HTMLElement {
 			: null;
 	}
 
+	// Set by warning attributes -----------------
 	setWarnState(display: string) {
 		const progressWarnElement = this.querySelector('[data-progress-warn-el]');
 
 		switch (display) {
 			case 'false':
-				progressWarnElement
-					? progressWarnElement.removeAttribute('pulse')
-					: null;
-				// progressWarnElement
-				// 	? (progressWarnElement.textContent = `${stringifySeconds(
-				// 			Number(display)
-				// 	  )} warning`)
-				// 	: null;
-				break;
-
-			case 'true':
 				progressWarnElement
 					? progressWarnElement.removeAttribute('pulse')
 					: null;
@@ -158,6 +149,25 @@ export default class ProgressIndicator extends HTMLElement {
 						  )}"`)
 						: null;
 				}
+				break;
+
+			case 'true':
+				// progressWarnElement
+				// 	? progressWarnElement.removeAttribute('pulse')
+				// 	: null;
+				// if (this.label.search('music') >= 0) {
+				// 	progressWarnElement
+				// 		? (progressWarnElement.textContent = `"Music starts in ${stringifySeconds(
+				// 				Number(this.getAttribute('data-progress-warn'))
+				// 		  )}"`)
+				// 		: null;
+				// } else if (this.label.search('ends') >= 0) {
+				// 	progressWarnElement
+				// 		? (progressWarnElement.textContent = `"Session ends in ${stringifySeconds(
+				// 				Number(this.getAttribute('data-progress-warn'))
+				// 		  )}"`)
+				// 		: null;
+				// }
 				break;
 
 			case 'pending':
@@ -177,12 +187,12 @@ export default class ProgressIndicator extends HTMLElement {
 					false
 			  )} warning`)
 			: null;
-		// progressWarnElement
-		// 	? (progressWarnElement.textContent = `${stringifySeconds(
-		// 			Number(display),
-		// 			false
-		// 	  )} warning`)
-		// 	: null;
+		progressWarnElement
+			? (progressWarnElement.textContent = `${stringifySeconds(
+					Number(display),
+					false
+			  )} warning`)
+			: null;
 	}
 
 	// setWarnLabel(display: string) {

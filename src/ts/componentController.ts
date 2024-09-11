@@ -23,7 +23,7 @@ export interface Indicators {
 	progressValueInit: number; // Initialization value
 	progressValue: number; // Current value
 	progressComplete: boolean;
-	warnState: 'false' | 'pending' | 'true';
+	warnState: 'false' | 'pending' | 'true' | 'end';
 	warnTime: string;
 }
 [];
@@ -95,8 +95,15 @@ export class ComponentController {
 		});
 	}
 
-	setWarnState(indicator: Indicators, state: string) {
+	setWarnState(indicator: Indicators, state: string, force?: 'force') {
 		switch (state) {
+			case 'false':
+				if (indicator.warnState !== 'false' || force) {
+					indicator.element.setAttribute('data-progress-warn-state', 'false');
+					indicator.warnState = 'false';
+				}
+				break;
+			//HERE: Pending not right 2nd loop?
 			case 'pending':
 				if (indicator.warnState !== 'pending') {
 					indicator.element.setAttribute('data-progress-warn-state', 'pending');
@@ -107,6 +114,12 @@ export class ComponentController {
 				if (indicator.warnState !== 'true') {
 					indicator.element.setAttribute('data-progress-warn-state', 'true');
 					indicator.warnState = 'true';
+				}
+				break;
+			case 'end':
+				if (indicator.warnState !== 'end') {
+					indicator.element.setAttribute('data-progress-warn-state', 'end');
+					indicator.warnState = 'end';
 				}
 				break;
 		}
@@ -179,7 +192,7 @@ export class ComponentController {
 					`${indicator.warnTime}`
 				);
 
-				indicator.warnState = 'false';
+				this.setWarnState(indicator, 'false', 'force');
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 			}
@@ -265,7 +278,9 @@ export class ComponentController {
 						currentTarget.display
 					);
 
-					// Wrangle warning badge pending
+					//------------------------------DELETE LINE
+					// Wrangle warning badge state
+					//! combine with the setWarnState func?
 					if (
 						currentWarn.progress <= 0 + timeController.pendingWarn &&
 						indicator.warnState !== 'pending' &&
@@ -278,6 +293,12 @@ export class ComponentController {
 					if (currentWarn.progress <= 0 && indicator.warnState !== 'true') {
 						this.setWarnState(indicator, 'true');
 					}
+
+					// Wrangle warning badge end session
+					if (currentTarget.progress <= 0 && indicator.warnState !== 'end') {
+						this.setWarnState(indicator, 'end');
+					}
+					//------------------------------DELETE LINE
 				} else {
 					// Count-up timers (future use)
 				}
