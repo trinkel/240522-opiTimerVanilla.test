@@ -76,3 +76,7 @@
 		visibility: visible;
 	}
 }
+
+[data-progress-warn-state='pending'] [data-progress-warn-el] slot {
+	display: none;
+}

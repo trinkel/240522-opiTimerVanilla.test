@@ -138,42 +138,33 @@ export default class ProgressIndicator extends HTMLElement {
 					: null;
 				if (this.label.search('music') >= 0) {
 					progressWarnElement
-						? (progressWarnElement.textContent = `"Music starts in ${stringifySeconds(
-								Number(this.getAttribute('data-progress-warn'))
-						  )}"`)
+						? (progressWarnElement.textContent = `Warn ${this.title.toLowerCase()}`)
 						: null;
 				} else if (this.label.search('ends') >= 0) {
 					progressWarnElement
-						? (progressWarnElement.textContent = `"Session ends in ${stringifySeconds(
-								Number(this.getAttribute('data-progress-warn'))
-						  )}"`)
+						? (progressWarnElement.textContent = `Warn end of session`)
 						: null;
 				}
-				break;
-
-			case 'true':
-				// progressWarnElement
-				// 	? progressWarnElement.removeAttribute('pulse')
-				// 	: null;
-				// if (this.label.search('music') >= 0) {
-				// 	progressWarnElement
-				// 		? (progressWarnElement.textContent = `"Music starts in ${stringifySeconds(
-				// 				Number(this.getAttribute('data-progress-warn'))
-				// 		  )}"`)
-				// 		: null;
-				// } else if (this.label.search('ends') >= 0) {
-				// 	progressWarnElement
-				// 		? (progressWarnElement.textContent = `"Session ends in ${stringifySeconds(
-				// 				Number(this.getAttribute('data-progress-warn'))
-				// 		  )}"`)
-				// 		: null;
-				// }
 				break;
 
 			case 'pending':
 				progressWarnElement
 					? progressWarnElement.setAttribute('pulse', '')
 					: null;
+				break;
+
+			case 'true':
+				// style changes only
+				break;
+
+			case 'end':
+				// affects end session timer only
+				if (this.label.search('ends') >= 0) {
+					progressWarnElement
+						? (progressWarnElement.textContent = `Session ending`)
+						: null;
+				}
+				break;
 		}
 	}
 

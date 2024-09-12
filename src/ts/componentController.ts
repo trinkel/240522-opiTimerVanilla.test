@@ -298,7 +298,6 @@ export class ComponentController {
 					if (currentTarget.progress <= 0 && indicator.warnState !== 'end') {
 						this.setWarnState(indicator, 'end');
 					}
-					//------------------------------DELETE LINE
 				} else {
 					// Count-up timers (future use)
 				}
