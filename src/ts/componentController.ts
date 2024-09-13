@@ -12,7 +12,7 @@ import { timeUnits } from './timeUtilities';
  * @typedef {Indicators}
  */
 export interface Indicators {
-	id: string; // element ID
+	id: 'first-music' | 'second-music' | 'end-session'; // element ID
 	element: Element; // progressIndicator custom element
 	timeProperty: string; // name of property with time for element (eg firstWarnTime)
 	targetKey: string; // key for use with timeController for target time reference
