@@ -136,6 +136,15 @@ export default class ProgressIndicator extends HTMLElement {
 				progressWarnElement
 					? progressWarnElement.removeAttribute('pulse')
 					: null;
+				break;
+
+			case 'pending':
+				progressWarnElement
+					? progressWarnElement.setAttribute('pulse', '')
+					: null;
+				break;
+
+			case 'true':
 				if (this.label.search('music') >= 0) {
 					progressWarnElement
 						? (progressWarnElement.textContent = `Warn ${this.title.toLowerCase()}`)
@@ -147,17 +156,7 @@ export default class ProgressIndicator extends HTMLElement {
 				}
 				break;
 
-			case 'pending':
-				progressWarnElement
-					? progressWarnElement.setAttribute('pulse', '')
-					: null;
-				break;
-
-			case 'true':
-				// style changes only
-				break;
-
-			case 'end':
+			case 'ending':
 				// affects end session timer only
 				if (this.label.search('ends') >= 0) {
 					progressWarnElement
@@ -165,11 +164,14 @@ export default class ProgressIndicator extends HTMLElement {
 						: null;
 				}
 				break;
+
+			case 'end':
+				// style changes only
+				break;
 		}
 	}
 
 	setWarn(display: string) {
-		const progressWarnElement = this.querySelector('[data-progress-warn-el]');
 		const progressTitleWarn = this.querySelector('[data-progress-title-warn]');
 
 		progressTitleWarn
@@ -224,6 +226,10 @@ export default class ProgressIndicator extends HTMLElement {
 		if (name === 'data-progress-warn-state') {
 			this.setWarnState(newValue);
 		}
+	}
+
+	get id(): string {
+		return this.getAttribute('id') || 'unknown[234]';
 	}
 
 	get valueMax(): number {

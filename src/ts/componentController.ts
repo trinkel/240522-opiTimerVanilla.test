@@ -23,7 +23,7 @@ export interface Indicators {
 	progressValueInit: number; // Initialization value
 	progressValue: number; // Current value
 	progressComplete: boolean;
-	warnState: 'false' | 'pending' | 'true' | 'end';
+	warnState: 'false' | 'pending' | 'true' | 'ending' | 'end';
 	warnTime: string;
 }
 [];
@@ -114,6 +114,12 @@ export class ComponentController {
 				if (indicator.warnState !== 'true') {
 					indicator.element.setAttribute('data-progress-warn-state', 'true');
 					indicator.warnState = 'true';
+				}
+				break;
+			case 'ending':
+				if (indicator.warnState !== 'ending') {
+					indicator.element.setAttribute('data-progress-warn-state', 'ending');
+					indicator.warnState = 'ending';
 				}
 				break;
 			case 'end':
@@ -294,7 +300,18 @@ export class ComponentController {
 						this.setWarnState(indicator, 'true');
 					}
 
-					// Wrangle warning badge end session
+					// Wrangle warning badge session ending
+					if (indicator.id === 'end-session') {
+						if (
+							currentTarget.progress <= 0 + timeController.pendingEndSession &&
+							indicator.warnState !== 'end' &&
+							indicator.warnState !== 'ending'
+						) {
+							this.setWarnState(indicator, 'ending');
+						}
+					}
+
+					// Wrangle warning badge end timer
 					if (currentTarget.progress <= 0 && indicator.warnState !== 'end') {
 						this.setWarnState(indicator, 'end');
 					}
