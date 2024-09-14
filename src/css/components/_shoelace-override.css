@@ -5,6 +5,7 @@
 		&::part(base) {
 			/* Max width doesn't limit text width work */
 			max-width: calc(var(--progress-indicator-viewbox) * 0.75);
+			white-space: normal;
 		}
 	}
 }

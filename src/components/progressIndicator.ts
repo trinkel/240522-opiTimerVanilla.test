@@ -136,15 +136,21 @@ export default class ProgressIndicator extends HTMLElement {
 				progressWarnElement
 					? progressWarnElement.removeAttribute('pulse')
 					: null;
+				progressWarnElement ? (progressWarnElement.textContent = ``) : null;
+
 				break;
 
 			case 'pending':
 				progressWarnElement
 					? progressWarnElement.setAttribute('pulse', '')
 					: null;
+				progressWarnElement ? (progressWarnElement.textContent = ``) : null;
 				break;
 
 			case 'true':
+				progressWarnElement
+					? progressWarnElement.removeAttribute('pulse')
+					: null;
 				if (this.label.search('music') >= 0) {
 					progressWarnElement
 						? (progressWarnElement.textContent = `Warn ${this.title.toLowerCase()}`)
@@ -158,9 +164,12 @@ export default class ProgressIndicator extends HTMLElement {
 
 			case 'ending':
 				// affects end session timer only
+				progressWarnElement
+					? progressWarnElement.removeAttribute('pulse')
+					: null;
 				if (this.label.search('ends') >= 0) {
 					progressWarnElement
-						? (progressWarnElement.textContent = `Session ending`)
+						? (progressWarnElement.textContent = `Session ending Leave the ice`)
 						: null;
 				}
 				break;
