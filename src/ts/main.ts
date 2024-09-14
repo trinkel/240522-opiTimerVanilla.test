@@ -19,6 +19,8 @@ const sessionStatus = document.querySelector('[data-session-status]');
 const timeController = new TimeController(
 	parameters.sessionLength,
 	parameters.tick,
+	parameters.pendingWarn,
+	parameters.pendingEndSession,
 	parameters.warp
 );
 
@@ -54,6 +56,8 @@ async function startPracticeGroup(timeController: TimeController) {
 			timeController = new TimeController(
 				parameters.sessionLength,
 				parameters.tick,
+				parameters.pendingWarn,
+				parameters.pendingEndSession,
 				parameters.warp
 			);
 			componentController.init(timeController);

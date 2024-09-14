@@ -1,5 +1,11 @@
 .progress-indicator__count-container {
 	.progress-indicator__warning-badge {
 		font-size: max(9cqw, 0.75rem);
+
+		&::part(base) {
+			/* Max width doesn't limit text width work */
+			max-width: calc(var(--progress-indicator-viewbox) * 0.75);
+			white-space: normal;
+		}
 	}
 }
