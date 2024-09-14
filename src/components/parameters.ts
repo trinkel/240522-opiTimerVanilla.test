@@ -23,18 +23,21 @@
 
 export class Parameters {
 	// Debugging flag
-	dBugg: number = 1;
+	dBugg: number = 6;
 	// Set defaults
-	sessionLength: number = 6; // Length of each practice session.
+	// ! Changed for testing (6)
+	sessionLength: number = 1; // Length of each practice session.
 	sessionPause: number = 0; // Length of pause between sessions
 	groupStartType: number = 0; // Manual (0) or Scheduled (1)
 	groupStartTimeString: string = ''; // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 	pm: boolean = false;
 	teamMode: number = 0; // Anonymous (0), List (1)
 	teamList: [string] = ['']; // CR delimited text to array elements
-	numStarts: number = 8; // if teamMode=0: get input; if teamMode=1: `teamList.length`
-	warp: number = 10; // Speed factor for demos (1-8)
-	tick: number = 100; // Component timeout interval in milliseconds
+	numStarts: number = 3; // if teamMode=0: get input; if teamMode=1: `teamList.length`
+	warp: number = 1; // Speed factor for demos (1-8)
+	tick: number = 200; // Component timeout interval in milliseconds (100)
+	pendingWarn: number = 5000; // Time before warning time to flash badge "pending" in milliseconds (3000)
+	pendingEndSession: number = 15000; // Time before end to display "leave the ice" badge in milliseconds (15000)
 
 	// Set start time. Default to now
 	groupStartTime: Date = new Date();
