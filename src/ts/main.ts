@@ -1,5 +1,7 @@
 import ProgressIndicator from '../components/progressIndicator';
 // sample data: remove or add a demo switch
+import '@shoelace-style/shoelace/dist/components/badge/badge.js';
+import '@shoelace-style/shoelace/dist/themes/light.css';
 import { isBefore } from 'date-fns';
 import { Parameters } from '../components/parameters';
 import { ComponentController } from './componentController';
@@ -17,6 +19,8 @@ const sessionStatus = document.querySelector('[data-session-status]');
 const timeController = new TimeController(
 	parameters.sessionLength,
 	parameters.tick,
+	parameters.pendingWarn,
+	parameters.pendingEndSession,
 	parameters.warp
 );
 
@@ -52,6 +56,8 @@ async function startPracticeGroup(timeController: TimeController) {
 			timeController = new TimeController(
 				parameters.sessionLength,
 				parameters.tick,
+				parameters.pendingWarn,
+				parameters.pendingEndSession,
 				parameters.warp
 			);
 			componentController.init(timeController);

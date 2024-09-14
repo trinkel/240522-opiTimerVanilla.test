@@ -8,9 +8,11 @@ import {
 } from 'date-fns';
 
 import { practiceTimes } from '../data/practiceTimes';
-import { timeUnits } from './timeUnits';
+import { timeUnits } from './timeUtilities';
 
 interface sessionSpec {
+	[specKey: string]: any; // Index Signature (Parameter): used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
+
 	duration: number;
 	firstMusic: number;
 	firstWarning: number;
@@ -52,7 +54,7 @@ function setTime(time: string): Date {
 }
 
 export class TimeController {
-	[key: string]: any; // used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
+	[timeKey: string]: any; //Index Signature (Parameter): used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
 	// teams: teams[];
 	sessionSpec: sessionSpec = {
 		duration: 0,
@@ -75,6 +77,8 @@ export class TimeController {
 	constructor(
 		public duration: number, // sessionLength
 		public tick: number, // loop interval
+		public pendingWarn: number, //Time before warning time to flash badge
+		public pendingEndSession: number, // Time before end to display "leave the ice"
 		public warp: number = 1,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
@@ -84,12 +88,12 @@ export class TimeController {
 		// TODO: [240813] (turn into explainer comment) getters return an array or object of a string ([hours]:minutes:seconds) and a number (seconds) until that goal. Initial defs above should change to that.
 		// TODOcont: First, we do need a date/time for each goal set on init. Then, in each loop, we need to get the array/object to set the timer. I think the getters (set times) and methods (run timers) are already set up below, they just need to be used.
 		// Set variables: Date
-		this.firstWarnTime = this.firstWarn;
+		this.firstWarningTime = this.firstWarning;
 		this.firstMusicTime = this.firstMusic;
-		this.secondWarnTime = this.secondWarn;
+		this.secondWarningTime = this.secondWarning;
 		this.secondMusicTime = this.secondMusic;
-		this.endWarnTime = this.endWarn;
-		this.endSessionTime = this.endTime;
+		this.endWarningTime = this.endWarning;
+		this.endSessionTime = this.endSession;
 	}
 
 	//Getters set initial times. remainingTime() does the work during control loop.
@@ -102,7 +106,7 @@ export class TimeController {
 		return addMinutes(this.startTime, this.sessionSpec.firstMusic);
 	}
 
-	get firstWarn(): Date {
+	get firstWarning(): Date {
 		return addMinutes(this.firstMusic, this.sessionSpec.firstWarning * -1);
 	}
 
@@ -110,16 +114,16 @@ export class TimeController {
 		return addMinutes(this.startTime, this.sessionSpec.secondMusic);
 	}
 
-	get secondWarn(): Date {
+	get secondWarning(): Date {
 		return addMinutes(this.secondMusic, this.sessionSpec.secondWarning * -1);
 	}
 
-	get endTime(): Date {
+	get endSession(): Date {
 		return addMinutes(this.startTime, this.sessionSpec.duration);
 	}
 
-	get endWarn(): Date {
-		return addMinutes(this.endTime, this.sessionSpec.endWarning * -1);
+	get endWarning(): Date {
+		return addMinutes(this.endSession, this.sessionSpec.endWarning * -1);
 	}
 
 	/**
@@ -143,6 +147,12 @@ export class TimeController {
 		return this.timeRemaining;
 	}
 
+	/**
+	 * formatTime: converts timestamp to hours: seconds:minutes time string format 00:00:00 (hours optional)
+	 *
+	 * @param {number} timeStamp
+	 * @returns {string}
+	 */
 	formatTime(timeStamp: number): string {
 		let totalSeconds = Math.round(timeStamp / timeUnits.millies);
 		const hours = Math.floor(totalSeconds / timeUnits.hours);

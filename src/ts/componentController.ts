@@ -2,16 +2,29 @@ import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
 import { timeRemaining } from './timeController';
+import { timeUnits } from './timeUtilities';
 
+/**
+ * Indicators - array of indicator element objects
+ *
+ * @export
+ * @interface Indicators
+ * @typedef {Indicators}
+ */
 export interface Indicators {
-	id: string; // element ID
+	id: 'first-music' | 'second-music' | 'end-session'; // element ID
 	element: Element; // progressIndicator custom element
 	timeProperty: string; // name of property with time for element (eg firstWarnTime)
+	targetKey: string; // key for use with timeController for target time reference
+	warnKey: string; // key for use with timeController for warning time reference
+	warnSpecKey: string; // key for use with timeController for warning time length
 	modeValue: number; // Count up or down //! Don't need it but leave it in for posterity or 'just in case'
 	maxValue: number; // Maximum value
 	progressValueInit: number; // Initialization value
 	progressValue: number; // Current value
 	progressComplete: boolean;
+	warnState: 'false' | 'pending' | 'true' | 'ending' | 'end';
+	warnTime: string;
 }
 [];
 
@@ -43,12 +56,17 @@ export class ComponentController {
 					timeProperty: `${id.substring(0, dashIdx)}${id
 						.charAt(dashIdx + 1)
 						.toUpperCase()}${id.substring(dashIdx + 2)}`, // used to access times from class such as firstMusicTime
+					targetKey: '', // key for use with timeController for target time reference
+					warnKey: '', // key for use with timeController for warning time reference
+					warnSpecKey: '', // key for use with timeController for warning time length
 					modeValue: 1, // Count up or down
 					// Zero out properties to initialize then initialize in class)
 					maxValue: 100, // Maximum value
 					progressValueInit: 0, // Initialization value
 					progressValue: 0, // Placeholder - reinitialize in first init
 					progressComplete: false,
+					warnState: 'false',
+					warnTime: '0',
 				});
 			}
 		});
@@ -63,8 +81,7 @@ export class ComponentController {
 		this.deleteCurrent.textContent = '';
 		this.deleteBefore.textContent = '';
 		this.indicators.forEach((indicator) => {
-			// don't need this?:
-
+			// To satisfy TypeScript when used as object property index
 			indicator.element.setAttribute('progress', '0');
 
 			indicator.element.setAttribute('data-progress-count', '0:00');
@@ -78,6 +95,42 @@ export class ComponentController {
 		});
 	}
 
+	setWarnState(indicator: Indicators, state: string, force?: 'force') {
+		switch (state) {
+			case 'false':
+				if (indicator.warnState !== 'false' || force) {
+					indicator.element.setAttribute('data-progress-warn-state', 'false');
+					indicator.warnState = 'false';
+				}
+				break;
+			//HERE: Pending not right 2nd loop?
+			case 'pending':
+				if (indicator.warnState !== 'pending') {
+					indicator.element.setAttribute('data-progress-warn-state', 'pending');
+					indicator.warnState = 'pending';
+				}
+				break;
+			case 'true':
+				if (indicator.warnState !== 'true') {
+					indicator.element.setAttribute('data-progress-warn-state', 'true');
+					indicator.warnState = 'true';
+				}
+				break;
+			case 'ending':
+				if (indicator.warnState !== 'ending') {
+					indicator.element.setAttribute('data-progress-warn-state', 'ending');
+					indicator.warnState = 'ending';
+				}
+				break;
+			case 'end':
+				if (indicator.warnState !== 'end') {
+					indicator.element.setAttribute('data-progress-warn-state', 'end');
+					indicator.warnState = 'end';
+				}
+				break;
+		}
+	}
+
 	init(timeController: TimeController): void {
 		this.iterator = 0;
 		console.log(`[init] Iteration: ${this.iterator}`);
@@ -87,11 +140,29 @@ export class ComponentController {
 			// Uses the timeProperty as the name of the property holding the max time for the timer.
 
 			if (timeController.duration) {
-				// To satisfy TypeScript when used as object property index
-				const key = `${indicator.timeProperty}Time`;
+				// key for use with timeController for target time reference
+				indicator.targetKey = `${indicator.timeProperty}Time`;
+
+				// key for use with timeController for warning time reference
+				indicator.warnKey = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warning'
+				)}Time`;
+
+				// key for use with timeController for warning time length
+				indicator.warnSpecKey = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warning'
+				)}`;
+
+				// String of warning time for the timer in seconds
+				indicator.warnTime = `${
+					timeController.sessionSpec[`${indicator.warnSpecKey}`] *
+					timeUnits.minutes
+				}`;
 
 				indicator.maxValue = timeController.remainingTime(
-					timeController[key],
+					timeController[indicator.targetKey],
 					now
 				).progress;
 
@@ -117,8 +188,17 @@ export class ComponentController {
 
 				indicator.element.setAttribute(
 					'data-progress-count',
-					timeController.remainingTime(timeController[key], now).display
+					timeController.remainingTime(timeController[indicator.targetKey], now)
+						.display
 				);
+
+				// set warning badge
+				indicator.element.setAttribute(
+					'data-progress-warn',
+					`${indicator.warnTime}`
+				);
+
+				this.setWarnState(indicator, 'false', 'force');
 
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 			}
@@ -158,34 +238,13 @@ export class ComponentController {
 				// Manage timer--not using decrement that was developed with the component. We check the time every loop.
 
 				/**
-				 * @var target
-				 * @description To satisfy TypeScript when used as object property index.
-				 * @example #first-music becomes firstMusicTime
-				 * @use timeController[target]
-				 *      points at timeController->get firstMusic(): Date
-				 */
-				const target = `${indicator.timeProperty}Time`;
-
-				/**
-				 * @var warn
-				 * @description To satisfy TypeScript when used as object property index. Gets the warning time for the current indicator.
-				 * @example #first-music becomes firstWarnTime
-				 * @use timeController[warn]
-				 *      points at timeController->get firstWarn(): Date
-				 */
-				const warn = `${indicator.timeProperty.replace(
-					/Music|Session/,
-					'Warn'
-				)}Time`;
-
-				/**
 				 * @var currentTarget: timeRemaining
 				 * @description Find time remaining to target for each timer. Returns an object of {progressValue:, displayValue:}
 				 */
 				const currentTarget: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentTarget,
-					timeController.remainingTime(timeController[target], now)
+					timeController.remainingTime(timeController[indicator.targetKey], now)
 				);
 
 				/**
@@ -195,14 +254,18 @@ export class ComponentController {
 				const currentWarn: timeRemaining = { display: '', progress: 0 };
 				Object.assign(
 					currentWarn,
-					timeController.remainingTime(timeController[warn], now)
+					timeController.remainingTime(timeController[indicator.warnKey], now)
 				);
 
 				console.log(
-					`currentTarget: ${target} | ${timeController[target]} | Time Remaining ${currentTarget.display}`
+					`currentTarget: ${indicator.targetKey} | ${
+						timeController[indicator.targetKey]
+					} | Time Remaining ${currentTarget.display}`
 				);
 				console.log(
-					`Warn: ${warn} | ${timeController[warn]} | Time Remaining ${currentWarn.display}`
+					`Warn: ${indicator.warnKey} | ${
+						timeController[indicator.warnKey]
+					} | Time Remaining ${currentWarn.display}`
 				);
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
@@ -210,6 +273,8 @@ export class ComponentController {
 
 				if (indicator.modeValue) {
 					// Countdown timers
+
+					// Wrangle counter
 					indicator.element.setAttribute(
 						'progress',
 						indicator.progressValue.toString()
@@ -218,6 +283,38 @@ export class ComponentController {
 						'data-progress-count',
 						currentTarget.display
 					);
+
+					//------------------------------DELETE LINE
+					// Wrangle warning badge state
+					//! combine with the setWarnState func?
+					if (
+						currentWarn.progress <= 0 + timeController.pendingWarn &&
+						indicator.warnState !== 'pending' &&
+						indicator.warnState !== 'true'
+					) {
+						this.setWarnState(indicator, 'pending');
+					}
+
+					// Wrangle warning badge on
+					if (currentWarn.progress <= 0 && indicator.warnState !== 'true') {
+						this.setWarnState(indicator, 'true');
+					}
+
+					// Wrangle warning badge session ending
+					if (indicator.id === 'end-session') {
+						if (
+							currentTarget.progress <= 0 + timeController.pendingEndSession &&
+							indicator.warnState !== 'end' &&
+							indicator.warnState !== 'ending'
+						) {
+							this.setWarnState(indicator, 'ending');
+						}
+					}
+
+					// Wrangle warning badge end timer
+					if (currentTarget.progress <= 0 && indicator.warnState !== 'end') {
+						this.setWarnState(indicator, 'end');
+					}
 				} else {
 					// Count-up timers (future use)
 				}
@@ -235,6 +332,8 @@ export class ComponentController {
 		this.before = now;
 		// Reference value
 		this.iterator++;
+
+		//! This is a dBugg statement so we're ignoring the error
 		this.sessionStatus.textContent = this.iterator.toString();
 	}
 

@@ -31,6 +31,14 @@
 	display: none;
 }
 
+.progress-indicator__count-container {
+	display: grid;
+	grid-template-rows: 1.5fr 1fr;
+	justify-items: center;
+	align-items: center;
+	text-align: center;
+}
+
 .progress-indicator__count {
 	font-size: var(--progress-indicator-count-size, max(25cqw, 1rem));
 	z-index: 1;
@@ -39,7 +47,7 @@
 .progress-indicator__visual {
 	display: grid;
 	grid-template-areas: 'stack';
-	align-items: center;
+	/* align-items: center; */
 	place-items: center;
 }
 
@@ -58,4 +66,25 @@
 
 [data-progress-state='complete'] .progress-indicator__check {
 	display: revert;
+}
+
+[data-progress-warn-state='false'] [data-progress-warn-el] {
+	visibility: hidden;
+}
+
+[data-progress-warn-state='pending'],
+[data-progress-warn-state='true'] {
+	[data-progress-warn-el] {
+		visibility: visible;
+	}
+}
+
+[data-progress-warn-state='pending'] [data-progress-warn-el] {
+	&::part(base) {
+		padding: 1em;
+		background-color: var(--clr-neutral-500);
+	}
+	slot {
+		display: none;
+	}
 }
