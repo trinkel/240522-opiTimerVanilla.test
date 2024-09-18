@@ -19,9 +19,20 @@
 
 	<main class="application">
 		<section id="clock_block" class="wrapper">
-			<clock-badge id="start-time">Clock</clock-badge>
-			<clock-badge id="current-time">Clock</clock-badge>
-			<clock-badge id="stop-time">Clock</clock-badge>
+			<sl-card id="start-time" class="clock" label="Session start time">
+				<div slot="header">practice start</div>
+				<div id="start-time-contents">00:00:00</div>
+			</sl-card>
+			<sl-card id="current-time" class="clock" label="Current time">
+				<div class="current-time-group">
+					<sl-icon name="clock"></sl-icon>
+					<span id="current-time-contents">00:00:00</span>
+				</div>
+			</sl-card>
+			<sl-card id="end-time" class="clock" label="Session end time">
+				<div slot="header">practice ends</div>
+				<div id="end-time-contents">00:00:00</div>
+			</sl-card>
 		</section>
 		<section id="time_block" class="wrapper">
 			<progress-indicator id="first-music"
@@ -36,9 +47,24 @@
 			<p data-session-status></p>
 		</section>
 		<section id="team_block" class="wrapper">
-			<team-button id="previous-team">Team</team-button>
-			<team-button id="current-team">Team</team-button>
-			<team-button id="next-team">Team</team-button>
+			<sl-button id="previous-team" size="large" variant="primary"
+				Label="Previous team" pill>
+				<sl-icon name="skip-backward-fill" slot="prefix"></sl-icon>
+				Previous Team</sl-button>
+			<sl-button-group id="current-team">
+				<sl-button size="large" variant="primary" pill>
+					<sl-icon name="skip-start-fill" slot="prefix"></sl-icon>
+				</sl-button>
+				<sl-button size="large" variant="primary" pill>Current Team
+					<sl-icon name="play-fill" slot="suffix"></sl-icon>
+				</sl-button>
+				<sl-button size="large" variant="primary" pill>
+					<sl-icon name="skip-end-fill" slot="suffix"></sl-icon>
+				</sl-button>
+			</sl-button-group>
+			<sl-button id="next-team" size="large" variant="primary" pill>Next Team
+				<sl-icon name="skip-forward-fill" slot="suffix"></sl-icon>
+			</sl-button>
 		</section>
 	</main>
 

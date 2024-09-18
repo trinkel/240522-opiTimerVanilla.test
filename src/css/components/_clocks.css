@@ -1,0 +1,11 @@
+:host .clock {
+	--border-width: 0;
+	--border-radius: 100vh;
+	text-align: center;
+
+	.current-time [slot='header'] {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+}
