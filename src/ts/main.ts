@@ -21,9 +21,6 @@ export default ProgressIndicator;
 
 const parameters = new Parameters();
 
-// Temporary status label at bottom of page --- //! Now it's in ComponentController.ts?
-const sessionStatus = document.querySelector('[data-session-status]');
-
 const timeController = new TimeController(
 	parameters.sessionLength,
 	parameters.tick,
