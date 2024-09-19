@@ -33,15 +33,18 @@ export interface Indicators {
  */
 export class ComponentController {
 	indicators: Indicators[] = [];
-	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
 
 	numStarts: number = 0;
 	progressComplete: boolean = false;
 	before: Date = new Date();
 	iterator: number = 0;
 
-	deleteCurrent = document.getElementById('current-time') as HTMLElement;
-	deleteBefore = document.getElementById('start-time') as HTMLElement;
+	clocksStartTime = document.getElementById(
+		'start-time-contents'
+	) as HTMLElement;
+	clocksCurrentTime = document.getElementById(
+		'current-time-contents'
+	) as HTMLElement;
 
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
@@ -78,8 +81,8 @@ export class ComponentController {
 	 * Draws all indicators in their initial state (zeroed out).
 	 */
 	flatline(): void {
-		this.deleteCurrent.textContent = '';
-		this.deleteBefore.textContent = '';
+		this.clocksCurrentTime.textContent = '';
+		this.clocksStartTime.textContent = '';
 		this.indicators.forEach((indicator) => {
 			// To satisfy TypeScript when used as object property index
 			indicator.element.setAttribute('progress', '0');
@@ -219,8 +222,8 @@ export class ComponentController {
 				: timeController.warpJump(this.before);
 
 		// DELETE
-		this.deleteCurrent.textContent = format(now, 'h:mm:ss');
-		this.deleteBefore.textContent = format(this.before, 'h:mm:ss');
+		this.clocksCurrentTime.textContent = format(now, 'h:mm:ss');
+		this.clocksStartTime.textContent = format(this.before, 'h:mm:ss');
 
 		// initialize progress complete test for each loop
 		this.progressComplete = true;

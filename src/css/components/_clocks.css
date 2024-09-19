@@ -1,0 +1,23 @@
+/* .clock {
+	--border-width: 0;
+	--border-radius: 100vh;
+	text-align: center;
+
+	.current-time [slot='header'] {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+} */
+
+.clock {
+	&::part(base) {
+		display: block;
+		text-align: center;
+	}
+
+	.current-time-group {
+		display: flex;
+		gap: 0.75rem;
+	}
+}

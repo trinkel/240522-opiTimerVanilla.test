@@ -5,4 +5,5 @@
 
 @import './components/_timer';
 @import './components/_button';
+@import './components/_clocks';
 @import './components/_shoelace-override';
