@@ -78,8 +78,8 @@ Installation for Vite (from Will Schenk article overriding Shoelace info):
 pnpm add npm i @shoelace-style/shoelace vite-plugin-static-copy vite
 ```
 
-```js
-//vite.cfg.js
+```ts
+//vite.config.ts
 import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
