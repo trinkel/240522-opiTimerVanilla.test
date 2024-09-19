@@ -13,6 +13,7 @@
 .clock {
 	&::part(base) {
 		display: block;
+		text-align: center;
 	}
 
 	.current-time-group {
