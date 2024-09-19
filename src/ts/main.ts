@@ -1,20 +1,25 @@
 import ProgressIndicator from '../components/progressIndicator';
 // sample data: remove or add a demo switch
+// import { setBasePath } from '@shoelace-style/shoelace';
 import '@shoelace-style/shoelace/dist/components/badge/badge.js';
+import '@shoelace-style/shoelace/dist/components/button-group/button-group.js';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/card/card.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/themes/light.css';
 import { isBefore } from 'date-fns';
 import { Parameters } from '../components/parameters';
 import { ComponentController } from './componentController';
 import { TimeController } from './timeController';
+// setBasePath(
+// 	'./node_modules/.pnpm/@shoelace-style+shoelace@2.16.0_@types+react@18.3.5/node_modules/@shoelace-style/shoelace/dist/components/icon'
+// );
 
 // Passthrough component module
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
 const parameters = new Parameters();
-
-// Temporary status label at bottom of page --- //! Now it's in ComponentController.ts?
-const sessionStatus = document.querySelector('[data-session-status]');
 
 const timeController = new TimeController(
 	parameters.sessionLength,
