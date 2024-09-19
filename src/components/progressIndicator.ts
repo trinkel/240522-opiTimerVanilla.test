@@ -189,12 +189,6 @@ export default class ProgressIndicator extends HTMLElement {
 					false
 			  )} warning`)
 			: null;
-		progressWarnElement
-			? (progressWarnElement.textContent = `${stringifySeconds(
-					Number(display),
-					false
-			  )} warning`)
-			: null;
 	}
 
 	// setWarnLabel(display: string) {
