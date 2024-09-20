@@ -20,6 +20,7 @@
 		display: block;
 		text-align: center;
 		font-size: var(--fs-1);
+		font-weight: var(--sl-font-weight-normal);
 		line-height: var(--lh-0);
 		padding-inline: var(--space-l);
 	}
@@ -27,6 +28,8 @@
 	[id],
 	[name='clock'] {
 		font-size: var(--fs-4);
+		font-weight: var(--sl-font-weight-bold);
+		letter-spacing: 0.08em;
 	}
 
 	.current-time-group {

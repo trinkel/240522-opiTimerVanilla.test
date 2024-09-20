@@ -7,6 +7,7 @@
 	--clr-neutral-000: hsl(0, 0%, 100%, 1);
 	--clr-neutral-100: hsl(0, 0%, 94%, 1);
 	--clr-neutral-500: hsl(0, 0%, 67%, 1);
+	--clr-neutral-600: hsl(0, 0%, 35%, 1);
 	--clr-neutral-700: hsl(0, 0%, 20%, 1);
 	--clr-neutral-999: hsl(0, 0%, 0%, 1);
 
@@ -19,6 +20,7 @@
 	--clr-accent-000: var(--clr-neutral-000);
 	--clr-accent-100: var(--clr-neutral-100);
 	--clr-accent-500: var(--clr-neutral-500);
+	--clr-accent-600: var(--clr-neutral-600);
 	--clr-accent-700: var(--clr-neutral-700);
 	--clr-accent-999: var(--clr-neutral-999);
 
@@ -37,6 +39,13 @@
 	/* font family */
 	--ff-base: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial,
 		sans-serif;
+
+	/* font weight */
+
+	--fw-300: 300;
+	--fw-400: 400;
+	--fw-500: 500;
+	--fw-700: 700;
 
 	/* Utopia font sizes */
 	/* @link https://utopia.fyi/type/calculator?c=320,18,1.2,1240,22,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
