@@ -4,6 +4,7 @@
 
 :root {
 	/* colors */
+	/*Todo Try a minor third progression of L values */
 	--clr-neutral-000: hsl(0, 0%, 100%, 1);
 	--clr-neutral-100: hsl(0, 0%, 94%, 1);
 	--clr-neutral-500: hsl(0, 0%, 67%, 1);
