@@ -50,6 +50,12 @@
 	--fs-4: clamp(2.3328rem, 1.9766rem + 1.7811vi, 3.3569rem);
 	--fs-5: clamp(2.7994rem, 2.3135rem + 2.4292vi, 4.1962rem);
 
+	/* Line height */
+
+	--lh-0: 1.36;
+	--lh-1: 1.7;
+	--lh-2: 2.125;
+
 	/* Utopia space sizes */
 	/* @link https://utopia.fyi/space/calculator?c=320,18,1.2,1240,22,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 
@@ -82,7 +88,8 @@
 
 body {
 	min-height: 100vh;
-	background-color: var(--clr-primary-100);
+	background-color: var(--clr-primary-700);
 	font-family: var(--ff-base);
-	font-size: var(--fs-0);
+	font-size: var(--fs-1);
+	line-height: var(--lh-1);
 }

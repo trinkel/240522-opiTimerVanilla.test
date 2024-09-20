@@ -18,25 +18,30 @@
 	</header>
 
 	<main class="application">
+
 		<section id="clock_block" class="wrapper">
-			<sl-badge id="start-time" class="clock" label="Session start time" pill>
+			<sl-badge id="start-time" class="clock" variant="neutral"
+				label="Session start time" pill>
 				<p>practice start</p>
 				<p id="start-time-contents" aria-live="polite"
 					aria-labelledby="start-time">00:00:00</p>
 			</sl-badge>
-			<sl-badge id="current-time" class="clock" label="Current time" pill>
+			<sl-badge id="current-time" class="clock" variant="neutral"
+				label="Current time" pill>
 				<div class="current-time-group">
 					<sl-icon name="clock"></sl-icon>
 					<span id="current-time-contents" aria-live="polite"
 						aria-labelledby="current-time">00:00:00</span>
 				</div>
 			</sl-badge>
-			<sl-badge id="end-time" class="clock" label="Session end time" pill>
+			<sl-badge id="end-time" class="clock" variant="neutral"
+				label="Session end time" pill>
 				<p>practice end</p>
 				<p id="end-time-contents" aria-live="polite" aria-labelledby="end-time">
 					00:00:00</p>
 			</sl-badge>
 		</section>
+
 		<section id="time_block" class="wrapper">
 			<progress-indicator id="first-music"
 				label="Time until first time music plays" title="First Music" mode="1"
@@ -48,26 +53,28 @@
 				title="Time Remaining" mode="1" stroke="14"
 				viewbox="1000">Timer</progress-indicator>
 		</section>
+
 		<section id="team_block" class="wrapper">
-			<sl-button id="previous-team" size="large" variant="primary"
+			<sl-button id="previous-team" size="large" variant="neutral"
 				Label="Previous team" pill>
 				<sl-icon name="skip-backward-fill" slot="prefix"></sl-icon>
 				Previous Team</sl-button>
 			<sl-button-group id="current-team">
-				<sl-button size="large" variant="primary" pill>
+				<sl-button size="large" variant="neutral" pill>
 					<sl-icon name="skip-start-fill" slot="prefix"></sl-icon>
 				</sl-button>
-				<sl-button size="large" variant="primary" pill>Current Team
+				<sl-button size="large" variant="neutral" pill>Current Team
 					<sl-icon name="play-fill" slot="suffix"></sl-icon>
 				</sl-button>
-				<sl-button size="large" variant="primary" pill>
+				<sl-button size="large" variant="neutral" pill>
 					<sl-icon name="skip-end-fill" slot="suffix"></sl-icon>
 				</sl-button>
 			</sl-button-group>
-			<sl-button id="next-team" size="large" variant="primary" pill>Next Team
+			<sl-button id="next-team" size="large" variant="neutral" pill>Next Team
 				<sl-icon name="skip-forward-fill" slot="suffix"></sl-icon>
 			</sl-button>
 		</section>
+
 	</main>
 
 </body>
