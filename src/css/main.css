@@ -4,6 +4,6 @@
 @import './base/_layout';
 
 @import './components/_timer';
-@import './components/_button';
+@import './components/_session-control';
 @import './components/_clocks';
 @import './components/_shoelace-override';
