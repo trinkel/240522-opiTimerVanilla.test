@@ -58,7 +58,7 @@ figcaption {
 /* sets containers for container queries
  * 'body >' limits the selector to the un-nested occurrences of these elements
  */
-body > :is(header footer),
+body > :is(header, footer),
 main,
 section,
 article {
