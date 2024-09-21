@@ -97,7 +97,7 @@
 }
 
 body {
-	min-height: 100vh;
+	min-height: 100svh;
 	background-color: var(--clr-primary-700);
 	font-family: var(--ff-base);
 	font-size: var(--fs-1);
