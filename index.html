@@ -20,9 +20,8 @@
 	<main class="application">
 
 		<section id="clock_block" class="wrapper">
-			<sl-badge id="start-time" class="clock" variant="neutral"
-				label="Session start time" pill>
-				<p>practice start</p>
+			<sl-badge id="start-time" class="clock" variant="neutral" pill>
+				<p>Practice Start</p>
 				<p id="start-time-contents" aria-live="polite"
 					aria-labelledby="start-time">00:00:00</p>
 			</sl-badge>
@@ -34,9 +33,8 @@
 						aria-labelledby="current-time">00:00:00</span>
 				</div>
 			</sl-badge>
-			<sl-badge id="end-time" class="clock" variant="neutral"
-				label="Session end time" pill>
-				<p>practice end</p>
+			<sl-badge id="end-time" class="clock" variant="neutral" pill>
+				<p>Practice End</p>
 				<p id="end-time-contents" aria-live="polite" aria-labelledby="end-time">
 					00:00:00</p>
 			</sl-badge>
@@ -55,24 +53,32 @@
 		</section>
 
 		<section id="team_block" class="wrapper">
-			<sl-button id="previous-team" size="large" variant="neutral"
-				Label="Previous team" pill>
+			<sl-button id="previous-team" class="session-control" size="large"
+				variant="neutral" pill>
 				<sl-icon name="skip-backward-fill" slot="prefix"></sl-icon>
 				Previous Team</sl-button>
-			<sl-button-group id="current-team">
+			<sl-button-group id="current-team" class="session-control">
 				<sl-button size="large" variant="neutral" pill>
-					<sl-icon name="skip-start-fill" slot="prefix"></sl-icon>
+					<sl-icon name="skip-start-fill" label="Skip to start of session"
+						slot="prefix"></sl-icon>
 				</sl-button>
-				<sl-button size="large" variant="neutral" pill>Current Team
+				<sl-button size="large" variant="neutral" pill>Current
+					Team
 					<sl-icon name="play-fill" slot="suffix"></sl-icon>
 				</sl-button>
 				<sl-button size="large" variant="neutral" pill>
-					<sl-icon name="skip-end-fill" slot="suffix"></sl-icon>
+					<sl-icon name="skip-end-fill" label="Skip to end of session"
+						slot="suffix"></sl-icon>
 				</sl-button>
 			</sl-button-group>
-			<sl-button id="next-team" size="large" variant="neutral" pill>Next Team
+			<sl-button id="next-team" class="session-control" size="large"
+				variant="neutral" pill>Next Team
 				<sl-icon name="skip-forward-fill" slot="suffix"></sl-icon>
 			</sl-button>
+			<sl-button variant="default" size="medium" circle>
+				<sl-icon name="gear" label="Settings"></sl-icon>
+			</sl-button>
+
 		</section>
 
 	</main>
