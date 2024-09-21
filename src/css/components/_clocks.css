@@ -26,7 +26,7 @@
 	}
 
 	[id],
-	[name='clock'] {
+	sl-icon {
 		font-size: var(--fs-4);
 		font-weight: var(--sl-font-weight-bold);
 		letter-spacing: 0.08em;
