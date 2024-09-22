@@ -1,7 +1,7 @@
 :root {
 	--progress-indicator-color-complete: var(--clr-critical-100);
 	--progress-indicator-progress-stroke: var(--clr-active-700);
-	--progress-indicator-bg-stroke: var(--clr-neutral-100);
+	--progress-indicator-bg-stroke: var(--clr-neutral-500);
 }
 
 .progress-indicator {
@@ -23,6 +23,7 @@
 
 .progress-indicator__background-circle {
 	stroke: var(--progress-indicator-bg-stroke, gray);
+	fill: var(--clr-neutral-000);
 }
 
 .progress-indicator__check {
