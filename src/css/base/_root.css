@@ -93,6 +93,31 @@
 	/* Custom pairs */
 	--space-s-l: clamp(1.125rem, 0.5598rem + 2.8261vi, 2.75rem);
 
+	/* EM based spacing */
+
+	--space-em-3xs: clamp(0.3125em, 0.2908em + 0.1087vi, 0.375em);
+	--space-em-2xs: clamp(0.5625em, 0.519em + 0.2174vi, 0.6875em);
+	--space-em-xs: clamp(0.875em, 0.8098em + 0.3261vi, 1.0625em);
+	--space-em-s: clamp(1.125em, 1.038em + 0.4348vi, 1.375em);
+	--space-em-m: clamp(1.6875em, 1.5571em + 0.6522vi, 2.0625em);
+	--space-em-l: clamp(2.25em, 2.0761em + 0.8696vi, 2.75em);
+	--space-em-xl: clamp(3.375em, 3.1141em + 1.3043vi, 4.125em);
+	--space-em-2xl: clamp(4.5em, 4.1522em + 1.7391vi, 5.5em);
+	--space-em-3xl: clamp(6.75em, 6.2283em + 2.6087vi, 8.25em);
+
+	/* One-up pairs */
+	--space-em-3xs-2xs: clamp(0.3125em, 0.1821em + 0.6522vi, 0.6875em);
+	--space-em-2xs-xs: clamp(0.5625em, 0.3886em + 0.8696vi, 1.0625em);
+	--space-em-xs-s: clamp(0.875em, 0.7011em + 0.8696vi, 1.375em);
+	--space-em-s-m: clamp(1.125em, 0.7989em + 1.6304vi, 2.0625em);
+	--space-em-m-l: clamp(1.6875em, 1.3179em + 1.8478vi, 2.75em);
+	--space-em-l-xl: clamp(2.25em, 1.5978em + 3.2609vi, 4.125em);
+	--space-em-xl-2xl: clamp(3.375em, 2.6359em + 3.6957vi, 5.5em);
+	--space-em-2xl-3xl: clamp(4.5em, 3.1957em + 6.5217vi, 8.25em);
+
+	/* Custom pairs */
+	--space-em-s-l: clamp(1.125em, 0.5598em + 2.8261vi, 2.75em);
+
 	/* OPI Timer starting values */
 	--transition: 200ms linear;
 }
