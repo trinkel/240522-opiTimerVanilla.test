@@ -119,7 +119,11 @@
 	--space-em-s-l: clamp(1.125em, 0.5598em + 2.8261vi, 2.75em);
 
 	/* OPI Timer starting values */
-	--transition: 200ms linear;
+	--transition-xs: 100ms;
+	--transition-s: 200ms;
+	--transition-m: 500ms;
+	--transition-l: 1000ms;
+	--transition-xl: 2000ms;
 }
 
 body {

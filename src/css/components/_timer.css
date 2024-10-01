@@ -2,6 +2,7 @@
 	--progress-indicator-color-complete: var(--clr-critical-100);
 	--progress-indicator-progress-stroke: var(--clr-active-700);
 	--progress-indicator-bg-stroke: var(--clr-neutral-500);
+	--transition-s: 2000ms;
 }
 
 .progress-indicator {
@@ -15,7 +16,7 @@
 
 .progress-indicator__progress-circle {
 	stroke: var(--progress-indicator-progress-stroke, currentColor);
-	transition: stroke-dashoffset var(--transition);
+	transition: stroke-dashoffset var(--transition-s) linear;
 	/* ! Note: The transform-origin doesn't work in Safari, so I moved the rotation to the SVG */
 	/* rotate: -90deg;
 	transform-origin: 50% 50%; */
@@ -57,26 +58,35 @@
 }
 
 /* Respond to data-progress-state change in JS */
-[data-progress-state='complete'] .progress-indicator__progress-circle {
-	fill: var(--progress-indicator-color-complete);
+[data-progress-state='complete'] {
+	.progress-indicator__progress-circle {
+		fill: var(--progress-indicator-color-complete);
+	}
+	.progress-indicator__background-circle {
+		stroke: var(--progress-indicator-color-complete), gray;
+	}
+	.progress-indicator__count {
+		display: none;
+	}
+	.progress-indicator__check {
+		display: revert;
+	}
 }
-
-[data-progress-state='complete'] .progress-indicator__count {
-	display: none;
-}
-
-[data-progress-state='complete'] .progress-indicator__check {
-	display: revert;
-}
-
-[data-progress-warn-state='false'] [data-progress-warn-el] {
-	visibility: hidden;
+[data-progress-warn-state='false'],
+[data-progress-state='complete'] {
+	[data-progress-warn-el] {
+		display: none;
+		opacity: 0;
+		transition: all var(--transition-s);
+	}
 }
 
 [data-progress-warn-state='pending'],
 [data-progress-warn-state='true'] {
 	[data-progress-warn-el] {
-		visibility: visible;
+		display: revert;
+		opacity: 1;
+		transition: all var(--transition-s);
 	}
 }
 
