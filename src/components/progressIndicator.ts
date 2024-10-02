@@ -27,8 +27,6 @@ export default class ProgressIndicator extends HTMLElement {
 					<svg
 						fill='none'
 						viewBox="0 0 ${this.viewBox} ${this.viewBox}"
-						width="${this.viewBox}"
-						height="${this.viewBox}"
 						focusable="false"
 						class="progress-indicator__circle"
 					>
