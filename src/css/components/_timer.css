@@ -5,12 +5,18 @@
 	--transition-s: 2000ms;
 }
 
+progress-indicator {
+	width: 100%;
+	max-width: 50vh;
+}
+
 .progress-indicator {
 	font-family: var(--font-base);
 	line-height: 1.1;
-	color: var(--color-dark);
 	container-type: inline-size;
-	width: var(--progress-indicator-viewbox);
+	/* todo: delete comment. Can probably loose --progress-indicator-viewbox: 100px assignment in component? This has to do with scaling indicator circles.*/
+	/* width: var(--progress-indicator-viewbox); */
+	/* width: 100%; */
 	height: auto;
 }
 
@@ -31,6 +37,7 @@
 	width: var(--progress-indicator-check-size, 60cqw);
 	height: auto;
 	display: none;
+	color: var(--clr-neutral-900);
 }
 
 .progress-indicator__count-container {
@@ -51,6 +58,7 @@
 	grid-template-areas: 'stack';
 	/* align-items: center; */
 	place-items: center;
+	color: var(--clr-neutral-900);
 }
 
 .progress-indicator__visual > * {
@@ -98,4 +106,8 @@
 	slot {
 		display: none;
 	}
+}
+
+[data-progress-title] {
+	text-align: center;
 }

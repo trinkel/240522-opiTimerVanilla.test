@@ -1,0 +1,23 @@
+h1,
+h2,
+h3 {
+	font-weight: var(--fw-700);
+}
+
+h1 {
+	font-size: var(--fs-4);
+	font-size: var(--fsq-4);
+	line-height: var(--lh--1);
+}
+
+h2 {
+	font-size: var(--fs-3);
+	font-size: var(--fsq-3);
+	line-height: var(--lh--1);
+}
+
+h3 {
+	font-size: var(--fs-2);
+	font-size: var(--fsq-2);
+	line-height: var(--lh-0);
+}

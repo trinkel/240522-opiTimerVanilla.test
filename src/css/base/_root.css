@@ -10,6 +10,7 @@
 	--clr-neutral-500: hsl(0, 0%, 67%, 1);
 	--clr-neutral-600: hsl(0, 0%, 35%, 1);
 	--clr-neutral-700: hsl(0, 0%, 20%, 1);
+	--clr-neutral-900: hsl(0, 0%, 10%, 1);
 	--clr-neutral-999: hsl(0, 0%, 0%, 1);
 
 	--clr-primary-000: var(--clr-neutral-000);
@@ -59,6 +60,18 @@
 	--fs-3: clamp(1.944rem, 1.6861rem + 1.2896vi, 2.6855rem);
 	--fs-4: clamp(2.3328rem, 1.9766rem + 1.7811vi, 3.3569rem);
 	--fs-5: clamp(2.7994rem, 2.3135rem + 2.4292vi, 4.1962rem);
+
+	/* Utopia font sizes */
+	/* Converted to cqi units */
+
+	--fsq--2: clamp(0.7813rem, 0.7469rem + 0.5151cqi, 0.88rem);
+	--fsq--1: clamp(0.9375rem, 0.881rem + 0.8478cqi, 1.1rem);
+	--fsq-0: clamp(1.125rem, 1.038rem + 1.3044cqi, 1.375rem);
+	--fsq-1: clamp(1.35rem, 1.2217rem + 2.5239cqi, 1.7188rem);
+	--fsq-2: clamp(1.62rem, 1.4362rem + 2.757cqi, 2.1484rem);
+	--fsq-3: clamp(1.944rem, 1.6861rem + 3.8688cqi, 2.6855rem);
+	--fsq-4: clamp(2.3328rem, 1.9766rem + 5.3433cqi, 3.3569rem);
+	--fsq-5: clamp(2.7994rem, 2.3135rem + 7.2876cqi, 4.1962rem);
 
 	/* Line height */
 
@@ -131,5 +144,6 @@ body {
 	background-color: var(--clr-primary-700);
 	font-family: var(--ff-base);
 	font-size: var(--fs-1);
+	color: var(--clr-neutral-100);
 	line-height: var(--lh-1);
 }
