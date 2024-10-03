@@ -6,7 +6,8 @@
 	&::part(base) {
 		background-color: var(--clr-neutral-700);
 		text-align: center;
-		font-size: var(--fs-4);
+		font-size: var(--fs-2);
+		font-size: var(--fsq-2);
 		font-weight: var(--sl-font-weight-normal);
 		line-height: var(--lh--1);
 		padding: var(--space-em-3xs) var(--space-em-xs);
