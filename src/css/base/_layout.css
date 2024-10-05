@@ -24,8 +24,9 @@
 	}
 }
 
-@media (orientation: landscape) {
+/* Deactivate making active timer larger */
+/* @media (orientation: landscape) {
 	#time_block.wrapper {
 		grid-template-columns: 3fr 1fr 1fr;
 	}
-}
+} */
