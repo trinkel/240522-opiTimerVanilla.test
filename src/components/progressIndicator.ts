@@ -133,6 +133,10 @@ export default class ProgressIndicator extends HTMLElement {
 
 		switch (display) {
 			case 'false':
+				if (progressWarnElement) {
+					progressWarnElement.removeAttribute('pulse');
+					progressWarnElement.textContent = ``;
+				}
 				progressWarnElement
 					? progressWarnElement.removeAttribute('pulse')
 					: null;
@@ -175,6 +179,11 @@ export default class ProgressIndicator extends HTMLElement {
 				break;
 
 			case 'end':
+				if (progressWarnElement) {
+					if (this.label.search('music') >= 0) {
+						progressWarnElement.textContent = 'Play music';
+					}
+				}
 				// style changes only
 				break;
 		}

@@ -9,3 +9,7 @@
 		}
 	}
 }
+
+.progress-indicator {
+	--sl-color-primary-600: var(--clr-progress-indicator-700);
+}

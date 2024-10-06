@@ -1,18 +1,13 @@
 :root {
-	--progress-indicator-color-complete: var(--clr-critical-100);
+	/* --progress-indicator-color-complete: var(--clr-critical-100);
 	--progress-indicator-progress-stroke: var(--clr-active-700);
-	--progress-indicator-bg-stroke: var(--clr-neutral-500);
+	--progress-indicator-bg-stroke: var(--clr-neutral-500); */
 	--transition-s: 2000ms;
 }
 
 progress-indicator {
 	width: 100%;
 	max-width: 50vh;
-}
-
-[data-progress-state='pending']:first-of-type
-	.progress-indicator__background-circle {
-	fill: var(--clr-neutral-000);
 }
 
 .progress-indicator {
@@ -26,16 +21,16 @@ progress-indicator {
 }
 
 .progress-indicator__progress-circle {
-	stroke: var(--progress-indicator-progress-stroke, currentColor);
-	transition: stroke-dashoffset var(--transition-xs) linear;
+	stroke: var(--clr-progress-indicator-700, currentColor);
+	transition: stroke-dashoffset var(--transition-s) linear;
 	/* ! Note: The transform-origin doesn't work in Safari, so I moved the rotation to the SVG */
 	/* rotate: -90deg;
 	transform-origin: 50% 50%; */
 }
 
 .progress-indicator__background-circle {
-	stroke: var(--progress-indicator-bg-stroke, gray);
-	fill: var(--clr-neutral-500);
+	stroke: var(--clr-neutral-500);
+	fill: var(--clr-progress-indicator-400, purple);
 }
 
 .progress-indicator__check {
@@ -72,12 +67,15 @@ progress-indicator {
 
 /* Respond to data-progress-state change in JS */
 [data-progress-state='complete'] {
-	.progress-indicator__progress-circle {
-		fill: var(--progress-indicator-color-complete);
+	--clr-progress-indicator-700: var(--clr-active-700);
+	--clr-progress-indicator-400: var(--clr-active-100);
+
+	/* .progress-indicator__progress-circle {
+		fill: var(--clr-progress-indicator-700);
 	}
 	.progress-indicator__background-circle {
-		stroke: var(--progress-indicator-color-complete), gray;
-	}
+		stroke: var(--clr-progress-indicator-700);
+	} */
 	.progress-indicator__count {
 		display: none;
 	}
@@ -85,6 +83,38 @@ progress-indicator {
 		display: revert;
 	}
 }
+
+/* Handle changes in warning states
+/* States: false, pending, true, ending, end */
+
+/* Colors */
+[data-progress-warn-state='false'] {
+	--clr-progress-indicator-700: var(--clr-active-700);
+	--clr-progress-indicator-400: var(--clr-neutral-000);
+}
+
+[data-progress-warn-state='pending'] {
+	--clr-progress-indicator-700: var(--clr-active-700);
+	--clr-progress-indicator-400: purple;
+}
+
+:nth-child(
+		1 of [data-progress-state='pending']
+	)[data-progress-warn-state='pending'] {
+	--clr-progress-indicator-400: purple;
+}
+
+[data-progress-warn-state='true'] {
+	--clr-progress-indicator-700: var(--clr-warning-700);
+	--clr-progress-indicator-400: var(--clr-warning-100);
+}
+
+[data-progress-warn-state='ending'],
+[data-progress-warn-state='end'] {
+	--clr-progress-indicator-700: var(--clr-critical-700);
+	--clr-progress-indicator-400: var(--clr-critical-100);
+}
+
 [data-progress-warn-state='false'],
 [data-progress-state='complete'] {
 	[data-progress-warn-el] {
@@ -106,7 +136,6 @@ progress-indicator {
 [data-progress-warn-state='pending'] [data-progress-warn-el] {
 	&::part(base) {
 		padding: 1em;
-		background-color: var(--clr-neutral-500);
 	}
 	slot {
 		display: none;
