@@ -95,13 +95,14 @@ progress-indicator {
 
 [data-progress-warn-state='pending'] {
 	--clr-progress-indicator-700: var(--clr-active-700);
-	--clr-progress-indicator-400: purple;
+	--clr-progress-indicator-400: var(--clr-neutral-000);
 }
 
-:nth-child(
-		1 of [data-progress-state='pending']
-	)[data-progress-warn-state='pending'] {
-	--clr-progress-indicator-400: purple;
+:nth-child(1 of [data-progress-state='pending']) {
+	&[data-progress-warn-state='false'],
+	&[data-progress-warn-state='pending'] {
+		--clr-progress-indicator-400: var(--clr-active-100);
+	}
 }
 
 [data-progress-warn-state='true'] {

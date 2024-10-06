@@ -341,6 +341,7 @@ export class ComponentController {
 		return new Promise<void>((resolve, reject) => {
 			const intervalId = setInterval(() => {
 				this.timer(timeController);
+				// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
 				if (this.progressComplete) {
 					clearInterval(intervalId);
 					resolve();
