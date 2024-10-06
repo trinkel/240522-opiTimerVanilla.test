@@ -38,6 +38,11 @@
 	--clr-success-100: var(--clr-active-100);
 	--clr-success-700: var(--clr-active-700);
 
+	/* Colors for progress indicators */
+	--clr-progress-700: var(--clr-active-700);
+	--clr-progress-400: var(--clr-active-100);
+	--clr-progress-000: var(--clr-neutral-000);
+
 	/* font family */
 	--ff-base: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial,
 		sans-serif;
