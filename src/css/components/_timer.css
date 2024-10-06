@@ -10,6 +10,11 @@ progress-indicator {
 	max-width: 50vh;
 }
 
+[data-progress-state='pending']:first-of-type
+	.progress-indicator__background-circle {
+	fill: var(--clr-neutral-000);
+}
+
 .progress-indicator {
 	font-family: var(--font-base);
 	line-height: 1.1;
@@ -22,7 +27,7 @@ progress-indicator {
 
 .progress-indicator__progress-circle {
 	stroke: var(--progress-indicator-progress-stroke, currentColor);
-	transition: stroke-dashoffset var(--transition-s) linear;
+	transition: stroke-dashoffset var(--transition-xs) linear;
 	/* ! Note: The transform-origin doesn't work in Safari, so I moved the rotation to the SVG */
 	/* rotate: -90deg;
 	transform-origin: 50% 50%; */
@@ -30,7 +35,7 @@ progress-indicator {
 
 .progress-indicator__background-circle {
 	stroke: var(--progress-indicator-bg-stroke, gray);
-	fill: var(--clr-neutral-000);
+	fill: var(--clr-neutral-500);
 }
 
 .progress-indicator__check {
