@@ -136,7 +136,7 @@ export class ComponentController {
 
 	init(timeController: TimeController): void {
 		this.iterator = 0;
-		console.log(`[init] Iteration: ${this.iterator}`);
+		// console.log(`[init] Iteration: ${this.iterator}`);
 		const now = timeController.current;
 
 		this.indicators.forEach((indicator) => {
@@ -260,16 +260,18 @@ export class ComponentController {
 					timeController.remainingTime(timeController[indicator.warnKey], now)
 				);
 
-				console.log(
-					`currentTarget: ${indicator.targetKey} | ${
-						timeController[indicator.targetKey]
-					} | Time Remaining ${currentTarget.display}`
-				);
-				console.log(
-					`Warn: ${indicator.warnKey} | ${
-						timeController[indicator.warnKey]
-					} | Time Remaining ${currentWarn.display}`
-				);
+				// if (indicator.targetKey === 'firstMusicTime') {
+				// 	console.log(
+				// 		`currentTarget: ${indicator.targetKey} | ${
+				// 			timeController[indicator.targetKey]
+				// 		} | Time Remaining ${currentTarget.display}`
+				// 	);
+				// 	console.log(
+				// 		`Warn: ${indicator.warnKey} | ${
+				// 			timeController[indicator.warnKey]
+				// 		} | Time Remaining ${currentWarn.display}`
+				// 	);
+				// }
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
 				indicator.progressValue = currentTarget.progress;
