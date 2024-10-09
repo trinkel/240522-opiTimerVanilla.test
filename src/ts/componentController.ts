@@ -295,13 +295,18 @@ export class ComponentController {
 					if (
 						currentWarn.progress <= 0 + timeController.pendingWarn &&
 						indicator.warnState !== 'pending' &&
-						indicator.warnState !== 'true'
+						indicator.warnState !== 'true' &&
+						indicator.warnState !== 'end'
 					) {
 						this.setWarnState(indicator, 'pending');
 					}
 
 					// Wrangle warning badge on
-					if (currentWarn.progress <= 0 && indicator.warnState !== 'true') {
+					if (
+						currentWarn.progress <= 0 &&
+						indicator.warnState !== 'true' &&
+						indicator.warnState !== 'end'
+					) {
 						this.setWarnState(indicator, 'true');
 					}
 
