@@ -24,15 +24,9 @@ export default class ProgressIndicator extends HTMLElement {
 		this.innerHTML = `
 			<div class="progress-indicator">
 				<div class="progress-indicator__visual">
-					<div class="progress-indicator__count-container">
-						<div data-progress-count-el="" class="progress-indicator__count"></div>
-						<sl-badge pill data-progress-warn-el class="progress-indicator__warning-badge"></sl-badge>
-					</div>
 					<svg
 						fill='none'
 						viewBox="0 0 ${this.viewBox} ${this.viewBox}"
-						width="${this.viewBox}"
-						height="${this.viewBox}"
 						focusable="false"
 						class="progress-indicator__circle"
 					>
@@ -42,6 +36,7 @@ export default class ProgressIndicator extends HTMLElement {
 						cy="${radius}"
 						stroke-width="${this.stroke}"
 						class="progress-indicator__background-circle"
+						data-whitefill-graystroke
 						/>
 						<circle
 						transform="rotate(-90, ${radius}, ${radius})"
@@ -53,9 +48,14 @@ export default class ProgressIndicator extends HTMLElement {
 						stroke-linecap="round"
 						class="progress-indicator__progress-circle"
 						data-progress-circle
+						data-pinkfill-greenstroke
 						/>
 					</svg>
-					<svg
+				<div class="progress-indicator__count-container">
+					<div data-progress-count-el="" class="progress-indicator__count"></div>
+					<sl-badge pill data-progress-warn-el class="progress-indicator__warning-badge"></sl-badge>
+				</div>
+				<svg
 						class="progress-indicator__check"
 						focusable="false"
 						viewBox="0 0 20 20"
@@ -133,6 +133,10 @@ export default class ProgressIndicator extends HTMLElement {
 
 		switch (display) {
 			case 'false':
+				if (progressWarnElement) {
+					progressWarnElement.removeAttribute('pulse');
+					progressWarnElement.textContent = ``;
+				}
 				progressWarnElement
 					? progressWarnElement.removeAttribute('pulse')
 					: null;
@@ -175,6 +179,11 @@ export default class ProgressIndicator extends HTMLElement {
 				break;
 
 			case 'end':
+				if (progressWarnElement) {
+					if (this.label.search('music') >= 0) {
+						progressWarnElement.textContent = 'Play music';
+					}
+				}
 				// style changes only
 				break;
 		}
