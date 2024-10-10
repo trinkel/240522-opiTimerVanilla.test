@@ -6,6 +6,11 @@
 			/* Max width doesn't limit text width work */
 			max-width: calc(var(--progress-indicator-viewbox) * 0.75);
 			white-space: normal;
+			transition: background-color var(--transition-s) ease-out;
 		}
 	}
+}
+
+.progress-indicator {
+	--sl-color-primary-600: var(--clr-progress-indicator-700);
 }

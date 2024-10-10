@@ -136,7 +136,7 @@ export class ComponentController {
 
 	init(timeController: TimeController): void {
 		this.iterator = 0;
-		console.log(`[init] Iteration: ${this.iterator}`);
+		// console.log(`[init] Iteration: ${this.iterator}`);
 		const now = timeController.current;
 
 		this.indicators.forEach((indicator) => {
@@ -260,16 +260,18 @@ export class ComponentController {
 					timeController.remainingTime(timeController[indicator.warnKey], now)
 				);
 
-				console.log(
-					`currentTarget: ${indicator.targetKey} | ${
-						timeController[indicator.targetKey]
-					} | Time Remaining ${currentTarget.display}`
-				);
-				console.log(
-					`Warn: ${indicator.warnKey} | ${
-						timeController[indicator.warnKey]
-					} | Time Remaining ${currentWarn.display}`
-				);
+				// if (indicator.targetKey === 'firstMusicTime') {
+				// 	console.log(
+				// 		`currentTarget: ${indicator.targetKey} | ${
+				// 			timeController[indicator.targetKey]
+				// 		} | Time Remaining ${currentTarget.display}`
+				// 	);
+				// 	console.log(
+				// 		`Warn: ${indicator.warnKey} | ${
+				// 			timeController[indicator.warnKey]
+				// 		} | Time Remaining ${currentWarn.display}`
+				// 	);
+				// }
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
 				indicator.progressValue = currentTarget.progress;
@@ -293,13 +295,18 @@ export class ComponentController {
 					if (
 						currentWarn.progress <= 0 + timeController.pendingWarn &&
 						indicator.warnState !== 'pending' &&
-						indicator.warnState !== 'true'
+						indicator.warnState !== 'true' &&
+						indicator.warnState !== 'end'
 					) {
 						this.setWarnState(indicator, 'pending');
 					}
 
 					// Wrangle warning badge on
-					if (currentWarn.progress <= 0 && indicator.warnState !== 'true') {
+					if (
+						currentWarn.progress <= 0 &&
+						indicator.warnState !== 'true' &&
+						indicator.warnState !== 'end'
+					) {
 						this.setWarnState(indicator, 'true');
 					}
 
@@ -341,6 +348,7 @@ export class ComponentController {
 		return new Promise<void>((resolve, reject) => {
 			const intervalId = setInterval(() => {
 				this.timer(timeController);
+				// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
 				if (this.progressComplete) {
 					clearInterval(intervalId);
 					resolve();

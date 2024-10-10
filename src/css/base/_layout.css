@@ -5,15 +5,28 @@
 .application {
 	display: grid;
 	grid-template-rows: max-content 1fr max-content;
+	gap: 0.5rem;
 	min-height: 100vh;
 }
 
 .wrapper {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+	padding: var(--space-xs);
 	place-items: center;
+}
 
-	@media (orientation: landscape) {
-		grid-template-columns: repeat(3, 1fr);
+@media (orientation: portrait) {
+	.wrapper {
+		grid-template-columns: none;
+		/* grid-template-rows: repeat(3, 1fr); */
 	}
 }
+
+/* Deactivate making active timer larger */
+/* @media (orientation: landscape) {
+	#time_block.wrapper {
+		grid-template-columns: 3fr 1fr 1fr;
+	}
+} */
