@@ -27,8 +27,12 @@
 	--clr-accent-700: var(--clr-neutral-700);
 	--clr-accent-999: var(--clr-neutral-999);
 
-	--clr-warning-100: hsl(32, 100%, 90%, 1);
-	--clr-warning-700: hsl(32, 100%, 55%, 1);
+	/* Alternate warning colors */
+	/* --clr-warning-100: hsl(32, 100%, 90%, 1); */
+	/* --clr-warning-700: hsl(32, 100%, 55%, 1); */
+
+	--clr-warning-100: hsl(47, 100%, 85%, 1);
+	--clr-warning-700: hsl(37, 100%, 55%, 1);
 
 	--clr-critical-100: hsl(0, 100%, 85%, 1);
 	--clr-critical-700: hsl(0, 100%, 50%, 1);
