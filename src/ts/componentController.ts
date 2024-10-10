@@ -39,6 +39,7 @@ export class ComponentController {
 	before: Date = new Date();
 	iterator: number = 0;
 
+	// Move current time to main.ts so it continues running forever.
 	clocksStartTime = document.getElementById(
 		'start-time-contents'
 	) as HTMLElement;
