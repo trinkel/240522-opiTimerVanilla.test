@@ -45,6 +45,7 @@ export class ComponentController {
 	clocksCurrentTime = document.getElementById(
 		'current-time-contents'
 	) as HTMLElement;
+	clocksEndTime = document.getElementById('end-time-contents') as HTMLElement;
 
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
@@ -83,6 +84,7 @@ export class ComponentController {
 	flatline(): void {
 		this.clocksCurrentTime.textContent = '';
 		this.clocksStartTime.textContent = '';
+		this.clocksEndTime.textContent = '';
 		this.indicators.forEach((indicator) => {
 			// To satisfy TypeScript when used as object property index
 			indicator.element.setAttribute('progress', '0');
@@ -206,6 +208,17 @@ export class ComponentController {
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 			}
 
+			// Start/set clock badges
+			this.clocksCurrentTime.textContent = format(now, 'h:mm:ss');
+			this.clocksStartTime.textContent = format(
+				timeController.startTime,
+				'h:mm:ss'
+			);
+			this.clocksEndTime.textContent = format(
+				timeController.endSession,
+				'h:mm:ss'
+			);
+
 			this.before = timeController.current;
 		});
 	}
@@ -221,9 +234,16 @@ export class ComponentController {
 				? timeController.current
 				: timeController.warpJump(this.before);
 
-		// DELETE
 		this.clocksCurrentTime.textContent = format(now, 'h:mm:ss');
-		this.clocksStartTime.textContent = format(this.before, 'h:mm:ss');
+		// DELETE
+		// this.clocksStartTime.textContent = format(
+		// 	timeController.startTime,
+		// 	'h:mm:ss'
+		// );
+		// this.clocksEndTime.textContent = format(
+		// 	timeController.endSession,
+		// 	'h:mm:ss'
+		// );
 
 		// initialize progress complete test for each loop
 		this.progressComplete = true;
