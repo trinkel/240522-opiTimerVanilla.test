@@ -158,11 +158,11 @@ setBasePath('/path/to/shoelace/dist');
 
 [postcss-assets](https://github.com/borodean/postcss-assets): Lots of stuff you can do with images such as easy referencing. Get size and other information. For example, you can set the size of a `<div>` based on the width of an image:
 
-````css
+```css
 .card {
 	width: width('images/foobar.png');
 }
-
+```
 
 ## Resources
 
@@ -343,6 +343,20 @@ Sets the semantic role of the custom component.
 
 Set in HTML element to 'progressbar'.
 
+### Settings Form
+
+#### Form items
+
+| Label               | Element     | Type               |
+| ------------------- | ----------- | ------------------ |
+| Team Mode           | Radio       | boolean            |
+| Number of teams     | Text Input  | number             |
+| Team List           | Text Area   | [string]           |
+| Group Start Time    | Text Input  | formatted string   |
+| Session Length      | Select List | number (from data) |
+| Pause Between Teams | Radio       | boolean            |
+| Pause Seconds       | Text Input  | number             |
+
 ### Function for calculating time remaining
 
 ```js
@@ -381,7 +395,7 @@ export function counterMath(targetDate, todaysDate) {
 
 	return countDown;
 }
-````
+```
 
 ## Coding notes: Research and Explanations
 
