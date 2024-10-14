@@ -1,4 +1,3 @@
-import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
 import { timeRemaining } from './timeController';
@@ -39,15 +38,6 @@ export class ComponentController {
 	before: Date = new Date();
 	iterator: number = 0;
 
-	// Move current time to main.ts so it continues running forever.
-	clocksStartTime = document.getElementById(
-		'start-time-contents'
-	) as HTMLElement;
-	clocksCurrentTime = document.getElementById(
-		'current-time-contents'
-	) as HTMLElement;
-	clocksEndTime = document.getElementById('end-time-contents') as HTMLElement;
-
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
 		const indicatorIds = ['first-music', 'second-music', 'end-session'];
@@ -83,9 +73,6 @@ export class ComponentController {
 	 * Draws all indicators in their initial state (zeroed out).
 	 */
 	flatline(): void {
-		this.clocksCurrentTime.textContent = '';
-		this.clocksStartTime.textContent = '';
-		this.clocksEndTime.textContent = '';
 		this.indicators.forEach((indicator) => {
 			// To satisfy TypeScript when used as object property index
 			indicator.element.setAttribute('progress', '0');
@@ -209,17 +196,6 @@ export class ComponentController {
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
 			}
 
-			// Start/set clock badges
-			this.clocksCurrentTime.textContent = format(now, 'h:mm:ss');
-			this.clocksStartTime.textContent = format(
-				timeController.startTime,
-				'h:mm:ss'
-			);
-			this.clocksEndTime.textContent = format(
-				timeController.endSession,
-				'h:mm:ss'
-			);
-
 			this.before = timeController.current;
 		});
 	}
@@ -234,17 +210,6 @@ export class ComponentController {
 			timeController.warp === 1
 				? timeController.current
 				: timeController.warpJump(this.before);
-
-		this.clocksCurrentTime.textContent = format(now, 'h:mm:ss');
-		// DELETE
-		// this.clocksStartTime.textContent = format(
-		// 	timeController.startTime,
-		// 	'h:mm:ss'
-		// );
-		// this.clocksEndTime.textContent = format(
-		// 	timeController.endSession,
-		// 	'h:mm:ss'
-		// );
 
 		// initialize progress complete test for each loop
 		this.progressComplete = true;
