@@ -9,6 +9,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/themes/light.css';
 import { isBefore } from 'date-fns';
 import { Parameters } from '../components/parameters';
+import { ClockBadges } from './clockBadges';
 import { ComponentController } from './componentController';
 import { TimeController } from './timeController';
 // setBasePath(
@@ -28,6 +29,9 @@ const timeController = new TimeController(
 	parameters.pendingEndSession,
 	parameters.warp
 );
+
+// Instantiate clock badges. Start current time badge
+const clockBadges = new ClockBadges(new Date(), timeController.tick);
 
 // Instantiate main control loop
 //ToDo:
@@ -65,7 +69,13 @@ async function startPracticeGroup(timeController: TimeController) {
 				parameters.pendingEndSession,
 				parameters.warp
 			);
+
+			// Initialize new team session
 			componentController.init(timeController);
+			clockBadges.setClocksStartTime(timeController.startTime);
+			clockBadges.setClocksEndTime(timeController.endSession);
+
+			// Run new team session
 			await componentController.startTimer(timeController);
 		}
 	} catch (error) {
