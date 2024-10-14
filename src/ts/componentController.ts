@@ -1,4 +1,3 @@
-import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
 import { timeRemaining } from './timeController';
@@ -39,13 +38,6 @@ export class ComponentController {
 	before: Date = new Date();
 	iterator: number = 0;
 
-	clocksStartTime = document.getElementById(
-		'start-time-contents'
-	) as HTMLElement;
-	clocksCurrentTime = document.getElementById(
-		'current-time-contents'
-	) as HTMLElement;
-
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
 		const indicatorIds = ['first-music', 'second-music', 'end-session'];
@@ -81,8 +73,6 @@ export class ComponentController {
 	 * Draws all indicators in their initial state (zeroed out).
 	 */
 	flatline(): void {
-		this.clocksCurrentTime.textContent = '';
-		this.clocksStartTime.textContent = '';
 		this.indicators.forEach((indicator) => {
 			// To satisfy TypeScript when used as object property index
 			indicator.element.setAttribute('progress', '0');
@@ -220,10 +210,6 @@ export class ComponentController {
 			timeController.warp === 1
 				? timeController.current
 				: timeController.warpJump(this.before);
-
-		// DELETE
-		this.clocksCurrentTime.textContent = format(now, 'h:mm:ss');
-		this.clocksStartTime.textContent = format(this.before, 'h:mm:ss');
 
 		// initialize progress complete test for each loop
 		this.progressComplete = true;
