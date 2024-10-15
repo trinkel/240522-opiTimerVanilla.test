@@ -20,7 +20,7 @@ A fork of `240512-opiTimerAstro.stack` moving to vanilla JS on Vite.
 **Vite**
 
 ```bash
-pnpm create astro@latest`
+pnpm create vite@latest`
 # Options
 #   • Framework: Vanilla
 #   • Variant: Typescript
