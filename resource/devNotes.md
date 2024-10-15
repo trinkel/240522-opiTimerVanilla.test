@@ -75,7 +75,7 @@ Web component library.
 Installation for Vite (from Will Schenk article overriding Shoelace info):
 
 ```bash
-pnpm add npm i @shoelace-style/shoelace vite-plugin-static-copy vite
+pnpm add @shoelace-style/shoelace vite-plugin-static-copy vite
 ```
 
 ```ts
