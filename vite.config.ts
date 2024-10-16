@@ -5,6 +5,9 @@ const iconsPath = 'node_modules/@shoelace-style/shoelace/dist/assets/icons';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	server: {
+		open: true,
+	},
 	resolve: {
 		alias: [
 			{
