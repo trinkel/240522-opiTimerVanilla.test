@@ -20,7 +20,7 @@ A fork of `240512-opiTimerAstro.stack` moving to vanilla JS on Vite.
 **Vite**
 
 ```bash
-pnpm create astro@latest`
+pnpm create vite@latest`
 # Options
 #   • Framework: Vanilla
 #   • Variant: Typescript
@@ -75,7 +75,7 @@ Web component library.
 Installation for Vite (from Will Schenk article overriding Shoelace info):
 
 ```bash
-pnpm add npm i @shoelace-style/shoelace vite-plugin-static-copy vite
+pnpm add @shoelace-style/shoelace vite-plugin-static-copy vite
 ```
 
 ```ts
