@@ -403,6 +403,81 @@ export function counterMath(targetDate, todaysDate) {
 
 See `On Loops, Timeouts, Promises and Synchronicity.md` here and in Notion. Mostly a conversation with the Pieces guy.
 
+### Typing elements (`x = document.querySelector()`)
+
+When assigning a variable to an element on a page, it extends the `Element` type. To avoid TypeScript bitching, declare the correct type along with the assignment. `Element` is the base type class from which more specific classes, for example `HTMLElement` and `SVGElement`, inherit. It only has methods and properties common to all elements.
+
+We are mostly concerned with `HTMLElement`, which in turn is a base interface for other elements. When typing an element, use the most specific type available. Common interfaces that we would use include:
+
+- HTMLAnchorElement
+- HTMLBodyElement
+- HTMLButtonElement
+- HTMLCanvasElement
+- HTMLDataElement
+- HTMLDataListElement
+- HTMLDetailsElement
+- HTMLDialogElement
+- HTMLDivElement
+- HTMLFieldSetElement
+- HTMLFormElement
+- HTMLHeadElement
+- HTMLHeadingElement
+- HTMLImageElement
+- HTMLInputElement
+- HTMLLabelElement
+- HTMLPictureElement
+- HTMLPreElement
+- HTMLProgressElement
+- HTMLSlotElement
+- HTMLTableElement
+- FormDataEvent (Form Support)
+
+The entire list can be found here: [Saylor Academy (local web archive)](file://HTML%20Interface.webarchive) or [Saylor Academy (original)](https://learn.saylor.org/mod/book/tool/print/index.php?id=68225)
+
+In a lot of cases, `HTMLElement` may be sufficient, but may not include some of the methods or properties of the more specific interfaces.
+
+Example of the button interface:
+
+```ts
+const openButton = document.querySelector<HTMLButtonElement>('#settings-btn');
+```
+
+_You also need to account for the fact that the element may not exist to avoid TypeScript errors_. When acting on an element, for example attaching an event listener, test for the existence of the element and offer an alternative if it's not there. For example.
+
+```ts
+openButton
+	? openButton.addEventListener('click', () => handleClick());
+	: console.error(`openButton does not exist`);
+```
+
+Alternatively you could do a trust me by adding a _non-null assertion_ (`!`). You are basically taking responsibility for making sure that the element exists. But that's not a real good idea because it will cause a runtime error if the element doesn't exist.
+
+#### Typing custom elements (eg Shoelace)
+
+Custom elements may (or may not) have their own interface. In the case of Shoelace, an interface matches the element, which extends `ShoelaceElement`, which I'm guessing extends `LitElement` (or something like that) which at some point extends `HTMLElement`. I found one definition in their code for `sl-drawer`:
+
+```ts
+// drawer.component.ts
+export default class SlDrawer extends ShoelaceElement
+```
+
+So, when grabbing a Shoelace element:
+
+```ts
+import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.js';
+const drawer = document.querySelector<SlDrawer>('#settings');
+const openButton = document.querySelector<SlButton>('#settings');
+```
+
+And, of course, we need to need to satisfy TypeScript when we add our event listener. When I used `HTMLElement` as the type for `<sl-drawer>`, I got an error that `drawer.show()` didn't exist. The `<SL...>` interface fixed that. Also, combining the button and drawer in one assignment we need to handle the nulls for both elements. We could revert to `if` statements, but that gets a bit long winded. Doing it with a ternary looked like this:
+
+```ts
+openButton && drawer
+	? openButton.addEventListener('click', () => drawer.show())
+	: console.error(`Elements do not exist: openButton or drawer`);
+```
+
 ### Function with callback
 
 ```js
