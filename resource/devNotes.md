@@ -184,7 +184,7 @@ setBasePath('/path/to/shoelace/dist');
 
 [Build a Web App with Modern JavaScript and Web Components](https://www.sitepoint.com/build-frameworkless-web-app-modern-javascript-web-components/) (Sitepoint) A little dated, but comes with a [repo](https://github.com/sitepoint-editors/framework-less-web-components/tree/master) that might be interesting.
 
-**Astro** _Sidbar only_
+**Astro** _Sidebar only_
 
 [Astro | Scripts and Event Handling](https://docs.astro.build/en/guides/client-side-scripts/) (Astro Docs) Includes info in integrating and/or creating web components with Astro.
 
