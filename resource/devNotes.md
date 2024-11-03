@@ -142,13 +142,35 @@ import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/input/input.js';
 import '@shoelace-style/shoelace/dist/components/rating/rating.js';
+```
 
+**Accessing icons (original version):** Shoelace instructions use a Shoelace utility to specify the path to the icon files. This was replace by the configuration in `vite.config.ts` above.
+
+```ts
+// main.ts
+// Original icon path configuration
 // Import utility to set the base path to Shoelace stuff
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 
 // Set the base path to the folder you copied Shoelace's assets to
 setBasePath('/path/to/shoelace/dist');
 ```
+
+> **Sidebar: Shoelace component imports**:<br>
+> Actually, any of these seem to work:
+>
+> ```ts
+> // Straight import (for want of a better name)
+> import SlButton from '@shoelace-style/shoelace/dist/components/button/button.js';
+> import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
+>
+> // Object destructuring
+> import { SlButton } from '@shoelace-style/shoelace/';
+> import { SlDrawer } from '@shoelace-style/shoelace/';
+>
+> // Multiple objects
+> import { SlDrawer, SLButton } from '@shoelace-style/shoelace/';
+> ```
 
 ### Additional packages to check out
 
@@ -470,7 +492,7 @@ const drawer = document.querySelector<SlDrawer>('#settings');
 const openButton = document.querySelector<SlButton>('#settings');
 ```
 
-And, of course, we need to need to satisfy TypeScript when we add our event listener. When I used `HTMLElement` as the type for `<sl-drawer>`, I got an error that `drawer.show()` didn't exist. The `<SL...>` interface fixed that. Also, combining the button and drawer in one assignment we need to handle the nulls for both elements. We could revert to `if` statements, but that gets a bit long winded. Doing it with a ternary looked like this:
+And, of course, we need to need to satisfy TypeScript when we add our event listener. When I used `HTMLElement` as the type for `<sl-drawer>`, I got an error that `drawer.show()` didn't exist. The `<SL...>` interface fixed that. Also, when combining the button and drawer in one assignment, we need to handle the nulls for both elements. We could revert to `if` statements, but that gets a bit long winded. Doing it with a ternary looked like this:
 
 ```ts
 openButton && drawer
