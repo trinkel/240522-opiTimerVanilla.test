@@ -21,6 +21,8 @@
 // 	numStarts: -1,
 // };
 
+import { settingsForm } from './settingsForm';
+
 export class Parameters {
 	// Debugging flag
 	dBugg: number = 6;
@@ -68,6 +70,18 @@ export class Parameters {
 		if (this.teamMode && this.teamList) {
 			this.numStarts = this.teamList.length;
 		}
+
+		// Settings Form
+		this.setContainer();
+	}
+
+	setContainer(): void {
+		const settingsContainer = document.querySelector<HTMLBaseElement>(
+			'#settings-container'
+		);
+		settingsContainer
+			? (settingsContainer.innerHTML = settingsForm)
+			: console.error(`element doesn't exist`);
 	}
 }
 
