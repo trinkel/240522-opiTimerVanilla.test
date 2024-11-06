@@ -101,8 +101,9 @@ export class Parameters {
 		});
 	}
 
+	// ! 241105
 	// TODO: rest of form functions go here (pass elements)
-	// TODO: Update documentation on different forms of Shoelace imports: • Import JS file in main.ts (element is not called in TS, but is there for HTML elements. • Import individual elements in component file (like parameter.ts and ??.ts) where element is reference in code)
+	// TODO: Update documentation on different forms of Shoelace imports: • Import JS file in main.ts (element is not called in TS, but is there for HTML elements). • Import individual elements in component file (like parameter.ts and ??.ts) where element is referenced in code. These should be added automatically.
 
 	// TODO: Document attaching form elements within class: query in constructor. Test for existence and pass to function outside of constructor. The test is then not needed in the function. This way function doesn't call query every time the function is called.
 	// TODO: VERIFY!! that this method can access all of the functions from everywhere they are needed.
