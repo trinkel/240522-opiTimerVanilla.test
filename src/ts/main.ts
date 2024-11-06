@@ -1,25 +1,36 @@
+// ProgressIndicator Component
 import ProgressIndicator from '../components/progressIndicator';
-// sample data: remove or add a demo switch
-// import { setBasePath } from '@shoelace-style/shoelace';
+
+// Shoelace Components
 import '@shoelace-style/shoelace/dist/components/badge/badge.js';
 import '@shoelace-style/shoelace/dist/components/button-group/button-group.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/card/card.js';
+import '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@shoelace-style/shoelace/dist/components/input/input.js';
+import '@shoelace-style/shoelace/dist/components/radio-button/radio-button.js';
+import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@shoelace-style/shoelace/dist/components/textarea/textarea.js';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 import '@shoelace-style/shoelace/dist/themes/light.css';
+
+// DateFNS Utility
 import { isBefore } from 'date-fns';
+
+// Settings
 import { Parameters } from '../components/parameters';
+
+// Layout and Control
 import { ClockBadges } from './clockBadges';
 import { ComponentController } from './componentController';
 import { TimeController } from './timeController';
-// setBasePath(
-// 	'./node_modules/.pnpm/@shoelace-style+shoelace@2.16.0_@types+react@18.3.5/node_modules/@shoelace-style/shoelace/dist/components/icon'
-// );
 
 // Passthrough component module
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
+// Page Controller
 const parameters = new Parameters();
 
 const timeController = new TimeController(
