@@ -14,11 +14,10 @@
 	<header>
 		<h1 class="visually-hidden">OPI Timer</h1>
 		<p class="visually-hidden">A product of dBugg.dev</p>
-		<div id="settings-container"></div>
 	</header>
 
-	<main class="application">
 
+	<main class="application">
 		<section id="clock_block" class="wrapper">
 			<sl-badge id="start-time" class="clock" variant="neutral" pill>
 				<p>Practice Start</p>
@@ -41,6 +40,13 @@
 		</section>
 
 		<section id="time_block" class="wrapper">
+			<aside class="settings-button">
+				<sl-tooltip content="Settings">
+					<sl-icon-button id="settings-btn" name="gear" label="Settings"
+						large></sl-icon-button>
+				</sl-tooltip>
+				<div id="settings-container"></div>
+			</aside>
 			<progress-indicator id="first-music"
 				label="Time until first time music plays" title="First Music" mode="1"
 				stroke="56" viewbox="2000">Timer</progress-indicator>
