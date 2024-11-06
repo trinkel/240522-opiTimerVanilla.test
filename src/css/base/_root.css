@@ -143,6 +143,14 @@
 	/* Custom pairs */
 	--space-em-s-l: clamp(1.125em, 0.5598em + 2.8261vi, 2.75em);
 
+	/* Border radius */
+	--br-s: 0.1875rem;
+	--br-m: 0.25rem;
+	--br-l: 0.5rem;
+	--br-xl: 1rem;
+	--br-circle: 50%;
+	--br-pill: 100vh;
+
 	/* OPI Timer starting values */
 	--transition-xs: 100ms;
 	--transition-s: 200ms;
