@@ -4,7 +4,7 @@ export const settingsForm = `
 			<form id="settings-form">
 				<fieldset id="start">
 					<sl-input id="start-time" name="start-time" class="label-on-left"
-						label="Start Time" help-text="Start-time for this session (eg: 10:45 AM)" type="time"
+						label="Start Time" help-text="Start-time for this session (eg: 10:45 AM)" type="time" autofocus
 						required></sl-input>
 				</fieldset>
 
