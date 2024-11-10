@@ -44,7 +44,10 @@ export class Parameters {
 
 	// Set start time. Default to now
 	groupStartTime: Date = new Date();
-	// Set start time now plus 1 minute (Testing Mode)
+
+	// Reserve FormData object
+	formData: FormData = new FormData();
+
 	constructor() {
 		if (this.dBugg === 1) {
 			// force delay of starting timer run
@@ -72,19 +75,65 @@ export class Parameters {
 			this.numStarts = this.teamList.length;
 		}
 
-		// Settings Form
+		// Deploy settings form
 		this.setContainer();
 
-		// Connect elements
-		// TODO: Get rest of elements
+		// Connect settings drawer controls
 		const openButton = document.querySelector<SlButton>('#settings-btn');
 		const drawer = document.querySelector<SlDrawer>('#settings');
 
-		// Add event listeners
+		// Add event listeners for drawer contols
 		openButton && drawer
 			? this.openDrawer(openButton, drawer)
 			: console.error('Error function here');
+
+		const form = document.querySelector<HTMLFormElement>('form');
+		form
+			? (this.formData = new FormData(form))
+			: this.elementError('form', 'new FormData');
+
+		// TODO: Add listener(s) for form element(s)
+	} // end constructor()
+
+	// Get formData
+
+	get startTimeVal(): string {
+		return this.formData.get('start-time') as string;
 	}
+
+	get practiceLengthVal(): string {
+		return this.formData.get('practice-length') as string;
+	}
+
+	get pauseBetweenSelectorVal(): string {
+		return this.formData.get('pause-between-selector') as string;
+	}
+
+	get pauseLengthVal(): string {
+		return this.formData.get('pause-length') as string;
+	}
+
+	get operationModeSelectorVal(): string {
+		return this.formData.get('operation-mode-selector') as string;
+	}
+
+	get teamListVal(): string {
+		return this.formData.get('team-list') as string;
+	}
+
+	get anonymousModeVal(): string {
+		return this.formData.get('anonymous-mode') as string;
+	}
+
+	get teamListModeVal(): string {
+		return this.formData.get('team-list-mode') as string;
+	}
+
+	elementError = (element: string, location?: string) => {
+		console.log(
+			`Element does not exist: ${element}${location ? ` at ${location}` : ``}`
+		);
+	};
 
 	setContainer(): void {
 		const settingsContainer = document.querySelector<HTMLBaseElement>(
