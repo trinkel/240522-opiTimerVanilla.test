@@ -48,7 +48,7 @@ export const settingsForm = `
 						class="label-on-left" label="Number of teams"
 						help-text="Enter the number of teams in this group" type="number"
 						min="1" step="1" value="1" required></sl-input>
-					<sl-textarea id="team-list-mode" name="team_list_mode"
+					<sl-textarea id="team-list-mode" name="team-list-mode"
 						class="label-on-left" label="Team List"  disabled
 						help-text="Names of the teams in this group. One team per line (copy/paste is our friend)"
 						resize="auto" required></sl-textarea>
