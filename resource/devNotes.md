@@ -168,9 +168,52 @@ setBasePath('/path/to/shoelace/dist');
 > import { SlButton } from '@shoelace-style/shoelace/';
 > import { SlDrawer } from '@shoelace-style/shoelace/';
 >
-> // Multiple objects
+> // Multiple objects (components automatically added to the object)
 > import { SlDrawer, SLButton } from '@shoelace-style/shoelace/';
 > ```
+
+### Wrangling Form Data
+
+\*`serialize` is **Shoelace** specific. `FormData` is not.
+
+**Initial Source** [Shoelace: Form Controls](https://shoelace.style/getting-started/form-controls)
+
+There are two methods available gather data from _Shoelace_ forms: the `formdata` event which populates the `FormData` interface.
+
+**Example Form**
+
+```html
+<form>
+	<sl-input id="user_name" name="user" label="Enter user name"></sl-input>
+	<sl-input id="user_age" name="user-age" label="Enter user age"></sl-input>
+</form>
+```
+
+**Using `FormData`**
+
+```ts
+const form = document.querySelector('form');
+const data = new FormData(form);
+
+// format: `data.get(element-name)`
+console.log(`${data.get('user')}`); // value for "user"
+console.log(`${data.get('user-age')}`); // value for "user-age
+```
+
+Other methods are available such as `getAll()`, `set()`, etc.
+
+\*\*Using `serialize`
+
+```ts
+import { serialize } from '@shoelace-style/shoelace/dist/utilities/form.js
+const form = document.querySelector('form');
+const data = serialize(form);
+
+// format: `data.element-name`
+console.log(`${data.user}`) // value for "user"
+// Hyphens are not allowed as property names so you have to use key notation (verify terminology)
+console.log(`${data.['user-age']}`) // value for "user-age
+```
 
 ### Additional packages to check out
 
