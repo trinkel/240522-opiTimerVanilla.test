@@ -44,7 +44,7 @@ export const settingsForm = `
 							Team List
 						</sl-radio-button>
 					</sl-radio-group>
-					<sl-input id="anonymous-mode" name="anonymous-mode"
+					<sl-input id="number-teams" name="number-teams"
 						class="label-on-left" label="Number of teams"
 						help-text="Enter the number of teams in this group" type="number"
 						min="1" step="1" value="1" required></sl-input>

@@ -121,8 +121,8 @@ export class Parameters {
 		return this.formData.get('team-list') as string;
 	}
 
-	get anonymousModeVal(): string {
-		return this.formData.get('anonymous-mode') as string;
+	get numberTeamsVal(): string {
+		return this.formData.get('number-teams') as string;
 	}
 
 	get teamListModeVal(): string {

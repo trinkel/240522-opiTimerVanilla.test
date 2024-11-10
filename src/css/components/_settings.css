@@ -64,6 +64,6 @@ div.save {
 #operation-mode-selector[value='anonymous']
 	~ #team-list-mode
 	#operation-mode-selector[value='list']
-	~ #anonymous-mode {
+	~ #number-teams {
 	display: none;
 }
