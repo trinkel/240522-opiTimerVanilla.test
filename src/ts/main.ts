@@ -35,7 +35,7 @@ export default ProgressIndicator;
 const parameters = new Parameters();
 
 const timeController = new TimeController(
-	parameters.sessionLength,
+	parameters.practiceLength,
 	parameters.tick,
 	parameters.pendingWarn,
 	parameters.pendingEndSession,
@@ -75,7 +75,7 @@ async function startPracticeGroup(timeController: TimeController) {
 				}---`
 			);
 			timeController = new TimeController(
-				parameters.sessionLength,
+				parameters.practiceLength,
 				parameters.tick,
 				parameters.pendingWarn,
 				parameters.pendingEndSession,
