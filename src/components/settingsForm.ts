@@ -41,11 +41,11 @@ export const settingsForm = `
 				<fieldset id="operation-mode">
 					<sl-radio-group id="operation-mode-selector"
 						name="operation-mode-selector" class="label-on-left"
-						label="Select operation mode" value=${appDefaults.operationMode.toString()} required>
-						<sl-radio-button value="0" pill>
+						label="Select operation mode" value=${appDefaults.operationMode} required>
+						<sl-radio-button value="anonymous" pill>
 							Anonymous
 						</sl-radio-button>
-						<sl-radio-button id="team-list" name="team-list" value="1" pill>
+						<sl-radio-button id="team-list" name="team-list" value="list" pill>
 							Team List
 						</sl-radio-button>
 					</sl-radio-group>

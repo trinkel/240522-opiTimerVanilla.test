@@ -1,10 +1,13 @@
+export type operationModes = 'anonymous' | 'list';
+export type practiceLengthTimes = 1 | 6 | 7 | 8 | 10 | 11 | 12;
+
 export interface AppDefaults {
-	practiceLength: 1 | 6 | 7 | 8 | 10 | 11 | 12;
+	practiceLength: practiceLengthTimes;
 	pauseBetweenSelector: 'yes' | 'no'; // Pause between teams
 	pauseLength: number; // Length of pause between sessions in seconds
 	groupStartType: number;
 	groupStartTime: Date;
-	operationMode: 0 | 1; // Anonymous (0) | List (1)
+	operationMode: operationModes; // anonymous | list
 	teamList: string[]; // List of team names (Separated by CR from form)
 	numberTeams: number; // Number of teams
 
@@ -23,7 +26,7 @@ export const appDefaults: AppDefaults = {
 	pauseLength: 0, // Length of pause between sessions
 	groupStartType: 0,
 	groupStartTime: new Date(0),
-	operationMode: 0, // Anonymous (0) | List (1)
+	operationMode: 'anonymous', // anonymous | list
 	teamList: [''],
 	numberTeams: 3,
 

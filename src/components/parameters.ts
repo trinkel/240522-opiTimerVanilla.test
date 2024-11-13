@@ -24,26 +24,30 @@
 // };
 
 import { SlButton, SlDrawer } from '@shoelace-style/shoelace';
+import {
+	appDefaults,
+	operationModes,
+	practiceLengthTimes,
+} from '../data/appDefaults';
 import { settingsForm } from './settingsForm';
 
-// HERE 241110: `export defaults {}` to settingsForm then get from form for variables below. Or something like that.
-
 export class Parameters {
-	// Initialize parameter/settings variables
-	practiceLength: number = 0; // Length of each practice session.
-	pauseBetweenSelector: string = ''; // Pause between teams
-	pauseLength: number = 0; // Length of pause between sessions
-	groupStartType: number = 0; // Manual (0) or Scheduled (1)
-	groupStartTime: Date = new Date(0);
-	operationMode: number = 0; // Anonymous (0), List (1)
-	teamList: string[] = ['']; // List of team names (Separated by CR from form)
-	numberTeams: number = 0; // if teamMode=0: get input; if teamMode=1: `teamList.length`
+	// Map appDefaults to Parameters
+	practiceLength = appDefaults.practiceLength;
+	pauseBetweenSelector = appDefaults.pauseBetweenSelector;
+	pauseLength = appDefaults.pauseLength;
+	groupStartType = appDefaults.groupStartType;
+	groupStartTime = appDefaults.groupStartTime;
+	operationMode = appDefaults.operationMode;
+	teamList = appDefaults.teamList;
+	numberTeams = appDefaults.numberTeams;
 
-	// Initialize App passthrough settings
-	warp: number = 0; // Speed factor for demos (1-8)
-	tick: number = 0; // Component timeout interval in milliseconds (200)
-	pendingWarn: number = 0; // Time before warning-time to flash badge "pending" in milliseconds (3000)
-	pendingEndSession: number = 0; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
+	// App passthrough settings
+	dBugg = appDefaults.dBugg;
+	warp = appDefaults.warp;
+	tick = appDefaults.tick;
+	pendingWarn = appDefaults.pendingWarn;
+	pendingEndSession = appDefaults.pendingEndSession;
 
 	// Set start time. Default to now
 	//! groupStartTime: Date = new Date();
@@ -54,6 +58,29 @@ export class Parameters {
 	formData: FormData = new FormData();
 
 	constructor() {
+		// Deploy settings form
+		this.setContainer();
+
+		// Connect settings drawer controls
+		const openButton = document.querySelector<SlButton>('#settings-btn');
+		const drawer = document.querySelector<SlDrawer>('#settings');
+
+		// Add event listeners for drawer contols
+		openButton && drawer
+			? this.openDrawer(openButton, drawer)
+			: console.error('Error function here');
+
+		const form = document.querySelector<HTMLFormElement>('form');
+		form
+			? (this.formData = new FormData(form))
+			: this.elementError('form', 'new FormData');
+
+		// get parameters back from form
+		this.setParameters();
+
+		// ----- Above: New deploy form
+		// ----- Below: Old parameter setup, figure it out
+
 		if (this.dBugg === 1) {
 			// force delay of starting timer run
 			this.groupStartTime.setSeconds(this.groupStartTime.getSeconds() + 30);
@@ -79,25 +106,6 @@ export class Parameters {
 		if (this.operationMode && this.teamList) {
 			this.numStarts = this.teamList.length;
 		}
-
-		// Deploy settings form
-		this.setContainer();
-
-		// Connect settings drawer controls
-		const openButton = document.querySelector<SlButton>('#settings-btn');
-		const drawer = document.querySelector<SlDrawer>('#settings');
-
-		// Add event listeners for drawer contols
-		openButton && drawer
-			? this.openDrawer(openButton, drawer)
-			: console.error('Error function here');
-
-		const form = document.querySelector<HTMLFormElement>('form');
-		form
-			? (this.formData = new FormData(form))
-			: this.elementError('form', 'new FormData');
-
-		this.setParameters();
 	} // end constructor()
 
 	// Get User Defaults formData object
@@ -181,7 +189,7 @@ export class Parameters {
 
 	setParameters(): void {
 		// Get user defaults from settings form
-		this.practiceLength = Number(this.practiceLengthVal); // Length of each practice session.
+		this.practiceLength = Number(this.practiceLengthVal) as practiceLengthTimes; // Length of each practice session.
 		this.pauseLength = Number(this.pauseLengthVal); // Length of pause between sessions
 
 		this.groupStartType = Number(this.startTypeVal); // Manual (0) or Scheduled (1)
@@ -193,7 +201,7 @@ export class Parameters {
 
 		this.pm = false;
 
-		this.operationMode = Number(this.operationModeSelectorVal); // Anonymous (0), List (1)
+		this.operationMode = this.operationModeSelectorVal as operationModes; // anonymous, list
 		if (this.operationMode) {
 			this.teamList = this.operationModeSelectorVal.split('\n'); // CR delimited text to array elements
 			this.numStarts = 0;
@@ -214,6 +222,9 @@ export class Parameters {
 	// TODO: Update documentation on different forms of Shoelace imports: • Import JS file in main.ts (element is not called in TS, but is there for HTML elements). • Import individual elements in component file (like parameter.ts and ??.ts) where element is referenced in code. These should be added automatically.
 
 	// TODO: Document attaching form elements within class: query in constructor. Test for existence and pass to function outside of constructor. The test is then not needed in the function. This way function doesn't call query every time the function is called.
+
+	// TODO: Document TypeScript literal types (eg '1 | 6 | 7 | 8 | 10 | 11 | 12') as they are used here. Should work as advertised but I think there were issue going through the formData API. When they were converted back to string or number they got an error —Type 'number' is not assignable to type <type> ts(2322)— when to all appearances, the types matched. The solution was to create an alias of the type and use it in place of the type. Then where I was cast the variable as the alias —See `setParameters(): this.practiceLength() (number) and this.operationMode() (string)
+
 	// TODO: VERIFY!! that this method can access all of the functions from everywhere they are needed.
 
 	// TODO: Form drawer open at start?
