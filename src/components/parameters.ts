@@ -65,7 +65,8 @@ export class Parameters {
 		const openButton = document.querySelector<SlButton>('#settings-btn');
 		const drawer = document.querySelector<SlDrawer>('#settings');
 
-		// Add event listeners for drawer contols
+		// Add event listeners for drawer controls
+		//TODO: Does the really need to call a function? Move the event here?
 		openButton && drawer
 			? this.openDrawer(openButton, drawer)
 			: console.error('Error function here');
@@ -134,8 +135,9 @@ export class Parameters {
 		return this.formData.get('operation-mode-selector') as string;
 	}
 
-	get teamListVal(): string {
-		return this.formData.get('team-list') as string;
+	get teamListVal(): string[] {
+		const value = this.formData.get('team-list') as string;
+		return value.split('\n');
 	}
 
 	get numberTeamsVal(): string {
@@ -199,15 +201,17 @@ export class Parameters {
 			this.groupStartTime = new Date(0);
 		}
 
-		this.pm = false;
+		this.pm = false; //! <--
 
 		this.operationMode = this.operationModeSelectorVal as operationModes; // anonymous, list
-		if (this.operationMode) {
-			this.teamList = this.operationModeSelectorVal.split('\n'); // CR delimited text to array elements
-			this.numStarts = 0;
-		} else {
-			this.teamList = [];
-			this.numStarts = 3; // if teamMode=0: get input; if teamMode=1: `teamList.length`
+		switch (this.operationMode) {
+			case 'anonymous':
+				this.numberTeams = Number(this.numberTeamsVal);
+				this.teamList = [''];
+				break;
+			case 'list':
+				this.teamList = this.teamListVal;
+				this.numberTeams = this.teamList.length;
 		}
 
 		// Get application defaults from appDefaults
