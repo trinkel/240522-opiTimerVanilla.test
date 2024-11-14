@@ -1,3 +1,6 @@
+/* Blue is --sl-color-primary-600 */
+/* todo add padding to fieldset */
+
 .settings-button {
 	position: absolute;
 	display: grid;
@@ -12,10 +15,25 @@
 	}
 }
 
+#settings {
+	--sl-panel-background-color: var(--clr-neutral-600);
+	--sl-font-size-large: var(--fsq-3);
+
+	&::part(title) {
+		font-weight: var(--fw-500);
+	}
+
+	&::part(header) {
+		background-color: var(--clr-neutral-900);
+	}
+
+	&::part(overlay) {
+		--sl-overlay-background-color: hsl(240 3.8% 30% / 50%);
+	}
+}
+
 /* Form */
-
 /* Form general style */
-
 form {
 	display: grid;
 	grid-template-rows: auto;
