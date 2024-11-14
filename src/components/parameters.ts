@@ -79,8 +79,26 @@ export class Parameters {
 		// get parameters back from form
 		this.setParameters();
 
+		// Event Builder
+		if (form && drawer) {
+			// this.submitForm(form, drawer);
+		} else {
+			!form ? this.elementError('form', 'eventBuilder') : null;
+			!drawer ? this.elementError('drawer', 'eventBuilder') : null;
+		}
+
 		// ----- Above: New deploy form
 		// ----- Below: Old parameter setup, figure it out
+
+		//! Pseudo
+		/* [Should some of this be in settingsForm.ts?]
+		Build form functionality (see opiTimer-form.stack)
+		Form has event. Let it bubble and use .closest() (see tutorial)
+		Need function for save button
+			validation (see opiTimer-form.stack)
+			run setParameters()
+		*/
+		//!
 
 		if (this.dBugg === 1) {
 			// force delay of starting timer run
@@ -219,6 +237,31 @@ export class Parameters {
 		this.tick = 200; // Component timeout interval in milliseconds (200)
 		this.pendingWarn = 5000; // Time before warning time to flash badge "pending" in milliseconds (3000)
 		this.pendingEndSession = 15000; // Time before end to display "leave the ice" in milliseconds (1500// Set start time. Default to now
+	}
+
+	submitForm(form: HTMLFormElement, drawer: SlDrawer) {
+		Promise.all([
+			customElements.whenDefined('sl-input'),
+			customElements.whenDefined('sl-select'),
+			customElements.whenDefined('sl-option'),
+			customElements.whenDefined('sl-radio-group'),
+			customElements.whenDefined('sl-radio-button'),
+			customElements.whenDefined('sl-textarea'),
+		])
+			.then(() => {
+				form.addEventListener('submit', (event) => {
+					event.preventDefault();
+					if (drawer) {
+						drawer.hide();
+						// alert('All fields are valid!');
+					} else {
+						this.elementError('drawer', 'form addEventListener');
+					}
+				});
+			})
+			.catch((error) => {
+				console.error(`Promise.all Error: ${error.message}`);
+			});
 	}
 
 	// ! 241105
