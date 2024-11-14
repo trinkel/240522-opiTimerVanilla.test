@@ -1,0 +1,87 @@
+/* Blue is --sl-color-primary-600 */
+/* todo add padding to fieldset */
+
+.settings-button {
+	position: absolute;
+	display: grid;
+	place-content: center;
+	padding: var(--space-3xs);
+	inset-inline-end: 0;
+	inset-block-start: 0;
+	/* height: 100%; */
+	sl-icon-button {
+		font-size: var(--fs-2);
+		color: var(--clr-neutral-000);
+	}
+}
+
+#settings {
+	--sl-panel-background-color: var(--clr-neutral-600);
+	--sl-font-size-large: var(--fsq-3);
+
+	&::part(title) {
+		font-weight: var(--fw-500);
+	}
+
+	&::part(header) {
+		background-color: var(--clr-neutral-900);
+	}
+
+	&::part(overlay) {
+		--sl-overlay-background-color: hsl(240 3.8% 30% / 50%);
+	}
+}
+
+/* Form */
+/* Form general style */
+form {
+	display: grid;
+	grid-template-rows: auto;
+	gap: 1.75rem;
+	max-width: max-content;
+
+	text-align: left;
+
+	fieldset {
+		display: grid;
+		gap: 1rem;
+		border: none;
+		background-color: var(--clr-neutral-600);
+		border-radius: var(--br-l);
+		--sl-input-help-text-color: var(--clr-neutral-800);
+	}
+
+	@media (width > 32rem) {
+		fieldset,
+		.save {
+			grid-template-columns: 1fr 1fr;
+			gap: 2rem;
+		}
+		#close-drawer {
+			grid-column: 2 /-1;
+		}
+	}
+}
+
+::part(form-control-help-text),
+::part(form-control-label) {
+	font-weight: 700;
+}
+
+div.save {
+	display: grid;
+}
+
+#close-drawer {
+	width: 100%;
+}
+
+/* Form reveals: Initially hidden */
+
+#pause-between-selector[value='no'] ~ #pause-length,
+#operation-mode-selector[value='anonymous']
+	~ #team-list-mode
+	#operation-mode-selector[value='list']
+	~ #number-teams {
+	display: none;
+}

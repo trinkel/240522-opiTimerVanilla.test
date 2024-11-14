@@ -1,29 +1,41 @@
+// ProgressIndicator Component
 import ProgressIndicator from '../components/progressIndicator';
-// sample data: remove or add a demo switch
-// import { setBasePath } from '@shoelace-style/shoelace';
+
+// Shoelace Components
 import '@shoelace-style/shoelace/dist/components/badge/badge.js';
 import '@shoelace-style/shoelace/dist/components/button-group/button-group.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/card/card.js';
+import '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
-import '@shoelace-style/shoelace/dist/themes/light.css';
+import '@shoelace-style/shoelace/dist/components/input/input.js';
+import '@shoelace-style/shoelace/dist/components/option/option.js';
+import '@shoelace-style/shoelace/dist/components/radio-button/radio-button.js';
+import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@shoelace-style/shoelace/dist/components/select/select.js';
+import '@shoelace-style/shoelace/dist/components/textarea/textarea.js';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
+
+// DateFNS Utility
 import { isBefore } from 'date-fns';
+
+// Settings
 import { Parameters } from '../components/parameters';
+
+// Layout and Control
 import { ClockBadges } from './clockBadges';
 import { ComponentController } from './componentController';
 import { TimeController } from './timeController';
-// setBasePath(
-// 	'./node_modules/.pnpm/@shoelace-style+shoelace@2.16.0_@types+react@18.3.5/node_modules/@shoelace-style/shoelace/dist/components/icon'
-// );
 
 // Passthrough component module
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
+// Page Controller
 const parameters = new Parameters();
 
 const timeController = new TimeController(
-	parameters.sessionLength,
+	parameters.practiceLength,
 	parameters.tick,
 	parameters.pendingWarn,
 	parameters.pendingEndSession,
@@ -56,14 +68,14 @@ const waitTimer = (): void => {
 // Start a group of teams
 async function startPracticeGroup(timeController: TimeController) {
 	try {
-		for (let i = 0; i < parameters.numStarts; i++) {
+		for (let i = 0; i < parameters.numberTeams; i++) {
 			console.log(
 				`[START PRACTICE GROUP] ---START TEAM NUMBER ${i + 1} out of ${
-					parameters.numStarts
+					parameters.numberTeams
 				}---`
 			);
 			timeController = new TimeController(
-				parameters.sessionLength,
+				parameters.practiceLength,
 				parameters.tick,
 				parameters.pendingWarn,
 				parameters.pendingEndSession,
@@ -98,7 +110,7 @@ componentController.complete();
 //! OK, so here's the deal
 /*
  * Instantiate a new instance of Parameters
- * Instantiate a new instance of ComponentController passing it numStarts (instead of looping on number of teams?) (see wrangling above. Should that be changing params.numStart rather than a new var?)
+ * Instantiate a new instance of ComponentController passing it numberTeams (instead of looping on number of teams?) (see wrangling above. Should that be changing params.numStart rather than a new var?)
  * Instantiate a new instance of TimeController passing it params[sessionLength,groupStartTime(?)]
  *     // Actually, do we need to call this before we have a startTime, or even before startTime arrives?
  *     // groupStartTime is already a Date object

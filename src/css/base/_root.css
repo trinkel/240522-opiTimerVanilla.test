@@ -11,6 +11,7 @@
 	--clr-neutral-500: hsl(0, 0%, 67%, 1);
 	--clr-neutral-600: hsl(0, 0%, 35%, 1);
 	--clr-neutral-700: hsl(0, 0%, 20%, 1);
+	--clr-neutral-800: hsl(0, 0%, 15%, 1);
 	--clr-neutral-900: hsl(0, 0%, 10%, 1);
 	--clr-neutral-999: hsl(0, 0%, 0%, 1);
 
@@ -142,6 +143,14 @@
 
 	/* Custom pairs */
 	--space-em-s-l: clamp(1.125em, 0.5598em + 2.8261vi, 2.75em);
+
+	/* Border radius */
+	--br-s: 0.1875rem;
+	--br-m: 0.25rem;
+	--br-l: 0.5rem;
+	--br-xl: 1rem;
+	--br-circle: 50%;
+	--br-pill: 100vh;
 
 	/* OPI Timer starting values */
 	--transition-xs: 100ms;
