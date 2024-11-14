@@ -68,10 +68,10 @@ const waitTimer = (): void => {
 // Start a group of teams
 async function startPracticeGroup(timeController: TimeController) {
 	try {
-		for (let i = 0; i < parameters.numTeams; i++) {
+		for (let i = 0; i < parameters.numberTeams; i++) {
 			console.log(
 				`[START PRACTICE GROUP] ---START TEAM NUMBER ${i + 1} out of ${
-					parameters.numTeams
+					parameters.numberTeams
 				}---`
 			);
 			timeController = new TimeController(
@@ -110,7 +110,7 @@ componentController.complete();
 //! OK, so here's the deal
 /*
  * Instantiate a new instance of Parameters
- * Instantiate a new instance of ComponentController passing it numTeams (instead of looping on number of teams?) (see wrangling above. Should that be changing params.numStart rather than a new var?)
+ * Instantiate a new instance of ComponentController passing it numberTeams (instead of looping on number of teams?) (see wrangling above. Should that be changing params.numStart rather than a new var?)
  * Instantiate a new instance of TimeController passing it params[sessionLength,groupStartTime(?)]
  *     // Actually, do we need to call this before we have a startTime, or even before startTime arrives?
  *     // groupStartTime is already a Date object
