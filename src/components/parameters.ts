@@ -23,7 +23,13 @@
 // 	numStarts: -1,
 // };
 
-import { SlButton, SlDrawer } from '@shoelace-style/shoelace';
+import {
+	SlButton,
+	SlDrawer,
+	SlInput,
+	SlRadioGroup,
+	SlTextarea,
+} from '@shoelace-style/shoelace';
 import {
 	appDefaults,
 	operationModes,
@@ -65,13 +71,24 @@ export class Parameters {
 		const openButton = document.querySelector<SlButton>('#settings-btn');
 		const drawer = document.querySelector<SlDrawer>('#settings');
 
+		// Connect form controls
+		const form = document.querySelector<HTMLFormElement>('form');
+		const pauseSelector = document.querySelector<SlRadioGroup>(
+			'#pause-between-selector'
+		);
+		const pauseInput = document.querySelector<SlInput>('#pause-length');
+		const modeSelector = document.querySelector<SlRadioGroup>(
+			'#operation-mode-selector'
+		);
+		const numberInput = document.querySelector<SlInput>('#number-teams');
+		const teamsInput = document.querySelector<SlTextarea>('#team-list');
+
 		// Add event listeners for drawer controls
 		//TODO: Does the really need to call a function? Move the event here?
 		openButton && drawer
 			? this.openDrawer(openButton, drawer)
 			: console.error('Error function here');
 
-		const form = document.querySelector<HTMLFormElement>('form');
 		form
 			? (this.formData = new FormData(form))
 			: this.elementError('form', 'new FormData');
@@ -81,7 +98,7 @@ export class Parameters {
 
 		// Event Builder
 		if (form && drawer) {
-			// this.submitForm(form, drawer);
+			this.submitForm(form, drawer);
 		} else {
 			!form ? this.elementError('form', 'eventBuilder') : null;
 			!drawer ? this.elementError('drawer', 'eventBuilder') : null;
@@ -233,6 +250,7 @@ export class Parameters {
 		}
 
 		// Get application defaults from appDefaults
+		//ToDo Should this only run once?
 		this.warp = 1; // Speed factor for demos (1-8)
 		this.tick = 200; // Component timeout interval in milliseconds (200)
 		this.pendingWarn = 5000; // Time before warning time to flash badge "pending" in milliseconds (3000)
@@ -251,6 +269,11 @@ export class Parameters {
 			.then(() => {
 				form.addEventListener('submit', (event) => {
 					event.preventDefault();
+					this.setParameters(); //! I think this is right track, but needs to restart timers
+					//! Nope, not working
+					console.log(this.practiceLength);
+					console.log(this.startTime);
+					console.log(this.numberTeams);
 					if (drawer) {
 						drawer.hide();
 						// alert('All fields are valid!');
