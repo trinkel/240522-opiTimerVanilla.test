@@ -96,7 +96,8 @@ export function objectifySeconds(totalSeconds: number) {
 
 /**
  * Converts seconds to hour/minute/second string
- * Caveats: Only one format available. No days.
+ * Format 'text': 1 minute 15 seconds
+ * Format 'colon: 01:20
  *
  * @export
  * @param {number} seconds
@@ -109,8 +110,8 @@ export function objectifySeconds(totalSeconds: number) {
  *
  * @export
  * @param {number} seconds
- * @param {boolean} [plural=true]
  * @param {string} [format='text']
+ * @param {boolean} [plural=true]
  * @returns {string}
  */
 export function stringifySeconds(
@@ -119,12 +120,22 @@ export function stringifySeconds(
 	format: string = 'text'
 ): string {
 	let str = '';
+	let result = objectifySeconds(seconds);
 	switch (format) {
 		case '':
 			console.log('empty string');
 			break;
-		default:
-			let result = objectifySeconds(seconds);
+		case 'colon':
+			console.dir(result);
+			str += result.hours ? `${result.hours.toString().padStart(2, '0')}:` : ``;
+			str += result.minutes
+				? `${result.minutes.toString().padStart(2, '0')}:`
+				: `00:`;
+			str += result.seconds
+				? `${result.seconds.toString().padStart(2, '0')}`
+				: `00`;
+			break;
+		case 'text':
 			str += result.hours
 				? `${result.hours} ${
 						result.hours === 1 || plural === false ? 'hour' : 'hours'
