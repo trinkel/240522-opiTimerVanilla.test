@@ -2,11 +2,16 @@ import { appDefaults } from '../data/appDefaults';
 import { stringifySeconds } from '../ts/timeUtilities';
 
 export const settingsForm = `
-		<sl-drawer label="Settings" id="settings" open style="--size: max-content">
+		<sl-drawer label="Settings" id="settings" style="--size: max-content">
 			<form id="settings-form">
 				<fieldset id="start">
+				<sl-input id="start-type" name="start-type" label="Start group at time or by button?" hidden value="${
+					appDefaults.groupStartType
+				}"></sl-input>
 					<sl-input id="start-time" name="start-time" class="label-on-left"
-						label="Start Time" help-text="Start-time for this session (eg: 10:45 AM)" type="time" autofocus
+						label="Start Time" help-text="Start-time for this session (eg: 10:45 AM)" type="time" value="${
+							appDefaults.groupStartTimeStr
+						}" autofocus
 						required></sl-input>
 				</fieldset>
 
