@@ -73,8 +73,21 @@ export class TimeController {
 
 	// Starting time for team. Used in init
 	// ! Watch this in the case of team list. Loop works on flow of time allotted each team. It we also have scheduled times, make sure the alloted times stay in synch with the scheduled times. (Time/math sanity check)
-	startTime: Date = new Date();
+	startTimeVar: Date;
 
+	/**
+	 * Creates an instance of TimeController.
+	 *
+	 * @constructor
+	 * @param {number} duration sessionLength
+	 * @param {number} tick Loop interval
+	 * @param {number} pendingWarn Time before
+	 * @param {number} pendingEndSession Time before end of session to display "leave the ice"
+	 * @param {number} [warp=1] Speed enhancement for demos
+	 * @param {groupStartTypeTypes} groupStartType ['scheduled' | 'manual] Start by time or button
+	 * @param {Date} groupStartTime Time to start if by schedule
+	 * @param {boolean} [idle=true] Time before session starts
+	 */
 	constructor(
 		public duration: number, // sessionLength
 		public tick: number, // loop interval
@@ -85,6 +98,13 @@ export class TimeController {
 		public groupStartTime: Date,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
+		/**
+		 * startTime is a getter
+		 * startTimeVar holds the value as a variable for places that couldn't use the getter
+		 */
+		this.startTimeVar = this.startTime;
+		console.log(`groupStartTypex: ${this.groupStartType}`);
+		console.log(`groupStartTimex: ${this.groupStartTime}`);
 		// Select Session Duration object
 		this.sessionSpec = practiceTimes[this.duration];
 
@@ -97,12 +117,25 @@ export class TimeController {
 		this.secondMusicTime = this.secondMusic;
 		this.endWarningTime = this.endWarning;
 		this.endSessionTime = this.endSession;
-	}
+	} // end constructor
 
 	//Getters set initial times. remainingTime() does the work during control loop.
 	get current(): Date {
 		// updater, used in remainingTime function
 		return new Date();
+	}
+
+	get startTime(): Date {
+		switch (this.groupStartType) {
+			case 'manual':
+				return new Date(0);
+				break;
+			case 'scheduled':
+				return this.groupStartTime;
+				break;
+			default:
+				return new Date();
+		}
 	}
 
 	get firstMusic(): Date {
