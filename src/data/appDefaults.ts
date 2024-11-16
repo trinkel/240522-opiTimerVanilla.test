@@ -4,6 +4,29 @@ export type operationModes = 'anonymous' | 'list';
 export type practiceLengthTimes = 1 | 6 | 7 | 8 | 10 | 11 | 12;
 export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
 
+/**
+ * AppDefaults Interface
+ *
+ * @export
+ * @interface AppDefaults
+ * @typedef {AppDefaults}
+ * @prop {practiceLengthTimes} practiceLength
+ * @prop {'yes' | 'no'} pauseBetweenSelector Pause between teams
+ * @prop {number} pauseLength Length of pause between sessions in seconds
+ * @prop {groupStartTypeTypes} groupStartType
+ * @prop {Date} groupStartTime
+ * @prop {string} groupStartTimeStr
+ * @prop {operationModes} operationMode anonymous | list
+ * @prop {string[]} teamList List of team names (Separated by CR from form)
+ * @prop {number} numberTeams Number of teams
+ * @prop {number} dBugg
+ * @prop {number} warp Speed factor for demos (1-8 typical)
+ * @prop {number} tick Component sleep interval in milliseconds
+ * @prop {boolean} idle Is the session running
+ * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
+ * @prop {number} pendingEndSession Time before end-session to display "leave the ice" badge in milliseconds
+ * @prop {() => void} init
+ */
 export interface AppDefaults {
 	practiceLength: practiceLengthTimes;
 	pauseBetweenSelector: 'yes' | 'no'; // Pause between teams
