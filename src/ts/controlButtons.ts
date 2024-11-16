@@ -34,7 +34,8 @@ export class ControlButtons {
 			case 'current-skip-begin':
 				console.log(`target: currentSkipBegin`);
 				break;
-				deault: return;
+			default:
+				return;
 		}
 
 		// const et = event.target as HTMLElement;
