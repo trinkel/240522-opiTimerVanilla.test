@@ -30,31 +30,43 @@ import {
 	SlRadioGroup,
 	SlTextarea,
 } from '@shoelace-style/shoelace';
-import {
-	appDefaults,
-	groupStartTypeTypes,
-	operationModes,
-	practiceLengthTimes,
-} from '../data/appDefaults';
+// import {
+// 	appDefaults,
+// 	groupStartTypeTypes,
+// 	operationModes,
+// 	pauseBetweenSelectorTypes,
+// 	practiceLengthTimes,
+// } from '../data/appDefaults';
+import { format } from 'date-fns';
 import { settingsForm } from './settingsForm';
 
+export type operationModes = 'anonymous' | 'list';
+export type practiceLengthTimes = 1 | 6 | 7 | 8 | 10 | 11 | 12;
+export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
+export type pauseBetweenSelectorTypes = 'yes' | 'no';
 export class Parameters {
 	// Map appDefaults to Parameters
-	practiceLength = appDefaults.practiceLength;
-	pauseBetweenSelector = appDefaults.pauseBetweenSelector;
-	pauseLength = appDefaults.pauseLength;
-	groupStartType = appDefaults.groupStartType;
-	groupStartTime = appDefaults.groupStartTime;
-	operationMode = appDefaults.operationMode;
-	teamList = appDefaults.teamList;
-	numberTeams = appDefaults.numberTeams;
+	// User editable settings
+	practiceLength: practiceLengthTimes = 10; // Length of each practice session
+	pauseBetweenSelector: pauseBetweenSelectorTypes = 'no';
+	pauseLength: number = 0; // Length of pause between sessions
+	groupStartType: groupStartTypeTypes = 'scheduled';
+	groupStartTime: Date = new Date(new Date().setHours(0, 0, 0));
+
+	// Create string from `groupStartTime: Date`
+	groupStartTimeStr: string = format(this.groupStartTime, 'HH:mm');
+
+	operationMode: operationModes = 'anonymous'; // anonymous | list
+	teamList: string[] = [''];
+	numberTeams: number = 3;
 
 	// App passthrough settings
-	dBugg = appDefaults.dBugg;
-	warp = appDefaults.warp;
-	tick = appDefaults.tick;
-	pendingWarn = appDefaults.pendingWarn;
-	pendingEndSession = appDefaults.pendingEndSession;
+	dBugg: number = 0;
+	warp: number = 0; // Speed factor for demos (1-8)
+	tick: number = 0; // Component timeout interval in milliseconds (200)
+	idle: boolean = true; // True when session is not running
+	pendingWarn: number = 0; // Time before warning-time to flash badge "pending" in milliseconds (3000)
+	pendingEndSession: number = 0; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
 
 	// Set start time. Default to now
 	//! groupStartTime: Date = new Date();
@@ -65,7 +77,7 @@ export class Parameters {
 	formData: FormData = new FormData();
 
 	constructor() {
-		console.log(`appD GST: ${appDefaults.groupStartTime}`); //! Correct
+		console.log(`appD GST: ${this.groupStartTime}`); //! Correct
 
 		// Deploy settings form
 		this.setContainer();
@@ -129,8 +141,8 @@ export class Parameters {
 		// sessionLength: future enhancement option to set different lengths in `teamList`
 
 		// Set group start time
-		if (this.groupStartType && this.groupStartTimeString) {
-			let timeString = this.groupStartTimeString.split(':');
+		if (this.groupStartType && this.groupStartTimeStr) {
+			let timeString = this.groupStartTimeStr.split(':');
 			if (timeString.length === 2) {
 				timeString.push('00');
 			}
@@ -143,7 +155,7 @@ export class Parameters {
 		}
 
 		if (this.operationMode && this.teamList) {
-			this.numStarts = this.teamList.length;
+			this.numberStarts = this.teamList.length;
 		}
 	} // end constructor()
 
@@ -284,7 +296,7 @@ export class Parameters {
 					this.setParameters(); //! I think this is right track, but needs to restart timers
 					//! Nope, not working
 					console.log(this.practiceLength);
-					console.log(this.startTime);
+					console.log(this.groupStartTime);
 					console.log(this.numberTeams);
 					if (drawer) {
 						drawer.hide();
