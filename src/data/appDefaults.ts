@@ -1,11 +1,12 @@
 export type operationModes = 'anonymous' | 'list';
 export type practiceLengthTimes = 1 | 6 | 7 | 8 | 10 | 11 | 12;
+export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
 
 export interface AppDefaults {
 	practiceLength: practiceLengthTimes;
 	pauseBetweenSelector: 'yes' | 'no'; // Pause between teams
 	pauseLength: number; // Length of pause between sessions in seconds
-	groupStartType: number;
+	groupStartType: groupStartTypeTypes;
 	groupStartTime: Date;
 	operationMode: operationModes; // anonymous | list
 	teamList: string[]; // List of team names (Separated by CR from form)
@@ -19,16 +20,7 @@ export interface AppDefaults {
 	pendingEndSession: number; // Time before end-session to display "leave the ice" badge in milliseconds
 }
 
-export const appDefaults: AppDefaults = {
-	// User editable settings
-	practiceLength: 6, // Length of each practice session
-	pauseBetweenSelector: 'no',
-	pauseLength: 0, // Length of pause between sessions
-	groupStartType: 0,
-	groupStartTime: new Date(0),
-	operationMode: 'anonymous', // anonymous | list
-	teamList: [''],
-	numberTeams: 3,
+		groupStartType: 'scheduled',
 
 	// App passthrough settings
 	dBugg: 0,

@@ -32,6 +32,7 @@ import {
 } from '@shoelace-style/shoelace';
 import {
 	appDefaults,
+	groupStartTypeTypes,
 	operationModes,
 	practiceLengthTimes,
 } from '../data/appDefaults';
@@ -64,6 +65,8 @@ export class Parameters {
 	formData: FormData = new FormData();
 
 	constructor() {
+		console.log(`appD GST: ${appDefaults.groupStartTime}`); //! Correct
+
 		// Deploy settings form
 		this.setContainer();
 
@@ -229,12 +232,21 @@ export class Parameters {
 		this.practiceLength = Number(this.practiceLengthVal) as practiceLengthTimes; // Length of each practice session.
 		this.pauseLength = Number(this.pauseLengthVal); // Length of pause between sessions
 
-		this.groupStartType = Number(this.startTypeVal); // Manual (0) or Scheduled (1)
-		if (this.groupStartType) {
+		this.groupStartType = this.startTypeVal as groupStartTypeTypes; // Manual or Scheduled
+		if (this.groupStartType == 'scheduled') {
 			this.groupStartTime = new Date(this.startTimeVal); // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 		} else {
 			this.groupStartTime = new Date(0);
 		}
+
+		console.log(
+			`----params setParameters StartType | StartTime: ${this.groupStartType} | ${this.groupStartTime}` //! manual ok
+		);
+		console.dir(
+			`--------then again, getStartTypeVal &amp; getStartTimeVal: ${
+				this.startTypeVal
+			} & ${this.formData.get('start-time')}`
+		); //! ok
 
 		this.pm = false; //! <--
 

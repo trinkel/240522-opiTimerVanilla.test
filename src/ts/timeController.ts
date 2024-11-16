@@ -7,6 +7,7 @@ import {
 	setSeconds,
 } from 'date-fns';
 
+import { groupStartTypeTypes } from '../data/appDefaults';
 import { practiceTimes } from '../data/practiceTimes';
 import { timeUnits } from './timeUtilities';
 
@@ -80,6 +81,8 @@ export class TimeController {
 		public pendingWarn: number, //Time before warning time to flash badge
 		public pendingEndSession: number, // Time before end to display "leave the ice"
 		public warp: number = 1,
+		public groupStartType: groupStartTypeTypes,
+		public groupStartTime: Date,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
 		// Select Session Duration object
