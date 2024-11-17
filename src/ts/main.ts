@@ -66,13 +66,13 @@ componentController.init(timeController);
 
 async function waitTimer(): Promise<void> {
 	return new Promise<void>(() => {
-		const intervalId = setInterval(() => {
+		const waitTimeIntvId = setInterval(() => {
 			console.log('waitTimer');
 			const goTimer = (): void => {
 				switch (parameters.groupStartType) {
 					case 'manual':
 						if (clockOn) {
-							clearInterval(intervalId);
+							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
 							break;
 						} else {
@@ -80,8 +80,7 @@ async function waitTimer(): Promise<void> {
 							break;
 						}
 					case 'scheduled':
-						if (!isBefore(new Date(), parameters.groupStartTime)) {
-							clearInterval(intervalId);
+							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
 							break;
 						} else {
