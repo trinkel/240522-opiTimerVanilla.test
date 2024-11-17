@@ -35,7 +35,7 @@ export default ProgressIndicator;
 // Application settings (includes settings form)
 const parameters = new Parameters();
 
-const clockOn: boolean = false;
+const clockOn: boolean = false; // Flag. Receives click to start timer in manual mode
 
 const timeController = new TimeController(
 	parameters.practiceLength,
@@ -74,22 +74,26 @@ async function waitTimer(): Promise<void> {
 						if (clockOn) {
 							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
-							break;
 						} else {
 							goTimer();
-							break;
 						}
+						break;
 					case 'scheduled':
+						if (isBefore(new Date(), parameters.groupStartTime)) {
+							goTimer();
+						} else {
 							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
-							break;
-						} else {
-							goTimer();
 						}
+						break;
+					default:
+						goTimer();
 				}
 			};
 			// console.log('timerWait');
-		}, parameters.tick);
+			goTimer();
+		}, 2000); //parameters.tick
+		// ToDo: add a slow tick, maybe 1000?
 	});
 }
 
@@ -128,11 +132,11 @@ async function startPracticeGroup(timeController: TimeController) {
 }
 
 //! Call waitTimer
-// waitTimer();
+waitTimer();
 
 // Call appRunner (Replaces waitTimer)
 //!241114
-startPracticeGroup(timeController);
+// startPracticeGroup(timeController);
 
 //! This one will not be held back
 componentController.complete();
