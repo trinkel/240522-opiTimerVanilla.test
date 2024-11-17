@@ -2,7 +2,7 @@ import { appDefaults } from '../data/appDefaults';
 import { stringifySeconds } from '../ts/timeUtilities';
 
 export const settingsForm = `
-		<sl-drawer label="Settings" id="settings" style="--size: max-content">
+		<sl-drawer label="Settings" id="settings" open style="--size: max-content">
 			<form id="settings-form">
 				<fieldset id="start">
 					<sl-input id="start-time" name="start-time" class="label-on-left"

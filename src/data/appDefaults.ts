@@ -21,7 +21,7 @@ export interface AppDefaults {
 
 export const appDefaults: AppDefaults = {
 	// User editable settings
-	practiceLength: 2, // Length of each practice session
+	practiceLength: 6, // Length of each practice session
 	pauseBetweenSelector: 'no',
 	pauseLength: 0, // Length of pause between sessions
 	groupStartType: 0,
