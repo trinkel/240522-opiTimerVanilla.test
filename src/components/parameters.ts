@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 import { SettingsForm } from '../components/settingsForm';
 
 export type operationModes = 'anonymous' | 'list';
-export type practiceLengthTimes = 1 | 6 | 7 | 8 | 10 | 11 | 12;
+export type practiceLengthTimes = 1 | 2 | 6 | 7 | 8 | 10 | 11 | 12;
 export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
 export type pauseBetweenSelectorTypes = 'yes' | 'no';
 
@@ -45,7 +45,7 @@ export class Parameters {
 	 * Set application defaults here
 	 * ---------------------------
 	 * User editable settings   */
-	practiceLength: practiceLengthTimes = 10; // Length of each practice session
+	practiceLength: practiceLengthTimes = 2; // Length of each practice session
 	pauseBetweenSelector: pauseBetweenSelectorTypes = 'no';
 	pauseLength: number = 0; // Length of pause between sessions
 	groupStartType: groupStartTypeTypes = 'scheduled';
@@ -56,7 +56,7 @@ export class Parameters {
 
 	operationMode: operationModes = 'anonymous'; // anonymous | list
 	teamList: string[] = [''];
-	numberTeams: number = 3;
+	numberTeams: number = 6;
 
 	/*
 	 * Application passthrough settings  */
