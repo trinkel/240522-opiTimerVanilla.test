@@ -22,7 +22,7 @@ export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
  * @prop {number} dBugg
  * @prop {number} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
- * @prop {boolean} idle Is the session running
+ * @prop {boolean} idle True when session is not running
  * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
  * @prop {number} pendingEndSession Time before end-session to display "leave the ice" badge in milliseconds
  * @prop {() => void} init
@@ -42,6 +42,7 @@ export interface AppDefaults {
 	dBugg: number;
 	warp: number; // Speed factor for demos (1-8 typical)
 	tick: number; // Component sleep interval in milliseconds
+	idle: boolean; // True when session is not running
 	pendingWarn: number; // Time before warning-time to flash badge "pending" in milliseconds
 	pendingEndSession: number; // Time before end-session to display "leave the ice" badge in milliseconds
 	init: () => void;
@@ -70,6 +71,7 @@ export const appDefaults: AppDefaults = (() => {
 		dBugg: 0,
 		warp: 0, // Speed factor for demos (1-8)
 		tick: 0, // Component timeout interval in milliseconds (200)
+		idle: true, // True when session is not running
 		pendingWarn: 0, // Time before warning-time to flash badge "pending" in milliseconds (3000)
 		pendingEndSession: 0, // Time before end-session to display "leave the ice" badge in milliseconds (15000)
 	};
