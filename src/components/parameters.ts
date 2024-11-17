@@ -260,9 +260,15 @@ export class Parameters {
 		this.groupStartType = this.startTypeVal as groupStartTypeTypes; // Manual or Scheduled
 		if (this.groupStartType == 'scheduled') {
 			const time = this.startTimeVal.split(':').map((x) => Number(x));
-			this.groupStartTime = new Date(
-				new Date().setHours(time[0], time[1], time[2])
-			); // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
+			if (time.length === 3) {
+				this.groupStartTime = new Date(
+					new Date().setHours(time[0], time[1], time[2])
+				);
+			} else {
+				this.groupStartTime = new Date(
+					new Date().setHours(time[0], time[1], 0)
+				);
+			} // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 		} else {
 			this.groupStartTime = new Date(0);
 		}
