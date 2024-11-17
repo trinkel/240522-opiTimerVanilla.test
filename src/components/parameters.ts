@@ -310,14 +310,12 @@ export class Parameters {
 			.then(() => {
 				form.addEventListener('submit', (event) => {
 					event.preventDefault();
-					this.setParameters(form); //! I think this is right track, but needs to restart timers
-					//! Nope, not working
+					this.setParameters(form);
 					console.log(`[then] practiceLength: ${this.practiceLength}`);
 					console.log(`[then] groupStartTime: ${this.groupStartTime}`);
 					console.log(`[then] numberTeams: ${this.numberTeams}`);
 					if (drawer) {
 						drawer.hide();
-						// alert('All fields are valid!');
 					} else {
 						this.elementError('drawer', 'form addEventListener');
 					}
