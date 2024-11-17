@@ -30,23 +30,21 @@ import {
 	SlRadioGroup,
 	SlTextarea,
 } from '@shoelace-style/shoelace';
-// import {
-// 	appDefaults,
-// 	groupStartTypeTypes,
-// 	operationModes,
-// 	pauseBetweenSelectorTypes,
-// 	practiceLengthTimes,
-// } from '../data/appDefaults';
+
 import { format } from 'date-fns';
-import { settingsForm } from './settingsForm';
+
+import { SettingsForm } from '../components/settingsForm';
 
 export type operationModes = 'anonymous' | 'list';
 export type practiceLengthTimes = 1 | 6 | 7 | 8 | 10 | 11 | 12;
 export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
 export type pauseBetweenSelectorTypes = 'yes' | 'no';
 export class Parameters {
-	// Map appDefaults to Parameters
-	// User editable settings
+	/*
+	 * ---------------------------
+	 * Set application defaults here
+	 * ---------------------------
+	 * User editable settings   */
 	practiceLength: practiceLengthTimes = 10; // Length of each practice session
 	pauseBetweenSelector: pauseBetweenSelectorTypes = 'no';
 	pauseLength: number = 0; // Length of pause between sessions
@@ -54,19 +52,25 @@ export class Parameters {
 	groupStartTime: Date = new Date(new Date().setHours(0, 0, 0));
 
 	// Create string from `groupStartTime: Date`
-	groupStartTimeStr: string = format(this.groupStartTime, 'HH:mm');
+	groupStartTimeStr: string = format(this.groupStartTime, 'HH:mm:ss');
 
 	operationMode: operationModes = 'anonymous'; // anonymous | list
 	teamList: string[] = [''];
 	numberTeams: number = 3;
 
-	// App passthrough settings
+	/*
+	 * Application passthrough settings  */
 	dBugg: number = 0;
 	warp: number = 0; // Speed factor for demos (1-8)
 	tick: number = 0; // Component timeout interval in milliseconds (200)
 	idle: boolean = true; // True when session is not running
 	pendingWarn: number = 0; // Time before warning-time to flash badge "pending" in milliseconds (3000)
 	pendingEndSession: number = 0; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
+	/*
+	 * ---------------------------
+	 * End application defaults
+	 * ---------------------------
+	 */
 
 	// Set start time. Default to now
 	//! groupStartTime: Date = new Date();
@@ -79,8 +83,16 @@ export class Parameters {
 	constructor() {
 		console.log(`appD GST: ${this.groupStartTime}`); //! Correct
 
-		// Deploy settings form
-		this.setContainer();
+		const appSettings = new AppSettings(
+			this.groupStartType,
+			this.groupStartTimeStr,
+			this.practiceLength,
+			this.pauseBetweenSelector,
+			this.pauseLength,
+			this.operationMode,
+			this.numberTeams,
+			this.teamList
+		);
 
 		// Connect settings drawer controls
 		const openButton = document.querySelector<SlButton>('#settings-btn');
@@ -223,15 +235,6 @@ export class Parameters {
 			`Element does not exist: ${element}${location ? ` at ${location}` : ``}`
 		);
 	};
-
-	setContainer(): void {
-		const settingsContainer = document.querySelector<HTMLBaseElement>(
-			'#settings-container'
-		);
-		settingsContainer
-			? (settingsContainer.innerHTML = settingsForm)
-			: console.error(`element doesn't exist`); // Set elementError
-	}
 
 	openDrawer(button: SlButton, drawer: SlDrawer): void {
 		button.addEventListener('click', () => {

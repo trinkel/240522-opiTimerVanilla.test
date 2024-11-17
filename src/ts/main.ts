@@ -32,8 +32,9 @@ import { TimeController } from './timeController';
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
-// Page Controller
+// Application settings (includes settings form)
 const parameters = new Parameters();
+
 const clockOn: boolean = false;
 
 const timeController = new TimeController(
