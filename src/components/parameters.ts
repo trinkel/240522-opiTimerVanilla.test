@@ -83,7 +83,7 @@ export class Parameters {
 	constructor() {
 		console.log(`appD GST: ${this.groupStartTime}`); //! Correct
 
-		const appSettings = new AppSettings(
+		const appSettings = new SettingsForm(
 			this.groupStartType,
 			this.groupStartTimeStr,
 			this.practiceLength,
@@ -249,10 +249,15 @@ export class Parameters {
 
 		this.groupStartType = this.startTypeVal as groupStartTypeTypes; // Manual or Scheduled
 		if (this.groupStartType == 'scheduled') {
-			this.groupStartTime = new Date(this.startTimeVal); // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
+			const time = this.startTimeVal.split(':').map((x) => Number(x));
+			this.groupStartTime = new Date(
+				new Date().setHours(time[0], time[1], time[2])
+			); // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 		} else {
 			this.groupStartTime = new Date(0);
 		}
+
+		// this.groupStartTime = new Date(0);
 
 		console.log(
 			`----params setParameters StartType | StartTime: ${this.groupStartType} | ${this.groupStartTime}` //! manual ok
