@@ -7,7 +7,7 @@ import {
 	setSeconds,
 } from 'date-fns';
 
-import { groupStartTypeTypes } from '../data/appDefaults';
+import { groupStartTypeTypes } from '../components/parameters';
 import { practiceTimes } from '../data/practiceTimes';
 import { timeUnits } from './timeUtilities';
 

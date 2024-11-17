@@ -62,10 +62,10 @@ export class Parameters {
 	 * Application passthrough settings  */
 	dBugg: number = 0;
 	warp: number = 0; // Speed factor for demos (1-8)
-	tick: number = 0; // Component timeout interval in milliseconds (200)
+	tick: number = 200; // Component timeout interval in milliseconds (200)
 	idle: boolean = true; // True when session is not running
-	pendingWarn: number = 0; // Time before warning-time to flash badge "pending" in milliseconds (3000)
-	pendingEndSession: number = 0; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
+	pendingWarn: number = 5000; // Time before warning-time to flash badge "pending" in milliseconds (3000)
+	pendingEndSession: number = 15000; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
 	/*
 	 * ---------------------------
 	 * End application defaults
@@ -280,13 +280,6 @@ export class Parameters {
 				this.teamList = this.teamListVal;
 				this.numberTeams = this.teamList.length;
 		}
-
-		// Get application defaults from appDefaults
-		//ToDo Should this only run once?
-		this.warp = 1; // Speed factor for demos (1-8)
-		this.tick = 200; // Component timeout interval in milliseconds (200)
-		this.pendingWarn = 5000; // Time before warning time to flash badge "pending" in milliseconds (3000)
-		this.pendingEndSession = 15000; // Time before end to display "leave the ice" in milliseconds (1500// Set start time. Default to now
 	}
 
 	submitForm(form: HTMLFormElement, drawer: SlDrawer) {

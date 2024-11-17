@@ -31,3 +31,6 @@ RandomJS-files(root)
 
 # Playground and contents
 Playground/
+
+# Files removed from project
+resource/archive/*

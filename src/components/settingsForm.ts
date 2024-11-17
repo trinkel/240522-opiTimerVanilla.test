@@ -1,5 +1,3 @@
-// import { parameters } from '../data/appDefaults';
-
 import { stringifySeconds } from '../ts/timeUtilities';
 
 import {
