@@ -116,15 +116,16 @@ export class Parameters {
 			? this.openDrawer(openButton, drawer)
 			: console.error('Error function here');
 
-		form
-			? (this.formData = new FormData(form))
-			: this.elementError('form', 'new FormData');
-
-		// get parameters back from form
-		this.setParameters();
+		// form
+		// 	? (this.formData = new FormData(form))
+		// 	: this.elementError('form', 'new FormData');
+		//! setParameters(form) was here
 
 		// Event Builder
+		// get parameters back from form
 		if (form && drawer) {
+			// get parameters back from form
+			this.setParameters(form);
 			this.submitForm(form, drawer);
 		} else {
 			!form ? this.elementError('form', 'eventBuilder') : null;
@@ -244,7 +245,14 @@ export class Parameters {
 		});
 	}
 
-	setParameters(): void {
+	setParameters(form: HTMLFormElement): void {
+		console.dir(`[FORM]: `);
+		console.dir(form);
+
+		form
+			? (this.formData = new FormData(form))
+			: this.elementError('form', 'new FormData');
+
 		// Get user defaults from settings form
 		this.practiceLength = Number(this.practiceLengthVal) as practiceLengthTimes; // Length of each practice session.
 		this.pauseLength = Number(this.pauseLengthVal); // Length of pause between sessions
@@ -262,12 +270,12 @@ export class Parameters {
 		// this.groupStartTime = new Date(0);
 
 		console.log(
-			`----params setParameters StartType | StartTime: ${this.groupStartType} | ${this.groupStartTime}` //! manual ok
+			`----params setParameters StartType: ${this.groupStartType} | StartTime: ${this.groupStartTime}` //! manual ok
 		);
 		console.dir(
-			`--------then again, getStartTypeVal &amp; getStartTimeVal: ${
+			`----then again, getStartTypeVal ${
 				this.startTypeVal
-			} & ${this.formData.get('start-time')}`
+			} | getStartTimeVal: ${this.formData.get('start-time')}`
 		); //! ok
 
 		this.pm = false; //! <--
@@ -296,11 +304,11 @@ export class Parameters {
 			.then(() => {
 				form.addEventListener('submit', (event) => {
 					event.preventDefault();
-					this.setParameters(); //! I think this is right track, but needs to restart timers
+					this.setParameters(form); //! I think this is right track, but needs to restart timers
 					//! Nope, not working
-					console.log(this.practiceLength);
-					console.log(this.groupStartTime);
-					console.log(this.numberTeams);
+					console.log(`[then] practiceLength: ${this.practiceLength}`);
+					console.log(`[then] groupStartTime: ${this.groupStartTime}`);
+					console.log(`[then] numberTeams: ${this.numberTeams}`);
 					if (drawer) {
 						drawer.hide();
 						// alert('All fields are valid!');
