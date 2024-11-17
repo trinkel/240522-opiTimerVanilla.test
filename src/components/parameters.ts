@@ -1,28 +1,3 @@
-/**
- * @description setup parameters
- *
- * Application defaults are set in ../data/appDefaults.ts
- * Form:
- *
- * - Switch: Anonymous vs list of teams
- * - Session data comes from one of the following
- * 	1. List of teams: Text area to paste team info from competition schedule
- * 		- Returns array of `teams` objects.
- * 		- String properties may be empty. Be sure to test and replace in class
- * 	2. Anonymous: Select options
- * 		- Select box: practice session duration
- * 		- Number of teams
- * 		- Start time (if empty, start time is controlled by > button)
- * */
-
-// export interface parameters {
-// 	numStarts: number;
-// }
-
-// export const parameters = {
-// 	numStarts: -1,
-// };
-
 import {
 	SlButton,
 	SlDrawer,
@@ -39,6 +14,31 @@ export type operationModes = 'anonymous' | 'list';
 export type practiceLengthTimes = 1 | 6 | 7 | 8 | 10 | 11 | 12;
 export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
 export type pauseBetweenSelectorTypes = 'yes' | 'no';
+
+/**
+ * Parameters: Application settings.
+ * Application defaults are defined at the top of the class definition
+ *
+ * @export
+ * @class Parameters
+ * @typedef {Parameters}
+ *
+ * @prop {practiceLengthTimes} practiceLength
+ * @prop {'yes' | 'no'} pauseBetweenSelector Pause between teams
+ * @prop {number} pauseLength Length of pause between sessions in seconds
+ * @prop {groupStartTypeTypes} groupStartType
+ * @prop {Date} groupStartTime
+ * @prop {string} groupStartTimeStr
+ * @prop {operationModes} operationMode anonymous | list
+ * @prop {string[]} teamList List of team names (Separated by CR from form)
+ * @prop {number} numberTeams Number of teams
+ * @prop {number} dBugg
+ * @prop {number} warp Speed factor for demos (1-8 typical)
+ * @prop {number} tick Component sleep interval in milliseconds
+ * @prop {boolean} idle True when session is not running
+ * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
+ * @prop {number} pendingEndSession Time before end-session to display "leave the ice" badge in milliseconds
+ */
 export class Parameters {
 	/*
 	 * ---------------------------
