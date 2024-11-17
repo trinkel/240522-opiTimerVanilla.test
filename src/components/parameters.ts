@@ -152,19 +152,21 @@ export class Parameters {
 
 		// sessionLength: future enhancement option to set different lengths in `teamList`
 
+		//! Do I need this if section
 		// Set group start time
-		if (this.groupStartType && this.groupStartTimeStr) {
-			let timeString = this.groupStartTimeStr.split(':');
-			if (timeString.length === 2) {
-				timeString.push('00');
-			}
-			if (this.pm && Number(timeString[0]) <= 12) {
-				timeString[0] = Number((timeString[0] += 12)).toString();
-			}
-			this.groupStartTime.setHours(Number(timeString[0]));
-			this.groupStartTime.setMinutes(Number(timeString[1]));
-			this.groupStartTime.setSeconds(Number(timeString[2]));
-		}
+		// if (this.groupStartType && this.groupStartTimeStr) {
+		// 	let timeString = this.groupStartTimeStr.split(':');
+		// 	if (timeString.length === 2) {
+		// 		timeString.push('00');
+		// 	}
+		// 	if (this.pm && Number(timeString[0]) <= 12) {
+		// 		timeString[0] = Number((timeString[0] += 12)).toString();
+		// 	}
+		// 	this.groupStartTime.setHours(Number(timeString[0]));
+		// 	this.groupStartTime.setMinutes(Number(timeString[1]));
+		// 	this.groupStartTime.setSeconds(Number(timeString[2]));
+		// }
+		//! --------------------------
 
 		if (this.operationMode && this.teamList) {
 			this.numberStarts = this.teamList.length;
