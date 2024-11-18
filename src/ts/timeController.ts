@@ -139,7 +139,7 @@ export class TimeController {
 	}
 
 	get firstMusic(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.firstMusic);
+		return addMinutes(this.startTimeVar, this.sessionSpec.firstMusic);
 	}
 
 	get firstWarning(): Date {
@@ -147,7 +147,7 @@ export class TimeController {
 	}
 
 	get secondMusic(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.secondMusic);
+		return addMinutes(this.startTimeVar, this.sessionSpec.secondMusic);
 	}
 
 	get secondWarning(): Date {
@@ -155,7 +155,7 @@ export class TimeController {
 	}
 
 	get endSession(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.duration);
+		return addMinutes(this.startTimeVar, this.sessionSpec.duration);
 	}
 
 	get endWarning(): Date {
