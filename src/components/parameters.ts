@@ -12,6 +12,7 @@ import { SettingsForm } from '../components/settingsForm';
 
 export type operationModes = 'anonymous' | 'list';
 export type practiceLengthTimes = 1 | 2 | 6 | 7 | 8 | 10 | 11 | 12;
+export type warpFactors = 1 | 2 | 6 | 7 | 8;
 export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
 export type pauseBetweenSelectorTypes = 'yes' | 'no';
 
@@ -33,7 +34,7 @@ export type pauseBetweenSelectorTypes = 'yes' | 'no';
  * @prop {string[]} teamList List of team names (Separated by CR from form)
  * @prop {number} numberTeams Number of teams
  * @prop {number} dBugg
- * @prop {number} warp Speed factor for demos (1-8 typical)
+ * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
  * @prop {boolean} idle True when session is not running
  * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
@@ -61,7 +62,7 @@ export class Parameters {
 	/*
 	 * Application passthrough settings  */
 	dBugg: number = 0;
-	warp: number = 0; // Speed factor for demos (1-8)
+	warp: warpFactors = 1; // Speed factor for demos (1-8)
 	tick: number = 200; // Component timeout interval in milliseconds (200)
 	idle: boolean = true; // True when session is not running
 	pendingWarn: number = 5000; // Time before warning-time to flash badge "pending" in milliseconds (3000)

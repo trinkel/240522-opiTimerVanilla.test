@@ -7,7 +7,7 @@ import {
 	setSeconds,
 } from 'date-fns';
 
-import { groupStartTypeTypes } from '../components/parameters';
+import { groupStartTypeTypes, warpFactors } from '../components/parameters';
 import { practiceTimes } from '../data/practiceTimes';
 import { timeUnits } from './timeUtilities';
 
@@ -83,7 +83,7 @@ export class TimeController {
 	 * @param {number} tick Loop interval
 	 * @param {number} pendingWarn Time before
 	 * @param {number} pendingEndSession Time before end of session to display "leave the ice"
-	 * @param {number} [warp=1] Speed enhancement for demos
+	 * @param {warpFactors} [warp=1] Speed enhancement for demos
 	 * @param {groupStartTypeTypes} groupStartType ['scheduled' | 'manual] Start by time or button
 	 * @param {Date} groupStartTime Time to start if by schedule
 	 * @param {boolean} [idle=true] Time before session starts
@@ -93,7 +93,7 @@ export class TimeController {
 		public tick: number, // loop interval
 		public pendingWarn: number, //Time before warning time to flash badge
 		public pendingEndSession: number, // Time before end to display "leave the ice"
-		public warp: number = 1,
+		public warp: warpFactors = 1,
 		public groupStartType: groupStartTypeTypes,
 		public groupStartTime: Date,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
