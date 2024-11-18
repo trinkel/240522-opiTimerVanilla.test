@@ -74,20 +74,17 @@ async function waitTimer(): Promise<void> {
 						if (clockOn) {
 							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
-						} else {
-							goTimer();
 						}
 						break;
 					case 'scheduled':
-						if (isBefore(new Date(), parameters.groupStartTime)) {
-							goTimer();
-						} else {
+						if (!isBefore(new Date(), parameters.groupStartTime)) {
 							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
 						}
 						break;
 					default:
-						goTimer();
+						clearInterval(waitTimeIntvId);
+						startPracticeGroup(timeController);
 				}
 			};
 			// console.log('timerWait');
