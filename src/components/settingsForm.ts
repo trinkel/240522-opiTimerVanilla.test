@@ -20,6 +20,7 @@ export class SettingsForm {
 	 * @param {operationModes} operationMode
 	 * @param {number} numberTeams
 	 * @param {string[]} teamList
+	 * @param {boolean} demo
 	 */
 	constructor(
 		public groupStartType: groupStartTypeTypes,
@@ -29,7 +30,8 @@ export class SettingsForm {
 		public pauseLength: number,
 		public operationMode: operationModes,
 		public numberTeams: number,
-		public teamList: string[]
+		public teamList: string[],
+		public demo: boolean
 	) {
 		const settingsForm: string = `
 		<sl-drawer label="Settings" id="settings" style="--size: max-content">
@@ -48,6 +50,7 @@ export class SettingsForm {
 						class="label-on-left" label="Practice Length"
 						help-text="Practice Length from schedule or 104" value="${this.practiceLength.toString()}" clearable
 						required>
+						${this.demo ? '<sl-option value="2">2 minutes</sl-option>' : ''}
 						<sl-option value="6">6 minutes</sl-option>
 						<sl-option value="7">7 minutes</sl-option>
 						<sl-option value="8">8 minutes</sl-option>

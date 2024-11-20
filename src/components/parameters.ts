@@ -34,6 +34,7 @@ export type pauseBetweenSelectorTypes = 'yes' | 'no';
  * @prop {string[]} teamList List of team names (Separated by CR from form)
  * @prop {number} numberTeams Number of teams
  * @prop {number} dBugg
+ * @prop {boolean} demo Allows for some demo parameters. Mostly to speed things up
  * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
  * @prop {boolean} idle True when session is not running
@@ -63,9 +64,11 @@ export class Parameters {
 	/*
 	 * Application passthrough settings  */
 	dBugg: number = 0;
+	demo: boolean = true; // Allows for some demo parameters. Mostly to speed things up
 	warp: warpFactors = 1; // Speed factor for demos (1-8)
 	tick: number = 200; // Component timeout interval in milliseconds (200)
 	idle: boolean = true; // True when session is not running
+	clockOn: boolean = false;
 	pendingWarn: number = 5000; // Time before warning-time to flash badge "pending" in milliseconds (3000)
 	pendingEndSession: number = 15000; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
 	/*
@@ -93,7 +96,8 @@ export class Parameters {
 			this.pauseLength,
 			this.operationMode,
 			this.numberTeams,
-			this.teamList
+			this.teamList,
+			this.demo
 		);
 
 		// Connect settings drawer controls
