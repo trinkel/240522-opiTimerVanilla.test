@@ -28,6 +28,7 @@ export class ClockBadges {
 	}
 
 	setClocksStartTime(time: Date): void {
+		console.log(`Start Time Badge: ${time}`);
 		this.clocksStartTime.textContent = format(time, 'h:mm:ss');
 	}
 
