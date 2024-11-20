@@ -102,7 +102,8 @@ export class TimeController {
 		 * startTime is a getter
 		 * startTimeVar holds the value as a variable for places that couldn't use the getter
 		 */
-		this.startTimeVar = this.startTime;
+		this.startTimeVar = this.current;
+		this.groupStartTime = this.startTimeVar;
 		console.log(`groupStartTypex: ${this.groupStartType}`);
 		console.log(`groupStartTimex: ${this.groupStartTime}`);
 		// Select Session Duration object
