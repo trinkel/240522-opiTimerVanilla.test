@@ -170,8 +170,8 @@ export class Parameters {
 		// }
 		//! --------------------------
 
-		if (this.operationMode && this.teamList) {
-			this.numberStarts = this.teamList.length;
+		if (this.operationMode === 'list' && this.teamList) {
+			this.numberTeams = this.teamList.length;
 		}
 	} // end constructor()
 

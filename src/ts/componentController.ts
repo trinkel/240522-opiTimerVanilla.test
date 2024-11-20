@@ -216,7 +216,7 @@ export class ComponentController {
 
 		// This may be unused
 		this.sessionStatus
-			? (this.sessionStatus.textContent = this.numStarts.toString())
+			? (this.sessionStatus.textContent = this.numberTeams.toString())
 			: null; //! Display group number. Do we want it?
 
 		// Run the logic only if the time has changed
