@@ -35,7 +35,7 @@ export default ProgressIndicator;
 // Application settings (includes settings form)
 const parameters = new Parameters();
 
-const clockOn: boolean = false; // Flag. Receives click to start timer in manual mode
+const clockOn: boolean = false; //! Flag. Change to parameters.idle? Receives click to start timer in manual mode
 
 const timeController = new TimeController(
 	parameters.practiceLength,
@@ -67,7 +67,9 @@ componentController.init(timeController);
 async function waitTimer(): Promise<void> {
 	return new Promise<void>(() => {
 		const waitTimeIntvId = setInterval(() => {
-			console.log('waitTimer');
+			parameters.clockOn
+				? console.log('waitTimer: pending')
+				: console.log('waitTimer: hold');
 			const goTimer = (): void => {
 				switch (parameters.groupStartType) {
 					case 'manual':
@@ -77,6 +79,10 @@ async function waitTimer(): Promise<void> {
 						}
 						break;
 					case 'scheduled':
+						if (!parameters.clockOn) {
+							break;
+						}
+
 						if (!isBefore(new Date(), parameters.groupStartTime)) {
 							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
@@ -89,7 +95,7 @@ async function waitTimer(): Promise<void> {
 			};
 			// console.log('timerWait');
 			goTimer();
-		}, 2000); //parameters.tick
+		}, 1000); //parameters.tick
 		// ToDo: add a slow tick, maybe 1000?
 	});
 }

@@ -37,6 +37,7 @@ export type pauseBetweenSelectorTypes = 'yes' | 'no';
  * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
  * @prop {boolean} idle True when session is not running
+ * @prop {boolean} clockOn True when schedule defined or manual button clicked
  * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
  * @prop {number} pendingEndSession Time before end-session to display "leave the ice" badge in milliseconds
  */
@@ -312,6 +313,7 @@ export class Parameters {
 				form.addEventListener('submit', (event) => {
 					event.preventDefault();
 					this.setParameters(form);
+					this.clockOn = true;
 					console.log(`[then] practiceLength: ${this.practiceLength}`);
 					console.log(`[then] groupStartTime: ${this.groupStartTime}`);
 					console.log(`[then] numberTeams: ${this.numberTeams}`);
