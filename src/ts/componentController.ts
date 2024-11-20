@@ -33,7 +33,7 @@ export interface Indicators {
 export class ComponentController {
 	indicators: Indicators[] = [];
 
-	numStarts: number = 0;
+	numberTeams: number = 0;
 	progressComplete: boolean = false;
 	before: Date = new Date();
 	iterator: number = 0;
@@ -344,7 +344,7 @@ export class ComponentController {
 	}
 
 	complete(): void {
-		console.log(`[COMPLETE] ---Process Complete: ${this.numStarts}`);
+		console.log(`[COMPLETE] ---Process Complete: ${this.numberTeams}`);
 	}
 }
 
