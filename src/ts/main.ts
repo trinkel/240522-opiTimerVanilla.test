@@ -67,7 +67,7 @@ componentController.init(timeController);
 async function waitTimer(): Promise<void> {
 	return new Promise<void>(() => {
 		const waitTimeIntvId = setInterval(() => {
-			parameters.clockOn
+			parameters.scheduleSet
 				? console.log('waitTimer: pending')
 				: console.log('waitTimer: hold');
 			const goTimer = (): void => {
@@ -79,7 +79,7 @@ async function waitTimer(): Promise<void> {
 						}
 						break;
 					case 'scheduled':
-						if (!parameters.clockOn) {
+						if (!parameters.scheduleSet) {
 							break;
 						}
 

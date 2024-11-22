@@ -38,7 +38,8 @@ export type pauseBetweenSelectorTypes = 'yes' | 'no';
  * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
  * @prop {boolean} idle True when session is not running
- * @prop {boolean} clockOn True when schedule defined or manual button clicked
+ * @prop {boolean} clocksSet True when clocks have been set after schedule has been set
+ * @prop {boolean} scheduleSet True when schedule defined or manual button clicked
  * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
  * @prop {number} pendingEndSession Time before end-session to display "leave the ice" badge in milliseconds
  */
@@ -68,7 +69,8 @@ export class Parameters {
 	warp: warpFactors = 1; // Speed factor for demos (1-8)
 	tick: number = 200; // Component timeout interval in milliseconds (200)
 	idle: boolean = true; // True when session is not running
-	clockOn: boolean = false;
+	clocksSet: boolean = false; //
+	scheduleSet: boolean = false;
 	pendingWarn: number = 5000; // Time before warning-time to flash badge "pending" in milliseconds (3000)
 	pendingEndSession: number = 15000; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
 	/*
@@ -317,7 +319,7 @@ export class Parameters {
 				form.addEventListener('submit', (event) => {
 					event.preventDefault();
 					this.setParameters(form);
-					this.clockOn = true;
+					this.scheduleSet = true;
 					console.log(`[then] practiceLength: ${this.practiceLength}`);
 					console.log(`[then] groupStartTime: ${this.groupStartTime}`);
 					console.log(`[then] numberTeams: ${this.numberTeams}`);
