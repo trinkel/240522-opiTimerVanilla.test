@@ -18,9 +18,9 @@ export class ClockBadges {
 			this.setClocksCurrentTime(new Date());
 		}, this.tick);
 
-		this.setClocksStartTime(new Date(new Date().setHours(0, 0, 0)));
+		// this.setClocksStartTime(new Date(new Date().setHours(0, 0, 0)));
 
-		this.setClocksEndTime(new Date(new Date().setHours(0, 0, 0)));
+		// this.setClocksEndTime(new Date(new Date().setHours(0, 0, 0)));
 	}
 
 	setClocksCurrentTime(time: Date): void {

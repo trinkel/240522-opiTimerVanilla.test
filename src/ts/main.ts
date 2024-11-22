@@ -83,6 +83,28 @@ async function waitTimer(): Promise<void> {
 							break;
 						}
 
+						if (parameters.groupStartTime && !parameters.clocksSet) {
+							const timeController = new TimeController(
+								parameters.practiceLength,
+								parameters.tick,
+								parameters.pendingWarn,
+								parameters.pendingEndSession,
+								parameters.warp,
+								parameters.groupStartType,
+								parameters.groupStartTime
+							);
+							console.log(
+								`[waitTimer] parameters.groupStartTime: ${parameters.groupStartTime}`
+							);
+
+							console.log(
+								`[waitTimer] timeController.groupStartTime: ${timeController.groupStartTime}`
+							);
+							clockBadges.setClocksStartTime(timeController.groupStartTime);
+							clockBadges.setClocksEndTime(timeController.endSession);
+							parameters.clocksSet = true;
+						}
+
 						if (!isBefore(new Date(), parameters.groupStartTime)) {
 							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
@@ -115,13 +137,14 @@ async function startPracticeGroup(timeController: TimeController) {
 				parameters.pendingWarn,
 				parameters.pendingEndSession,
 				parameters.warp,
-				parameters.groupStartType,
-				parameters.groupStartTime
+				parameters.groupStartType
+				// parameters.groupStartTime
+				//! 241121  Not passing a parameter here relies on new Date() in time controller to set the next start time. That may not be all that accurate. At least once we were off by a second for the startTime. Could have been caused by the slower tick? Maybe what we need to do is reset individual properties rather than re-instantiate. Maybe just run the constructor (or it's functions) again. Or endTime becomes startTime and figure new endTime. Would be a good place to insert new session lengths.
 			);
 
 			// Initialize new team session
 			componentController.init(timeController);
-			clockBadges.setClocksStartTime(timeController.groupStartTime);
+			clockBadges.setClocksStartTime(timeController.teamStartTime);
 			clockBadges.setClocksEndTime(timeController.endSession);
 			// Run new team session
 			await componentController.startTimer(timeController);

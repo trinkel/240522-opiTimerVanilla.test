@@ -73,7 +73,7 @@ export class TimeController {
 
 	// Starting time for team. Used in init
 	// ! Watch this in the case of team list. Loop works on flow of time allotted each team. It we also have scheduled times, make sure the alloted times stay in synch with the scheduled times. (Time/math sanity check)
-	startTimeVar: Date;
+	teamStartTime: Date;
 
 	/**
 	 * Creates an instance of TimeController.
@@ -85,7 +85,7 @@ export class TimeController {
 	 * @param {number} pendingEndSession Time before end of session to display "leave the ice"
 	 * @param {warpFactors} [warp=1] Speed enhancement for demos
 	 * @param {groupStartTypeTypes} groupStartType ['scheduled' | 'manual] Start by time or button
-	 * @param {Date} groupStartTime Time to start if by schedule
+	 * @param {Date} groupStartTime Time passed from parameters (presumably group start time) or current time if nothing passed (presumably team/session start time). Passed to this.teamStartTime
 	 * @param {boolean} [idle=true] Time before session starts
 	 */
 	constructor(
@@ -95,15 +95,15 @@ export class TimeController {
 		public pendingEndSession: number, // Time before end to display "leave the ice"
 		public warp: warpFactors = 1,
 		public groupStartType: groupStartTypeTypes,
-		public groupStartTime: Date,
+		public groupStartTime: Date = this.current,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
 		/**
 		 * startTime is a getter
-		 * startTimeVar holds the value as a variable for places that couldn't use the getter
-		 */
-		this.startTimeVar = this.current;
-		this.groupStartTime = this.startTimeVar;
+		 * teamStartTime holds the value as a variable for places that couldn't use the getter
+		 */ //! COMMENT NOT ACCURATE ANY MORE?
+		this.teamStartTime = this.groupStartTime;
+		// this.groupStartTime = this.teamStartTime;
 		console.log(`groupStartTypex: ${this.groupStartType}`);
 		console.log(`groupStartTimex: ${this.groupStartTime}`);
 		// Select Session Duration object
@@ -140,7 +140,7 @@ export class TimeController {
 	}
 
 	get firstMusic(): Date {
-		return addMinutes(this.startTimeVar, this.sessionSpec.firstMusic);
+		return addMinutes(this.teamStartTime, this.sessionSpec.firstMusic);
 	}
 
 	get firstWarning(): Date {
@@ -148,7 +148,7 @@ export class TimeController {
 	}
 
 	get secondMusic(): Date {
-		return addMinutes(this.startTimeVar, this.sessionSpec.secondMusic);
+		return addMinutes(this.teamStartTime, this.sessionSpec.secondMusic);
 	}
 
 	get secondWarning(): Date {
@@ -156,7 +156,7 @@ export class TimeController {
 	}
 
 	get endSession(): Date {
-		return addMinutes(this.startTimeVar, this.sessionSpec.duration);
+		return addMinutes(this.teamStartTime, this.sessionSpec.duration);
 	}
 
 	get endWarning(): Date {
