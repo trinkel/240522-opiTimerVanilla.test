@@ -29,5 +29,9 @@ bigResource/
 # JS files inadvertantly created by Vite while compiling Typescript with `"noEmit": false` (I was testing something)
 RandomJS-files(root)
 
-# Playground and contents
+# Playground and contents, Misc scratch files
 Playground/
+resource/commitBuilder.md
+
+# Files removed from project
+resource/archive/*

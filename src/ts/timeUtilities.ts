@@ -157,3 +157,26 @@ export function stringifySeconds(
 	}
 	return str;
 }
+
+/**
+ * formatTime: converts timestamp to hours: seconds:minutes time string format 00:00:00 (hours optional)
+ *
+ * @export
+ * @param {number} timeStamp
+ * @returns {string}
+ */
+export function formatTime(timeStamp: number): string {
+	let totalSeconds = Math.round(timeStamp / timeUnits.millies);
+	const hours = Math.floor(totalSeconds / timeUnits.hours);
+	totalSeconds %= timeUnits.hours;
+	const minutes = Math.floor(totalSeconds / timeUnits.minutes);
+	const seconds = totalSeconds % timeUnits.minutes;
+
+	if (hours) {
+		return `${hours.toString()}:${minutes.toString().padStart(2, '0')}:${seconds
+			.toString()
+			.padStart(2, '0')}`;
+	} else {
+		return `${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
+	}
+}

@@ -2,11 +2,13 @@
 import {
 	addMinutes,
 	addSeconds,
+	format,
 	setHours,
 	setMinutes,
 	setSeconds,
 } from 'date-fns';
 
+import { groupStartTypeTypes, warpFactors } from '../components/parameters';
 import { practiceTimes } from '../data/practiceTimes';
 import { timeUnits } from './timeUtilities';
 
@@ -72,16 +74,39 @@ export class TimeController {
 
 	// Starting time for team. Used in init
 	// ! Watch this in the case of team list. Loop works on flow of time allotted each team. It we also have scheduled times, make sure the alloted times stay in synch with the scheduled times. (Time/math sanity check)
-	startTime: Date = new Date();
+	teamStartTime: Date;
 
+	/**
+	 * Creates an instance of TimeController.
+	 *
+	 * @constructor
+	 * @param {number} duration sessionLength
+	 * @param {number} tick Loop interval
+	 * @param {number} pendingWarn Time before
+	 * @param {number} pendingEndSession Time before end of session to display "leave the ice"
+	 * @param {warpFactors} [warp=1] Speed enhancement for demos
+	 * @param {groupStartTypeTypes} groupStartType ['scheduled' | 'manual] Start by time or button
+	 * @param {Date} groupStartTime Time passed from parameters (presumably group start time) or current time if nothing passed (presumably team/session start time). Passed to this.teamStartTime
+	 * @param {boolean} [idle=true] Time before session starts
+	 */
 	constructor(
 		public duration: number, // sessionLength
 		public tick: number, // loop interval
 		public pendingWarn: number, //Time before warning time to flash badge
 		public pendingEndSession: number, // Time before end to display "leave the ice"
-		public warp: number = 1,
+		public warp: warpFactors = 1,
+		public groupStartType: groupStartTypeTypes,
+		public groupStartTime: Date = this.current,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
+		/**
+		 * startTime is a getter
+		 * teamStartTime holds the value as a variable for places that couldn't use the getter
+		 */ //! COMMENT NOT ACCURATE ANY MORE?
+		this.teamStartTime = this.groupStartTime;
+		// this.groupStartTime = this.teamStartTime;
+		console.log(`groupStartTypex: ${this.groupStartType}`);
+		console.log(`groupStartTimex: ${this.groupStartTime}`);
 		// Select Session Duration object
 		this.sessionSpec = practiceTimes[this.duration];
 
@@ -94,7 +119,7 @@ export class TimeController {
 		this.secondMusicTime = this.secondMusic;
 		this.endWarningTime = this.endWarning;
 		this.endSessionTime = this.endSession;
-	}
+	} // end constructor
 
 	//Getters set initial times. remainingTime() does the work during control loop.
 	get current(): Date {
@@ -102,8 +127,21 @@ export class TimeController {
 		return new Date();
 	}
 
+	get startTime(): Date {
+		switch (this.groupStartType) {
+			case 'manual':
+				return new Date(0);
+				break;
+			case 'scheduled':
+				return this.groupStartTime;
+				break;
+			default:
+				return new Date();
+		}
+	}
+
 	get firstMusic(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.firstMusic);
+		return addMinutes(this.teamStartTime, this.sessionSpec.firstMusic);
 	}
 
 	get firstWarning(): Date {
@@ -111,7 +149,7 @@ export class TimeController {
 	}
 
 	get secondMusic(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.secondMusic);
+		return addMinutes(this.teamStartTime, this.sessionSpec.secondMusic);
 	}
 
 	get secondWarning(): Date {
@@ -119,7 +157,7 @@ export class TimeController {
 	}
 
 	get endSession(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.duration);
+		return addMinutes(this.teamStartTime, this.sessionSpec.duration);
 	}
 
 	get endWarning(): Date {
@@ -142,31 +180,12 @@ export class TimeController {
 		}
 
 		this.timeRemaining.progress = interval;
-		this.timeRemaining.display = this.formatTime(interval);
+		this.timeRemaining.display =
+			interval < timeUnits.hours * timeUnits.millies // 1 hour
+				? format(interval, 'm:ss')
+				: format(interval, 'h:mm:ss');
 
 		return this.timeRemaining;
-	}
-
-	/**
-	 * formatTime: converts timestamp to hours: seconds:minutes time string format 00:00:00 (hours optional)
-	 *
-	 * @param {number} timeStamp
-	 * @returns {string}
-	 */
-	formatTime(timeStamp: number): string {
-		let totalSeconds = Math.round(timeStamp / timeUnits.millies);
-		const hours = Math.floor(totalSeconds / timeUnits.hours);
-		totalSeconds %= timeUnits.hours;
-		const minutes = Math.floor(totalSeconds / timeUnits.minutes);
-		const seconds = totalSeconds % timeUnits.minutes;
-
-		if (hours) {
-			return `${hours.toString()}:${minutes
-				.toString()
-				.padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-		} else {
-			return `${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
-		}
 	}
 
 	/**

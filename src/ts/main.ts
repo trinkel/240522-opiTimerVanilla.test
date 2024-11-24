@@ -25,21 +25,26 @@ import { Parameters } from '../components/parameters';
 // Layout and Control
 import { ClockBadges } from './clockBadges';
 import { ComponentController } from './componentController';
+import { ControlButtons } from './controlButtons';
 import { TimeController } from './timeController';
 
 // Passthrough component module
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
-// Page Controller
+// Application settings (includes settings form)
 const parameters = new Parameters();
+
+const clockOn: boolean = false; //! Flag. Change to parameters.idle? Receives click to start timer in manual mode
 
 const timeController = new TimeController(
 	parameters.practiceLength,
 	parameters.tick,
 	parameters.pendingWarn,
 	parameters.pendingEndSession,
-	parameters.warp
+	parameters.warp,
+	parameters.groupStartType,
+	parameters.groupStartTime
 );
 
 // Instantiate clock badges. Start current time badge
@@ -50,20 +55,72 @@ const clockBadges = new ClockBadges(new Date(), timeController.tick);
 // Start based on parameters.groupStartTime or a start button
 const componentController = new ComponentController();
 
+const controlButtons = new ControlButtons();
+
 // Initialize the timers, wait for start time
 // TODO [240813 (soon)] init on app launch (or param set) to set duration in timers. Start timer functions on groupStartTime or start button
 componentController.init(timeController);
 
 //! TODO Initial attempt at initializing and then waiting to run timers. Make this prettier. (Not being used, but save for reference)
 // Initialize and run the timers
-const waitTimer = (): void => {
-	if (isBefore(new Date(), parameters.groupStartTime)) {
-		console.log('.');
-		setTimeout(waitTimer, 2000);
-	} else {
-		componentController.init(timeController);
-	}
-};
+
+async function waitTimer(): Promise<void> {
+	return new Promise<void>(() => {
+		const waitTimeIntvId = setInterval(() => {
+			parameters.scheduleSet
+				? console.log('waitTimer: pending')
+				: console.log('waitTimer: hold');
+			const goTimer = (): void => {
+				switch (parameters.groupStartType) {
+					case 'manual':
+						if (clockOn) {
+							clearInterval(waitTimeIntvId);
+							startPracticeGroup(timeController);
+						}
+						break;
+					case 'scheduled':
+						if (!parameters.scheduleSet) {
+							break;
+						}
+
+						if (parameters.groupStartTime && !parameters.clocksSet) {
+							const timeController = new TimeController(
+								parameters.practiceLength,
+								parameters.tick,
+								parameters.pendingWarn,
+								parameters.pendingEndSession,
+								parameters.warp,
+								parameters.groupStartType,
+								parameters.groupStartTime
+							);
+							console.log(
+								`[waitTimer] parameters.groupStartTime: ${parameters.groupStartTime}`
+							);
+
+							console.log(
+								`[waitTimer] timeController.groupStartTime: ${timeController.groupStartTime}`
+							);
+							clockBadges.setClocksStartTime(timeController.groupStartTime);
+							clockBadges.setClocksEndTime(timeController.endSession);
+							parameters.clocksSet = true;
+						}
+
+						if (!isBefore(new Date(), parameters.groupStartTime)) {
+							clearInterval(waitTimeIntvId);
+							startPracticeGroup(timeController);
+						}
+						break;
+					default:
+						clearInterval(waitTimeIntvId);
+						startPracticeGroup(timeController);
+				}
+			};
+			// console.log('timerWait');
+			goTimer();
+		}, 1000); //parameters.tick
+		// ToDo: add a slow tick, maybe 1000?
+	});
+}
 
 // Start a group of teams
 async function startPracticeGroup(timeController: TimeController) {
@@ -79,14 +136,17 @@ async function startPracticeGroup(timeController: TimeController) {
 				parameters.tick,
 				parameters.pendingWarn,
 				parameters.pendingEndSession,
-				parameters.warp
+				parameters.warp,
+				parameters.groupStartType,
+				i ? timeController.endSessionTime : parameters.groupStartTime
+				// parameters.groupStartTime
+				//! 241121  Not passing a parameter here relies on new Date() in time controller to set the next start time. That may not be all that accurate. At least once we were off by a second for the startTime. Could have been caused by the slower tick? Maybe what we need to do is reset individual properties rather than re-instantiate. Maybe just run the constructor (or it's functions) again. Or endTime becomes startTime and figure new endTime. Would be a good place to insert new session lengths.
 			);
 
 			// Initialize new team session
 			componentController.init(timeController);
-			clockBadges.setClocksStartTime(timeController.startTime);
+			clockBadges.setClocksStartTime(timeController.teamStartTime);
 			clockBadges.setClocksEndTime(timeController.endSession);
-
 			// Run new team session
 			await componentController.startTimer(timeController);
 		}
@@ -99,10 +159,11 @@ async function startPracticeGroup(timeController: TimeController) {
 }
 
 //! Call waitTimer
-// waitTimer();
+waitTimer();
 
 // Call appRunner (Replaces waitTimer)
-startPracticeGroup(timeController);
+//!241114
+// startPracticeGroup(timeController);
 
 //! This one will not be held back
 componentController.complete();
