@@ -33,7 +33,7 @@ export interface Indicators {
 export class ComponentController {
 	indicators: Indicators[] = [];
 
-	numStarts: number = 0;
+	numberTeams: number = 0;
 	progressComplete: boolean = false;
 	before: Date = new Date();
 	iterator: number = 0;
@@ -216,7 +216,7 @@ export class ComponentController {
 
 		// This may be unused
 		this.sessionStatus
-			? (this.sessionStatus.textContent = this.numStarts.toString())
+			? (this.sessionStatus.textContent = this.numberTeams.toString())
 			: null; //! Display group number. Do we want it?
 
 		// Run the logic only if the time has changed
@@ -332,11 +332,11 @@ export class ComponentController {
 
 	startTimer(timeController: TimeController) {
 		return new Promise<void>((resolve, reject) => {
-			const intervalId = setInterval(() => {
+			const startTimeIntvId = setInterval(() => {
 				this.timer(timeController);
 				// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
 				if (this.progressComplete) {
-					clearInterval(intervalId);
+					clearInterval(startTimeIntvId);
 					resolve();
 				}
 			}, timeController.tick);
@@ -344,7 +344,7 @@ export class ComponentController {
 	}
 
 	complete(): void {
-		console.log(`[COMPLETE] ---Process Complete: ${this.numStarts}`);
+		console.log(`[COMPLETE] ---Process Complete: ${this.numberTeams}`);
 	}
 }
 

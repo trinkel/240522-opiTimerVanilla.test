@@ -19,6 +19,7 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			// external: /^lit/,
+			external: ['./src/playground/'],
 			plugins: [],
 		},
 	},

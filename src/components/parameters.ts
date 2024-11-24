@@ -1,28 +1,3 @@
-/**
- * @description setup parameters
- *
- * Application defaults are set in ../data/appDefaults.ts
- * Form:
- *
- * - Switch: Anonymous vs list of teams
- * - Session data comes from one of the following
- * 	1. List of teams: Text area to paste team info from competition schedule
- * 		- Returns array of `teams` objects.
- * 		- String properties may be empty. Be sure to test and replace in class
- * 	2. Anonymous: Select options
- * 		- Select box: practice session duration
- * 		- Number of teams
- * 		- Start time (if empty, start time is controlled by > button)
- * */
-
-// export interface parameters {
-// 	numStarts: number;
-// }
-
-// export const parameters = {
-// 	numStarts: -1,
-// };
-
 import {
 	SlButton,
 	SlDrawer,
@@ -30,30 +5,79 @@ import {
 	SlRadioGroup,
 	SlTextarea,
 } from '@shoelace-style/shoelace';
-import {
-	appDefaults,
-	operationModes,
-	practiceLengthTimes,
-} from '../data/appDefaults';
-import { settingsForm } from './settingsForm';
 
+import { format } from 'date-fns';
+
+import { SettingsForm } from '../components/settingsForm';
+
+export type operationModes = 'anonymous' | 'list';
+export type practiceLengthTimes = 1 | 2 | 6 | 7 | 8 | 10 | 11 | 12;
+export type warpFactors = 1 | 2 | 6 | 7 | 8;
+export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
+export type pauseBetweenSelectorTypes = 'yes' | 'no';
+
+/**
+ * Parameters: Application settings.
+ * Application defaults are defined at the top of the class definition
+ *
+ * @export
+ * @class Parameters
+ * @typedef {Parameters}
+ *
+ * @prop {practiceLengthTimes} practiceLength
+ * @prop {'yes' | 'no'} pauseBetweenSelector Pause between teams
+ * @prop {number} pauseLength Length of pause between sessions in seconds
+ * @prop {groupStartTypeTypes} groupStartType
+ * @prop {Date} groupStartTime
+ * @prop {string} groupStartTimeStr
+ * @prop {operationModes} operationMode anonymous | list
+ * @prop {string[]} teamList List of team names (Separated by CR from form)
+ * @prop {number} numberTeams Number of teams
+ * @prop {number} dBugg
+ * @prop {boolean} demo Allows for some demo parameters. Mostly to speed things up
+ * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
+ * @prop {number} tick Component sleep interval in milliseconds
+ * @prop {boolean} idle True when session is not running
+ * @prop {boolean} clocksSet True when clocks have been set after schedule has been set
+ * @prop {boolean} scheduleSet True when schedule defined or manual button clicked
+ * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
+ * @prop {number} pendingEndSession Time before end-session to display "leave the ice" badge in milliseconds
+ */
 export class Parameters {
-	// Map appDefaults to Parameters
-	practiceLength = appDefaults.practiceLength;
-	pauseBetweenSelector = appDefaults.pauseBetweenSelector;
-	pauseLength = appDefaults.pauseLength;
-	groupStartType = appDefaults.groupStartType;
-	groupStartTime = appDefaults.groupStartTime;
-	operationMode = appDefaults.operationMode;
-	teamList = appDefaults.teamList;
-	numberTeams = appDefaults.numberTeams;
+	/*
+	 * ---------------------------
+	 * Set application defaults here
+	 * ---------------------------
+	 * User editable settings   */
+	practiceLength: practiceLengthTimes = 2; // Length of each practice session
+	pauseBetweenSelector: pauseBetweenSelectorTypes = 'no';
+	pauseLength: number = 0; // Length of pause between sessions
+	groupStartType: groupStartTypeTypes = 'scheduled';
+	groupStartTime: Date = new Date(new Date().setHours(0, 0, 0));
 
-	// App passthrough settings
-	dBugg = appDefaults.dBugg;
-	warp = appDefaults.warp;
-	tick = appDefaults.tick;
-	pendingWarn = appDefaults.pendingWarn;
-	pendingEndSession = appDefaults.pendingEndSession;
+	// Create string from `groupStartTime: Date`
+	groupStartTimeStr: string = format(this.groupStartTime, 'HH:mm:ss');
+
+	operationMode: operationModes = 'anonymous'; // anonymous | list
+	teamList: string[] = [''];
+	numberTeams: number = 6;
+
+	/*
+	 * Application passthrough settings  */
+	dBugg: number = 0;
+	demo: boolean = true; // Allows for some demo parameters. Mostly to speed things up
+	warp: warpFactors = 1; // Speed factor for demos (1-8)
+	tick: number = 200; // Component timeout interval in milliseconds (200)
+	idle: boolean = true; // True when session is not running
+	clocksSet: boolean = false; //
+	scheduleSet: boolean = false;
+	pendingWarn: number = 5000; // Time before warning-time to flash badge "pending" in milliseconds (3000)
+	pendingEndSession: number = 15000; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
+	/*
+	 * ---------------------------
+	 * End application defaults
+	 * ---------------------------
+	 */
 
 	// Set start time. Default to now
 	//! groupStartTime: Date = new Date();
@@ -64,8 +88,19 @@ export class Parameters {
 	formData: FormData = new FormData();
 
 	constructor() {
-		// Deploy settings form
-		this.setContainer();
+		console.log(`appD GST: ${this.groupStartTime}`); //! Correct
+
+		const appSettings = new SettingsForm(
+			this.groupStartType,
+			this.groupStartTimeStr,
+			this.practiceLength,
+			this.pauseBetweenSelector,
+			this.pauseLength,
+			this.operationMode,
+			this.numberTeams,
+			this.teamList,
+			this.demo
+		);
 
 		// Connect settings drawer controls
 		const openButton = document.querySelector<SlButton>('#settings-btn');
@@ -89,15 +124,16 @@ export class Parameters {
 			? this.openDrawer(openButton, drawer)
 			: console.error('Error function here');
 
-		form
-			? (this.formData = new FormData(form))
-			: this.elementError('form', 'new FormData');
-
-		// get parameters back from form
-		this.setParameters();
+		// form
+		// 	? (this.formData = new FormData(form))
+		// 	: this.elementError('form', 'new FormData');
+		//! setParameters(form) was here
 
 		// Event Builder
+		// get parameters back from form
 		if (form && drawer) {
+			// get parameters back from form
+			this.setParameters(form);
 			this.submitForm(form, drawer);
 		} else {
 			!form ? this.elementError('form', 'eventBuilder') : null;
@@ -125,22 +161,24 @@ export class Parameters {
 
 		// sessionLength: future enhancement option to set different lengths in `teamList`
 
+		//! Do I need this if section
 		// Set group start time
-		if (this.groupStartType && this.groupStartTimeString) {
-			let timeString = this.groupStartTimeString.split(':');
-			if (timeString.length === 2) {
-				timeString.push('00');
-			}
-			if (this.pm && Number(timeString[0]) <= 12) {
-				timeString[0] = Number((timeString[0] += 12)).toString();
-			}
-			this.groupStartTime.setHours(Number(timeString[0]));
-			this.groupStartTime.setMinutes(Number(timeString[1]));
-			this.groupStartTime.setSeconds(Number(timeString[2]));
-		}
+		// if (this.groupStartType && this.groupStartTimeStr) {
+		// 	let timeString = this.groupStartTimeStr.split(':');
+		// 	if (timeString.length === 2) {
+		// 		timeString.push('00');
+		// 	}
+		// 	if (this.pm && Number(timeString[0]) <= 12) {
+		// 		timeString[0] = Number((timeString[0] += 12)).toString();
+		// 	}
+		// 	this.groupStartTime.setHours(Number(timeString[0]));
+		// 	this.groupStartTime.setMinutes(Number(timeString[1]));
+		// 	this.groupStartTime.setSeconds(Number(timeString[2]));
+		// }
+		//! --------------------------
 
-		if (this.operationMode && this.teamList) {
-			this.numStarts = this.teamList.length;
+		if (this.operationMode === 'list' && this.teamList) {
+			this.numberTeams = this.teamList.length;
 		}
 	} // end constructor()
 
@@ -209,32 +247,50 @@ export class Parameters {
 		);
 	};
 
-	setContainer(): void {
-		const settingsContainer = document.querySelector<HTMLBaseElement>(
-			'#settings-container'
-		);
-		settingsContainer
-			? (settingsContainer.innerHTML = settingsForm)
-			: console.error(`element doesn't exist`); // Set elementError
-	}
-
 	openDrawer(button: SlButton, drawer: SlDrawer): void {
 		button.addEventListener('click', () => {
 			drawer.show();
 		});
 	}
 
-	setParameters(): void {
+	setParameters(form: HTMLFormElement): void {
+		console.dir(`[FORM]: `);
+		console.dir(form);
+
+		form
+			? (this.formData = new FormData(form))
+			: this.elementError('form', 'new FormData');
+
 		// Get user defaults from settings form
 		this.practiceLength = Number(this.practiceLengthVal) as practiceLengthTimes; // Length of each practice session.
 		this.pauseLength = Number(this.pauseLengthVal); // Length of pause between sessions
 
-		this.groupStartType = Number(this.startTypeVal); // Manual (0) or Scheduled (1)
-		if (this.groupStartType) {
-			this.groupStartTime = new Date(this.startTimeVal); // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
+		this.groupStartType = this.startTypeVal as groupStartTypeTypes; // Manual or Scheduled
+		if (this.groupStartType == 'scheduled') {
+			const time = this.startTimeVal.split(':').map((x) => Number(x));
+			if (time.length === 3) {
+				this.groupStartTime = new Date(
+					new Date().setHours(time[0], time[1], time[2])
+				);
+			} else {
+				this.groupStartTime = new Date(
+					new Date().setHours(time[0], time[1], 0)
+				);
+			} // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 		} else {
 			this.groupStartTime = new Date(0);
 		}
+
+		// this.groupStartTime = new Date(0);
+
+		console.log(
+			`----params setParameters StartType: ${this.groupStartType} | StartTime: ${this.groupStartTime}` //! manual ok
+		);
+		console.dir(
+			`----then again, getStartTypeVal ${
+				this.startTypeVal
+			} | getStartTimeVal: ${this.formData.get('start-time')}`
+		); //! ok
 
 		this.pm = false; //! <--
 
@@ -248,13 +304,6 @@ export class Parameters {
 				this.teamList = this.teamListVal;
 				this.numberTeams = this.teamList.length;
 		}
-
-		// Get application defaults from appDefaults
-		//ToDo Should this only run once?
-		this.warp = 1; // Speed factor for demos (1-8)
-		this.tick = 200; // Component timeout interval in milliseconds (200)
-		this.pendingWarn = 5000; // Time before warning time to flash badge "pending" in milliseconds (3000)
-		this.pendingEndSession = 15000; // Time before end to display "leave the ice" in milliseconds (1500// Set start time. Default to now
 	}
 
 	submitForm(form: HTMLFormElement, drawer: SlDrawer) {
@@ -269,14 +318,13 @@ export class Parameters {
 			.then(() => {
 				form.addEventListener('submit', (event) => {
 					event.preventDefault();
-					this.setParameters(); //! I think this is right track, but needs to restart timers
-					//! Nope, not working
-					console.log(this.practiceLength);
-					console.log(this.startTime);
-					console.log(this.numberTeams);
+					this.setParameters(form);
+					this.scheduleSet = true;
+					console.log(`[then] practiceLength: ${this.practiceLength}`);
+					console.log(`[then] groupStartTime: ${this.groupStartTime}`);
+					console.log(`[then] numberTeams: ${this.numberTeams}`);
 					if (drawer) {
 						drawer.hide();
-						// alert('All fields are valid!');
 					} else {
 						this.elementError('drawer', 'form addEventListener');
 					}
