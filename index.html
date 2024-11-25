@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- <html lang="en" class="sl-theme-dark"> -->
 
 <head>
 	<meta charset="UTF-8">
@@ -14,31 +14,79 @@
 	<header>
 		<h1 class="visually-hidden">OPI Timer</h1>
 		<p class="visually-hidden">A product of dBugg.dev</p>
-		<menu id="setup">Hamburger</menu>
 	</header>
+
 
 	<main class="application">
 		<section id="clock_block" class="wrapper">
-			<clock-badge id="start-time">Clock</clock-badge>
-			<clock-badge id="current-time">Clock</clock-badge>
-			<clock-badge id="stop-time">Clock</clock-badge>
+			<sl-badge id="start-time" class="clock" variant="neutral" pill>
+				<p>Practice Start</p>
+				<p id="start-time-contents" aria-live="polite"
+					aria-labelledby="start-time">00:00:00</p>
+			</sl-badge>
+			<sl-badge id="current-time" class="clock" variant="neutral"
+				label="Current time" pill>
+				<div class="current-time-group">
+					<sl-icon name="clock-fill"></sl-icon>
+					<span id="current-time-contents" aria-live="polite"
+						aria-labelledby="current-time">00:00:00</span>
+				</div>
+			</sl-badge>
+			<sl-badge id="end-time" class="clock" variant="neutral" pill>
+				<p>Practice End</p>
+				<p id="end-time-contents" aria-live="polite" aria-labelledby="end-time">
+					00:00:00</p>
+			</sl-badge>
 		</section>
+
 		<section id="time_block" class="wrapper">
+			<aside class="settings-button">
+				<sl-tooltip content="Settings">
+					<sl-icon-button id="settings-btn" name="gear" label="Settings"
+						large></sl-icon-button>
+				</sl-tooltip>
+				<div id="settings-container"></div>
+			</aside>
 			<progress-indicator id="first-music"
-				label="Time until first time music plays" mode="1" stroke="14"
-				viewbox="1000">Timer</progress-indicator>
+				label="Time until first time music plays" title="First Music" mode="1"
+				stroke="56" viewbox="2000">Timer</progress-indicator>
 			<progress-indicator id="second-music"
-				label="Time until second time music plays" mode="1" stroke="14"
-				viewbox="1000">Timer</progress-indicator>
+				label="Time until second time music plays" title="Second Music" mode="1"
+				stroke="56" viewbox="2000">Timer</progress-indicator>
 			<progress-indicator id="end-session" label="Time until session ends"
-				mode="1" stroke="14" viewbox="1000">Timer</progress-indicator>
-			<p data-session-status></p>
+				title="Time Remaining" mode="1" stroke="56"
+				viewbox="2000">Timer</progress-indicator>
 		</section>
+
 		<section id="team_block" class="wrapper">
-			<team-button id="previous-team">Team</team-button>
-			<team-button id="current-team">Team</team-button>
-			<team-button id="next-team">Team</team-button>
+			<sl-button id="previous-team" class="session-control" size="large"
+				variant="neutral" pill>
+				<sl-icon name="skip-backward-fill" slot="prefix"></sl-icon>
+				Previous Team</sl-button>
+			<sl-button-group id="current-team" class="session-control-group">
+				<sl-button id="current-skip-begin" name="current-skip-begin"
+					size="large" class="session-control" variant="neutral" pill>
+					<sl-icon name="skip-start-fill" label="Skip to start of session"
+						slot="prefix"></sl-icon>
+				</sl-button>
+				<sl-button id="current-start" name="current-start" size="large"
+					class="session-control" variant="neutral" pill>Current
+					Team
+					<sl-icon name="play-fill" slot="suffix"></sl-icon>
+				</sl-button>
+				<sl-button id="current-skip-begin" name="current-skip-begin"
+					size="large" class="session-control" variant="neutral" pill>
+					<sl-icon name="skip-end-fill" label="Skip to end of session"
+						slot="suffix"></sl-icon>
+				</sl-button>
+			</sl-button-group>
+			<sl-button id="next-team" class="session-control" size="large"
+				variant="neutral" pill>Next Team
+				<sl-icon name="skip-forward-fill" slot="suffix"></sl-icon>
+			</sl-button>
+
 		</section>
+
 	</main>
 
 </body>

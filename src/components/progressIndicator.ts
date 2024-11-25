@@ -1,3 +1,5 @@
+import { stringifySeconds } from '../ts/timeUtilities';
+
 export default class ProgressIndicator extends HTMLElement {
 	calculatedCircumference: number;
 	constructor() {
@@ -22,12 +24,9 @@ export default class ProgressIndicator extends HTMLElement {
 		this.innerHTML = `
 			<div class="progress-indicator">
 				<div class="progress-indicator__visual">
-					<div data-progress-count="" class="progress-indicator__count"></div>
 					<svg
 						fill='none'
 						viewBox="0 0 ${this.viewBox} ${this.viewBox}"
-						width="${this.viewBox}"
-						height="${this.viewBox}"
 						focusable="false"
 						class="progress-indicator__circle"
 					>
@@ -37,6 +36,7 @@ export default class ProgressIndicator extends HTMLElement {
 						cy="${radius}"
 						stroke-width="${this.stroke}"
 						class="progress-indicator__background-circle"
+						data-whitefill-graystroke
 						/>
 						<circle
 						transform="rotate(-90, ${radius}, ${radius})"
@@ -48,9 +48,14 @@ export default class ProgressIndicator extends HTMLElement {
 						stroke-linecap="round"
 						class="progress-indicator__progress-circle"
 						data-progress-circle
+						data-pinkfill-greenstroke
 						/>
 					</svg>
-					<svg
+				<div class="progress-indicator__count-container">
+					<div data-progress-count-el="" class="progress-indicator__count"></div>
+					<sl-badge pill data-progress-warn-el class="progress-indicator__warning-badge"></sl-badge>
+				</div>
+				<svg
 						class="progress-indicator__check"
 						focusable="false"
 						viewBox="0 0 20 20"
@@ -61,6 +66,10 @@ export default class ProgressIndicator extends HTMLElement {
 							fill="currentColor"
 						/>
 					</svg>
+				</div>
+				<div data-progress-title>
+					<h2>${this.title}</h2>
+					<p data-progress-title-warn></p>
 				</div>
 			</div>
 		`;
@@ -91,16 +100,19 @@ export default class ProgressIndicator extends HTMLElement {
 			  ).toString())
 			: null;
 
-		//  Set a complete or pending state base on progress
+		//  Set a complete or pending state based on progress.
+		////If complete, set warning to false (Now it will be 'end' set elsewhere)
 		if (this.mode) {
 			if (progress <= 0) {
 				this.setAttribute('data-progress-state', 'complete');
+				// this.setAttribute('data-progress-warn-state', 'false');
 			} else {
 				this.setAttribute('data-progress-state', 'pending');
 			}
 		} else {
 			if (progress >= this.valueMax) {
 				this.setAttribute('data-progress-state', 'complete');
+				// this.setAttribute('data-progress-warn-state', 'false');
 			} else {
 				this.setAttribute('data-progress-state', 'pending');
 			}
@@ -108,15 +120,103 @@ export default class ProgressIndicator extends HTMLElement {
 	}
 
 	setText(display: string) {
-		const progressCount = this.querySelector('[data-progress-count]');
+		const progressCount = this.querySelector('[data-progress-count-el]');
 		// A human readable version for the text label
 		progressCount
 			? (progressCount.textContent = `${display}${this.unit}`)
 			: null;
 	}
 
+	// Set by warning attributes -----------------
+	setWarnState(display: string) {
+		const progressWarnElement = this.querySelector('[data-progress-warn-el]');
+
+		switch (display) {
+			case 'false':
+				if (progressWarnElement) {
+					progressWarnElement.removeAttribute('pulse');
+					progressWarnElement.textContent = ``;
+				}
+				progressWarnElement
+					? progressWarnElement.removeAttribute('pulse')
+					: null;
+				progressWarnElement ? (progressWarnElement.textContent = ``) : null;
+
+				break;
+
+			case 'pending':
+				progressWarnElement
+					? progressWarnElement.setAttribute('pulse', '')
+					: null;
+				progressWarnElement ? (progressWarnElement.textContent = ``) : null;
+				break;
+
+			case 'true':
+				progressWarnElement
+					? progressWarnElement.removeAttribute('pulse')
+					: null;
+				if (this.label.search('music') >= 0) {
+					progressWarnElement
+						? (progressWarnElement.textContent = `Warn ${this.title.toLowerCase()}`)
+						: null;
+				} else if (this.label.search('ends') >= 0) {
+					progressWarnElement
+						? (progressWarnElement.textContent = `Warn end of session`)
+						: null;
+				}
+				break;
+
+			case 'ending':
+				// affects end session timer only
+				progressWarnElement
+					? progressWarnElement.removeAttribute('pulse')
+					: null;
+				if (this.label.search('ends') >= 0) {
+					progressWarnElement
+						? (progressWarnElement.textContent = `Session ending Leave the ice`)
+						: null;
+				}
+				break;
+
+			case 'end':
+				if (progressWarnElement) {
+					if (this.label.search('music') >= 0) {
+						progressWarnElement.textContent = 'Play music';
+					}
+				}
+				// style changes only
+				break;
+		}
+	}
+
+	setWarn(display: string) {
+		const progressTitleWarn = this.querySelector('[data-progress-title-warn]');
+
+		progressTitleWarn
+			? (progressTitleWarn.textContent = `${stringifySeconds(
+					Number(display),
+					false
+			  )} warning`)
+			: null;
+	}
+
+	// setWarnLabel(display: string) {
+	// 	const progressWarnLabel = this.querySelector('[data-progress-warn-label]');
+	// 	const warnTime = stringifySeconds(
+	// 		Number(this.getAttribute('data-progress-warn')),
+	// 		false
+	// 	);
+	// 	progressWarnLabel ? (progressWarnLabel.textContent = `${warnTime}`) : null;
+	// }
+
 	static get observedAttributes() {
-		return ['progress', 'data-progress-count', 'value-max'];
+		return [
+			'progress',
+			'data-progress-count',
+			'value-max',
+			'data-progress-warn',
+			'data-progress-warn-state',
+		];
 	}
 
 	attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -130,6 +230,18 @@ export default class ProgressIndicator extends HTMLElement {
 		if (name === 'value-max') {
 			this.setAttribute('aria-valuemax', this.valueMax.toString());
 		}
+
+		if (name === 'data-progress-warn') {
+			this.setWarn(newValue);
+		}
+
+		if (name === 'data-progress-warn-state') {
+			this.setWarnState(newValue);
+		}
+	}
+
+	get id(): string {
+		return this.getAttribute('id') || 'unknown[234]';
 	}
 
 	get valueMax(): number {
@@ -154,6 +266,10 @@ export default class ProgressIndicator extends HTMLElement {
 
 	get label(): string {
 		return this.getAttribute('label') || 'Current progress';
+	}
+
+	get title(): string {
+		return this.getAttribute('title') || '';
 	}
 }
 

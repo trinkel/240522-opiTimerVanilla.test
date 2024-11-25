@@ -2,6 +2,13 @@
 @import './base/_root';
 @import './base/_accessibility';
 @import './base/_layout';
+@import './base/_typography';
 
 @import './components/_timer';
-@import './components/_button';
+@import './components/_session-control';
+@import './components/_clocks';
+@import './components/_shoelace-override';
+@import './components/_settings';
+
+@import url('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.17.1/cdn/themes/light.css');
+@import url('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.17.1/cdn/themes/dark.css');

@@ -2,16 +2,19 @@
 import {
 	addMinutes,
 	addSeconds,
-	differenceInMilliseconds,
-	intervalToDuration,
+	format,
 	setHours,
 	setMinutes,
 	setSeconds,
 } from 'date-fns';
 
+import { groupStartTypeTypes, warpFactors } from '../components/parameters';
 import { practiceTimes } from '../data/practiceTimes';
+import { timeUnits } from './timeUtilities';
 
 interface sessionSpec {
+	[specKey: string]: any; // Index Signature (Parameter): used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
+
 	duration: number;
 	firstMusic: number;
 	firstWarning: number;
@@ -25,13 +28,13 @@ interface sessionSpec {
  * @property display string The value for the text-value attribute of the progress-indicator element
  * @property progress number The value for the progress attribute of the progress-indicator element
  */
-interface timeRemaining {
+export interface timeRemaining {
 	display: string; // text value
 	progress: number; // progress meter
 }
 
 /**
- * Sets the time of the given Date object based on a minimal time string.
+ * Sets the time of the given Date object based on a minimal time string. Used to manipulate string input from Parameters form.
  * @param time A string representing the time in the format 'HH:MM:SS' or 'HH:MM'.
  * @returns A Date object with the time set according to the input string.
  */
@@ -53,7 +56,7 @@ function setTime(time: string): Date {
 }
 
 export class TimeController {
-	[key: string]: any; // used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
+	[timeKey: string]: any; //Index Signature (Parameter): used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy
 	// teams: teams[];
 	sessionSpec: sessionSpec = {
 		duration: 0,
@@ -69,156 +72,131 @@ export class TimeController {
 		progress: 0,
 	};
 
-	//TODO: Do we need anything besides startTime (loose the rest)?
 	// Starting time for team. Used in init
 	// ! Watch this in the case of team list. Loop works on flow of time allotted each team. It we also have scheduled times, make sure the alloted times stay in synch with the scheduled times. (Time/math sanity check)
-	startTime: Date = new Date();
+	teamStartTime: Date;
 
-	//! Time remaining variable inits (don't need?)
-	// firstWarnTimeRemain: timeRemaining = this.timeRemaining;
-	// firstMusicTimeRemain: timeRemaining = this.timeRemaining;
-	// secondWarnTimeRemain: timeRemaining = this.timeRemaining;
-	// secondMusicTimeRemain: timeRemaining = this.timeRemaining;
-	// endSessionTimeRemain: timeRemaining = this.timeRemaining;
-
-	//! Time set variable inits (don't need?)
-	// firstWarnTime: Date = new Date();
-	// firstMusicTime: Date = new Date();
-	// secondWarnTime: Date = new Date();
-	// secondMusicTime: Date = new Date();
-	// endSessionTime: Date = new Date();
-
+	/**
+	 * Creates an instance of TimeController.
+	 *
+	 * @constructor
+	 * @param {number} duration sessionLength
+	 * @param {number} tick Loop interval
+	 * @param {number} pendingWarn Time before
+	 * @param {number} pendingEndSession Time before end of session to display "leave the ice"
+	 * @param {warpFactors} [warp=1] Speed enhancement for demos
+	 * @param {groupStartTypeTypes} groupStartType ['scheduled' | 'manual] Start by time or button
+	 * @param {Date} groupStartTime Time passed from parameters (presumably group start time) or current time if nothing passed (presumably team/session start time). Passed to this.teamStartTime
+	 * @param {boolean} [idle=true] Time before session starts
+	 */
 	constructor(
 		public duration: number, // sessionLength
 		public tick: number, // loop interval
-		public warp: number = 1,
+		public pendingWarn: number, //Time before warning time to flash badge
+		public pendingEndSession: number, // Time before end to display "leave the ice"
+		public warp: warpFactors = 1,
+		public groupStartType: groupStartTypeTypes,
+		public groupStartTime: Date = this.current,
 		public idle = true // true is waiting for start of session? Don't need any more? Or just don't remember
 	) {
-		// this.teams = teams;
-		// console.log(this.teams);
-
-		// if (numStarts) {
-		// 	// Do the thing `numStarts` times
-		// } else {
-		// teams.forEach((team) => {
-		//	// todo: Outline the timer process here, then replicate above for anonymous start
-		// Can we run the two setups then merge into a single run?
-
-		/** incoming: Team objects (from an array) includes
-		 * 	- teamName: string
-		 * 	- level: string
-		 * 	- startTime: string
-		 * 	- endTime: string
-		 * 	- duration: number
-		 *
-		 * imported: practiceTimes array of objects includes
-		 * 	- duration: number
-		 * 	- firstMusic: number
-		 *  - firstWarning: number
-		 *  - secondMusic: number
-		 *  - secondWarning: number
-		 *  - endWarning: number
-		 */
-
+		/**
+		 * startTime is a getter
+		 * teamStartTime holds the value as a variable for places that couldn't use the getter
+		 */ //! COMMENT NOT ACCURATE ANY MORE?
+		this.teamStartTime = this.groupStartTime;
+		// this.groupStartTime = this.teamStartTime;
+		console.log(`groupStartTypex: ${this.groupStartType}`);
+		console.log(`groupStartTimex: ${this.groupStartTime}`);
 		// Select Session Duration object
 		this.sessionSpec = practiceTimes[this.duration];
 
 		// TODO: [240813] (turn into explainer comment) getters return an array or object of a string ([hours]:minutes:seconds) and a number (seconds) until that goal. Initial defs above should change to that.
 		// TODOcont: First, we do need a date/time for each goal set on init. Then, in each loop, we need to get the array/object to set the timer. I think the getters (set times) and methods (run timers) are already set up below, they just need to be used.
 		// Set variables: Date
-		this.firstWarnTime = this.firstWarn;
+		this.firstWarningTime = this.firstWarning;
 		this.firstMusicTime = this.firstMusic;
-		this.secondWarnTime = this.secondWarn;
+		this.secondWarningTime = this.secondWarning;
 		this.secondMusicTime = this.secondMusic;
-		this.endWarnTime = this.endWarn;
-		this.endSessionTime = this.endTime;
+		this.endWarningTime = this.endWarning;
+		this.endSessionTime = this.endSession;
+	} // end constructor
 
-		console.log(`[timeControllerConstruct] FirstMusicTime:`);
-		// });
-	}
-
-	// reference to practice session spec
-	// sessionSpec: practiceTimes[setup[0].sessionSpec],
-
-	// getters based on ${practiceTimes}
-	// Runs each loop. Basis for time math
-	//! Getters set initial times. remainingTime() does the work during control loop.
+	//Getters set initial times. remainingTime() does the work during control loop.
 	get current(): Date {
 		// updater, used in remainingTime function
 		return new Date();
 	}
 
-	get firstMusic(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.firstMusic);
+	get startTime(): Date {
+		switch (this.groupStartType) {
+			case 'manual':
+				return new Date(0);
+				break;
+			case 'scheduled':
+				return this.groupStartTime;
+				break;
+			default:
+				return new Date();
+		}
 	}
 
-	get firstWarn(): Date {
+	get firstMusic(): Date {
+		return addMinutes(this.teamStartTime, this.sessionSpec.firstMusic);
+	}
+
+	get firstWarning(): Date {
 		return addMinutes(this.firstMusic, this.sessionSpec.firstWarning * -1);
 	}
 
 	get secondMusic(): Date {
-		return addMinutes(this.startTime, this.sessionSpec.secondMusic);
+		return addMinutes(this.teamStartTime, this.sessionSpec.secondMusic);
 	}
 
-	get secondWarn(): Date {
+	get secondWarning(): Date {
 		return addMinutes(this.secondMusic, this.sessionSpec.secondWarning * -1);
 	}
 
-	get endTime(): Date {
-		// return addMinutes(this.startTime, 1.5);
-		return addMinutes(this.startTime, this.sessionSpec.duration);
+	get endSession(): Date {
+		return addMinutes(this.teamStartTime, this.sessionSpec.duration);
 	}
 
-	get endWarn(): Date {
-		return addMinutes(this.endTime, this.sessionSpec.endWarning * -1);
+	get endWarning(): Date {
+		return addMinutes(this.endSession, this.sessionSpec.endWarning * -1);
 	}
 
-	//! NOW: (After commit cleanup): Remove this.current and pass it with target date. There are two real calls that need to be fixed in init plus multiple console.logs. Maybe default it to running this.current.
+	/**
+	 * Calculates the remaining time between the current time and a target time.
+	 *
+	 * @param {Date} target - The target date and time.
+	 * @param {Date} [now=this.current] - The current date and time. Defaults to the current time if not provided.
+	 * @returns {timeRemaining} An object containing the formatted display of the remaining time and the progress in seconds.
+	 */
 	remainingTime(target: Date, now: Date = this.current): timeRemaining {
-		console.log(
-			`[tContoller.remainingTime] Now Epoch: ${now.getTime()} | Target Epoch: ${target.getTime()}`
-		);
-		let t = intervalToDuration({
-			start: now,
-			end: target,
-		});
-
-		// build output
-		if (t.hasOwnProperty('hours')) {
-			t = Object.assign({ hours: 0, minutes: 0, seconds: 0 }, t);
+		let interval: number;
+		if (target.getTime() <= now.getTime()) {
+			interval = 0;
 		} else {
-			t = Object.assign({ minutes: 0, seconds: 0 }, t);
+			interval = target.getTime() - now.getTime();
 		}
 
-		this.timeRemaining.display = Object.values(t)
-			.map((unit, i) =>
-				i ? unit.toString().padStart(2, '0') : unit.toString().padStart(1, '0')
-			)
-			.join(':');
-
-		// this.timeRemaining.progress = differenceInSeconds(target, now);
-		this.timeRemaining.progress = differenceInMilliseconds(target, now) / 1000;
+		this.timeRemaining.progress = interval;
+		this.timeRemaining.display =
+			interval < timeUnits.hours * timeUnits.millies // 1 hour
+				? format(interval, 'm:ss')
+				: format(interval, 'h:mm:ss');
 
 		return this.timeRemaining;
 	}
 
 	/**
-	 * Performs a warp jump by calculating the time difference between two dates
-	 * and then applying a warp factor to that difference.
+	 * Performs a warp jump by calculating the time difference between two dates and then applying a warp factor to that difference. Used to speed up timers for testing and demos.
 	 *
 	 * @param {Date} now - The current date and time.
 	 * @param {Date} before - The date and time before the warp jump.
 	 * @returns {Date} - The new date and time after the warp jump.
 	 */
-	//TODO We do need to factor in the iteration number or it will keep backing up to the real current time. Also, are we getting into this function twice in a loop according to the log?
 	warpJump(before: Date): Date {
-		const diff = (this.tick / 1000) * this.warp;
-		console.log(
-			`[WARP JUMP] WWWWWWWWARP --Before: ${before} --New ${addSeconds(
-				before,
-				diff
-			)}`
-		);
+		const diff = (this.tick / timeUnits.millies) * this.warp;
 		return addSeconds(before, diff);
 	}
 }

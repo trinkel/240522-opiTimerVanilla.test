@@ -1,0 +1,35 @@
+#clock_block {
+	background-color: var(--clr-neutral-999);
+}
+
+.clock {
+	&::part(base) {
+		background-color: var(--clr-neutral-700);
+		display: block;
+		text-align: center;
+		font-size: var(--fs-0);
+		font-size: var(--fsq-0);
+		font-weight: var(--sl-font-weight-normal);
+		line-height: var(--lh--1);
+		padding-inline: var(--space-em-l);
+	}
+
+	[id],
+	sl-icon {
+		font-size: var(--fs-3);
+		font-size: var(--fsq-3);
+		font-weight: var(--sl-font-weight-bold);
+		letter-spacing: 0.08em;
+	}
+
+	.current-time-group {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+	}
+
+	#current-time-contents {
+		font-size: var(--fs-4);
+		font-size: var(--fsq-4);
+	}
+}
