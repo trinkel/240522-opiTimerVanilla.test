@@ -43,8 +43,12 @@ export class SettingsForm {
 						help-text="Start group at scheduled time or manually by button" value="${
 							this.groupStartType
 						}">
+						<sl-tooltip content="Start at designated Start Time">
 							<sl-radio-button value="scheduled" pill>Scheduled</sl-radio-button>
+						</sl-tooltip>
+						<sl-tooltip content="Start when Current Team start button clicked">
 							<sl-radio-button value="manual" pill>Manual</sl-radio-button>
+						</sl-tooltip>
 					</sl-radio-group>
 
 					<sl-input id="start-time" name="start-time" class="label-on-left"
@@ -84,14 +88,20 @@ export class SettingsForm {
 
 				<fieldset id="operation-mode">
 					<sl-radio-group id="operation-mode-selector"
-						name="operation-mode-selector" class="label-on-left"
-						label="Select operation mode" value="${this.operationMode}" required>
-						<sl-radio-button value="anonymous" pill>
-							Anonymous
-						</sl-radio-button>
-						<sl-radio-button id="team-list" name="team-list" value="list" pill>
-							Team List
-						</sl-radio-button>
+					name="operation-mode-selector" class="label-on-left"
+					label="Select operation mode" help-text="Session with or without team names" value="${
+						this.operationMode
+					}" required>
+						<sl-tooltip content="Group based on Number of teams only">
+							<sl-radio-button value="anonymous" pill>
+								Anonymous
+							</sl-radio-button>
+						</sl-tooltip>
+						<sl-tooltip content="Supply list of teams">
+							<sl-radio-button id="team-list" name="team-list" value="list" pill>
+								Team List
+							</sl-radio-button>
+						</sl-tooltip>
 					</sl-radio-group>
 					<sl-input id="number-teams" name="number-teams"
 						class="label-on-left" label="Number of teams"
@@ -102,6 +112,7 @@ export class SettingsForm {
 						help-text="Names of the teams in this group. One team per line (copy/paste is our friend)"
 						resize="auto" required></sl-textarea>
 				</fieldset>
+
 				<div class="save">
 					<sl-button id="close-drawer" variant="primary" label="submit" name="submit" type="submit"
 					Label="Save" pill>Save</sl-button>
