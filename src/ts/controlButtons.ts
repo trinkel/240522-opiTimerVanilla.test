@@ -3,7 +3,8 @@ import { SlButton } from '@shoelace-style/shoelace';
 export class ControlButtons {
 	constructor() {
 		// attach buttons
-		const controlBlock = document.querySelector<HTMLDivElement>('#team_block');
+		const controlBlock =
+			document.querySelector<HTMLDivElement>('#control_block');
 
 		const previousTeam = document.querySelector<SlButton>('#previous-team');
 
