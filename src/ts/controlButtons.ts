@@ -27,14 +27,28 @@ export class ControlButtons {
 	} // end constructor
 
 	handleControlBlockClick(event: Event) {
-		switch ((event.target as HTMLElement).getAttribute('id')) {
+		const targetId = (event.target as HTMLElement).getAttribute('id');
+		switch (targetId) {
 			case 'previous-team':
-				console.log(`target: previousTeam`);
+				console.log(`target: ${targetId}`);
 				break;
 
 			case 'current-skip-begin':
-				console.log(`target: currentSkipBegin`);
+				console.log(`target: ${targetId}`);
 				break;
+
+			case 'current-start':
+				console.log(`target: ${targetId}`);
+				break;
+
+			case 'current-skip-end':
+				console.log(`target: ${targetId}`);
+				break;
+
+			case 'next-team':
+				console.log(`target: ${targetId}`);
+				break;
+
 			default:
 				return;
 		}
