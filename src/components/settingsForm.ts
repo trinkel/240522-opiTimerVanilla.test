@@ -37,7 +37,16 @@ export class SettingsForm {
 		<sl-drawer label="Settings" id="settings" style="--size: max-content">
 			<form id="settings-form">
 				<fieldset id="start">
-				<sl-input id="start-type" name="start-type" label="Start group at time or by button?" hidden value="${groupStartType}"></sl-input>
+					<sl-radio-group id="start-type"
+						name="start-type" class="label-on-left"
+						label="Group start mode"
+						help-text="Start group at scheduled time or manually by button" value="${
+							this.groupStartType
+						}">
+							<sl-radio-button value="scheduled" pill>Scheduled</sl-radio-button>
+							<sl-radio-button value="manual" pill>Manual</sl-radio-button>
+					</sl-radio-group>
+
 					<sl-input id="start-time" name="start-time" class="label-on-left"
 						label="Start Time" help-text="Start-time for this session (eg: 10:45 AM)" type="time" value="${
 							this.groupStartTimeStr
