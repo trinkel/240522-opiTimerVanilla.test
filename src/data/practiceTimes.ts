@@ -11,6 +11,26 @@ export type practiceTimes = {
 
 export const practiceTimes: practiceTimes = [];
 
+// ! Times for testing only
+practiceTimes[1] = {
+	duration: 1,
+	firstMusic: 0.25,
+	firstWarning: 0.1,
+	secondMusic: 0.5,
+	secondWarning: 0.1,
+	endWarning: 0.75,
+};
+
+// ! Times for testing only
+practiceTimes[2] = {
+	duration: 2,
+	firstMusic: 0.5,
+	firstWarning: 0.25,
+	secondMusic: 1,
+	secondWarning: 0.25,
+	endWarning: 0.75,
+};
+
 practiceTimes[6] = {
 	duration: 6,
 	firstMusic: 1.25,

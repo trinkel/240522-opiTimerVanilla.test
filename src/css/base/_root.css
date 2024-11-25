@@ -4,10 +4,15 @@
 
 :root {
 	/* colors */
+	/*Todo Try a minor third progression of L values */
 	--clr-neutral-000: hsl(0, 0%, 100%, 1);
 	--clr-neutral-100: hsl(0, 0%, 94%, 1);
-	--clr-neutral-500: hsl(0, 0%, 67, 1);
+	--clr-neutral-300: hsl(0, 0%, 80%, 1);
+	--clr-neutral-500: hsl(0, 0%, 67%, 1);
+	--clr-neutral-600: hsl(0, 0%, 35%, 1);
 	--clr-neutral-700: hsl(0, 0%, 20%, 1);
+	--clr-neutral-800: hsl(0, 0%, 15%, 1);
+	--clr-neutral-900: hsl(0, 0%, 10%, 1);
 	--clr-neutral-999: hsl(0, 0%, 0%, 1);
 
 	--clr-primary-000: var(--clr-neutral-000);
@@ -19,24 +24,43 @@
 	--clr-accent-000: var(--clr-neutral-000);
 	--clr-accent-100: var(--clr-neutral-100);
 	--clr-accent-500: var(--clr-neutral-500);
+	--clr-accent-600: var(--clr-neutral-600);
 	--clr-accent-700: var(--clr-neutral-700);
 	--clr-accent-999: var(--clr-neutral-999);
 
-	--clr-warning-100: hsl(32, 100%, 90%, 1);
-	--clr-warning-700: hsl(32, 100%, 66%, 1);
+	/* Alternate warning colors */
+	/* --clr-warning-100: hsl(32, 100%, 90%, 1); */
+	/* --clr-warning-700: hsl(32, 100%, 55%, 1); */
+
+	--clr-warning-100: hsl(47, 100%, 85%, 1);
+	--clr-warning-700: hsl(32, 100%, 55%, 1);
 
 	--clr-critical-100: hsl(0, 100%, 85%, 1);
 	--clr-critical-700: hsl(0, 100%, 50%, 1);
 
-	--clr-active-100: hsl(142, 76%, 85%, 1);
+	--clr-active-100: hsl(142, 76%, 90%, 1);
+	--clr-active-300: hsl(142, 76%, 80%, 1);
 	--clr-active-700: hsl(142, 76%, 36%, 1);
 
 	--clr-success-100: var(--clr-active-100);
 	--clr-success-700: var(--clr-active-700);
 
+	/* Colors for progress indicators */
+	--clr-progress-indicator-700: var(--clr-active-700);
+	--clr-progress-indicator-400: var(--clr-active-100);
+	--clr-progress-indicator-100: var(--clr-neutral-300);
+	--clr-progress-indicator-000: var(--clr-neutral-000);
+
 	/* font family */
 	--ff-base: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial,
 		sans-serif;
+
+	/* font weight */
+
+	--fw-300: 300;
+	--fw-400: 400;
+	--fw-500: 500;
+	--fw-700: 700;
 
 	/* Utopia font sizes */
 	/* @link https://utopia.fyi/type/calculator?c=320,18,1.2,1240,22,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
@@ -49,6 +73,25 @@
 	--fs-3: clamp(1.944rem, 1.6861rem + 1.2896vi, 2.6855rem);
 	--fs-4: clamp(2.3328rem, 1.9766rem + 1.7811vi, 3.3569rem);
 	--fs-5: clamp(2.7994rem, 2.3135rem + 2.4292vi, 4.1962rem);
+
+	/* Utopia font sizes */
+	/* Converted to cqi units */
+
+	--fsq--2: clamp(0.7813rem, 0.7469rem + 0.5151cqi, 0.88rem);
+	--fsq--1: clamp(0.9375rem, 0.881rem + 0.8478cqi, 1.1rem);
+	--fsq-0: clamp(1.125rem, 1.038rem + 1.3044cqi, 1.375rem);
+	--fsq-1: clamp(1.35rem, 1.2217rem + 2.5239cqi, 1.7188rem);
+	--fsq-2: clamp(1.62rem, 1.4362rem + 2.757cqi, 2.1484rem);
+	--fsq-3: clamp(1.944rem, 1.6861rem + 3.8688cqi, 2.6855rem);
+	--fsq-4: clamp(2.3328rem, 1.9766rem + 5.3433cqi, 3.3569rem);
+	--fsq-5: clamp(2.7994rem, 2.3135rem + 7.2876cqi, 4.1962rem);
+
+	/* Line height */
+
+	--lh--1: 1.08;
+	--lh-0: 1.36;
+	--lh-1: 1.7;
+	--lh-2: 2.125;
 
 	/* Utopia space sizes */
 	/* @link https://utopia.fyi/space/calculator?c=320,18,1.2,1240,22,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
@@ -76,13 +119,52 @@
 	/* Custom pairs */
 	--space-s-l: clamp(1.125rem, 0.5598rem + 2.8261vi, 2.75rem);
 
+	/* EM based spacing */
+
+	--space-em-3xs: clamp(0.3125em, 0.2908em + 0.1087vi, 0.375em);
+	--space-em-2xs: clamp(0.5625em, 0.519em + 0.2174vi, 0.6875em);
+	--space-em-xs: clamp(0.875em, 0.8098em + 0.3261vi, 1.0625em);
+	--space-em-s: clamp(1.125em, 1.038em + 0.4348vi, 1.375em);
+	--space-em-m: clamp(1.6875em, 1.5571em + 0.6522vi, 2.0625em);
+	--space-em-l: clamp(2.25em, 2.0761em + 0.8696vi, 2.75em);
+	--space-em-xl: clamp(3.375em, 3.1141em + 1.3043vi, 4.125em);
+	--space-em-2xl: clamp(4.5em, 4.1522em + 1.7391vi, 5.5em);
+	--space-em-3xl: clamp(6.75em, 6.2283em + 2.6087vi, 8.25em);
+
+	/* One-up pairs */
+	--space-em-3xs-2xs: clamp(0.3125em, 0.1821em + 0.6522vi, 0.6875em);
+	--space-em-2xs-xs: clamp(0.5625em, 0.3886em + 0.8696vi, 1.0625em);
+	--space-em-xs-s: clamp(0.875em, 0.7011em + 0.8696vi, 1.375em);
+	--space-em-s-m: clamp(1.125em, 0.7989em + 1.6304vi, 2.0625em);
+	--space-em-m-l: clamp(1.6875em, 1.3179em + 1.8478vi, 2.75em);
+	--space-em-l-xl: clamp(2.25em, 1.5978em + 3.2609vi, 4.125em);
+	--space-em-xl-2xl: clamp(3.375em, 2.6359em + 3.6957vi, 5.5em);
+	--space-em-2xl-3xl: clamp(4.5em, 3.1957em + 6.5217vi, 8.25em);
+
+	/* Custom pairs */
+	--space-em-s-l: clamp(1.125em, 0.5598em + 2.8261vi, 2.75em);
+
+	/* Border radius */
+	--br-s: 0.1875rem;
+	--br-m: 0.25rem;
+	--br-l: 0.5rem;
+	--br-xl: 1rem;
+	--br-circle: 50%;
+	--br-pill: 100vh;
+
 	/* OPI Timer starting values */
-	--transition: 200ms linear;
+	--transition-xs: 100ms;
+	--transition-s: 200ms;
+	--transition-m: 500ms;
+	--transition-l: 1000ms;
+	--transition-xl: 2000ms;
 }
 
 body {
-	min-height: 100vh;
-	background-color: var(--clr-primary-100);
+	min-height: 100svh;
+	background-color: var(--clr-primary-700);
 	font-family: var(--ff-base);
-	font-size: var(--fs-0);
+	font-size: var(--fs-1);
+	color: var(--clr-neutral-100);
+	line-height: var(--lh-1);
 }

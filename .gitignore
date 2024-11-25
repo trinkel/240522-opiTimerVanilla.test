@@ -26,5 +26,12 @@ dist-ssr
 # oversize resources like original image files
 bigResource/
 
-# Playground and contents
+# JS files inadvertantly created by Vite while compiling Typescript with `"noEmit": false` (I was testing something)
+RandomJS-files(root)
+
+# Playground and contents, Misc scratch files
 Playground/
+resource/commitBuilder.md
+
+# Files removed from project
+resource/archive/*

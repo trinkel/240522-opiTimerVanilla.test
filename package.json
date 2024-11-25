@@ -1,21 +1,25 @@
 {
-  "name": "240522-opitimervanilla-stack",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "cssnano": "^7.0.1",
-    "postcss-import": "^16.1.0",
-    "postcss-preset-env": "^9.5.13",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0"
-  },
-  "dependencies": {
-    "date-fns": "^3.6.0"
-  }
+	"name": "240522-opitimervanilla-stack",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"strictDev": "tsc && vite",
+		"build": "tsc && vite build",
+		"forceBuild": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"cssnano": "^7.0.1",
+		"postcss-import": "^16.1.0",
+		"postcss-preset-env": "^9.5.13",
+		"typescript": "^5.2.2",
+		"vite": "^5.2.0",
+		"vite-plugin-static-copy": "^1.0.6"
+	},
+	"dependencies": {
+		"@shoelace-style/shoelace": "^2.16.0",
+		"date-fns": "^3.6.0"
+	}
 }

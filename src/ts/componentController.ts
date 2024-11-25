@@ -1,15 +1,29 @@
-import { format } from 'date-fns'; // just used for debugging for now
 import { TimeController } from './timeController';
 
+import { timeRemaining } from './timeController';
+import { timeUnits } from './timeUtilities';
+
+/**
+ * Indicators - array of indicator element objects
+ *
+ * @export
+ * @interface Indicators
+ * @typedef {Indicators}
+ */
 export interface Indicators {
-	id: string; // element ID
+	id: 'first-music' | 'second-music' | 'end-session'; // element ID
 	element: Element; // progressIndicator custom element
 	timeProperty: string; // name of property with time for element (eg firstWarnTime)
+	targetKey: string; // key for use with timeController for target time reference
+	warnKey: string; // key for use with timeController for warning time reference
+	warnSpecKey: string; // key for use with timeController for warning time length
 	modeValue: number; // Count up or down //! Don't need it but leave it in for posterity or 'just in case'
 	maxValue: number; // Maximum value
 	progressValueInit: number; // Initialization value
 	progressValue: number; // Current value
 	progressComplete: boolean;
+	warnState: 'false' | 'pending' | 'true' | 'ending' | 'end';
+	warnTime: string;
 }
 [];
 
@@ -18,15 +32,11 @@ export interface Indicators {
  */
 export class ComponentController {
 	indicators: Indicators[] = [];
-	sessionStatus = document.querySelector('[data-session-status'); // Temporary status label at bottom of page
 
-	numStarts: number = 0;
+	numberTeams: number = 0;
 	progressComplete: boolean = false;
 	before: Date = new Date();
 	iterator: number = 0;
-
-	deleteCurrent = document.getElementById('current-time') as HTMLElement;
-	deleteBefore = document.getElementById('start-time') as HTMLElement;
 
 	constructor() {
 		// also declares the variable (see https://www.digitalocean.com/community/tutorials/how-to-use-classes-in-typescript#adding-class-properties)
@@ -41,12 +51,17 @@ export class ComponentController {
 					timeProperty: `${id.substring(0, dashIdx)}${id
 						.charAt(dashIdx + 1)
 						.toUpperCase()}${id.substring(dashIdx + 2)}`, // used to access times from class such as firstMusicTime
+					targetKey: '', // key for use with timeController for target time reference
+					warnKey: '', // key for use with timeController for warning time reference
+					warnSpecKey: '', // key for use with timeController for warning time length
 					modeValue: 1, // Count up or down
 					// Zero out properties to initialize then initialize in class)
 					maxValue: 100, // Maximum value
 					progressValueInit: 0, // Initialization value
 					progressValue: 0, // Placeholder - reinitialize in first init
 					progressComplete: false,
+					warnState: 'false',
+					warnTime: '0',
 				});
 			}
 		});
@@ -58,11 +73,8 @@ export class ComponentController {
 	 * Draws all indicators in their initial state (zeroed out).
 	 */
 	flatline(): void {
-		this.deleteCurrent.textContent = '';
-		this.deleteBefore.textContent = '';
 		this.indicators.forEach((indicator) => {
-			// don't need this?:
-
+			// To satisfy TypeScript when used as object property index
 			indicator.element.setAttribute('progress', '0');
 
 			indicator.element.setAttribute('data-progress-count', '0:00');
@@ -73,81 +85,77 @@ export class ComponentController {
 			);
 
 			indicator.element.setAttribute('data-progress-state', 'pending');
-
-			console.log(`ZERO: ${indicator.element.getAttribute('progress')}`);
 		});
 	}
 
-	//TODO [240812 Start integrating practice time data]
-	//TODO  if teamMode=list: get duration/start-time from date else if teamMode=anonymous: get duration/start-time from parameters (all duration will be the same, start-time will be from form or from button)
-	//TODO  Need to change getting duration from element to getting duration of each timer from data or parameters. Should be able to use element name ("indicator") from loop.
-	//TODO  Routine to route element name to data name (first-warn to firstWarn) is above
-	//TODO [DO THIS FIRST]  So, in each indicator below, we need to test for data. If it's there, setAttribute to data, otherwise set it to value-max (which we have now). Or do we eliminate the fallback on the element?
+	setWarnState(indicator: Indicators, state: string, force?: 'force') {
+		switch (state) {
+			case 'false':
+				if (indicator.warnState !== 'false' || force) {
+					indicator.element.setAttribute('data-progress-warn-state', 'false');
+					indicator.warnState = 'false';
+				}
+				break;
+			//HERE: Pending not right 2nd loop?
+			case 'pending':
+				if (indicator.warnState !== 'pending') {
+					indicator.element.setAttribute('data-progress-warn-state', 'pending');
+					indicator.warnState = 'pending';
+				}
+				break;
+			case 'true':
+				if (indicator.warnState !== 'true') {
+					indicator.element.setAttribute('data-progress-warn-state', 'true');
+					indicator.warnState = 'true';
+				}
+				break;
+			case 'ending':
+				if (indicator.warnState !== 'ending') {
+					indicator.element.setAttribute('data-progress-warn-state', 'ending');
+					indicator.warnState = 'ending';
+				}
+				break;
+			case 'end':
+				if (indicator.warnState !== 'end') {
+					indicator.element.setAttribute('data-progress-warn-state', 'end');
+					indicator.warnState = 'end';
+				}
+				break;
+		}
+	}
 
 	init(timeController: TimeController): void {
 		this.iterator = 0;
+		// console.log(`[init] Iteration: ${this.iterator}`);
 		const now = timeController.current;
 
-		//! Was a numStarts routine which is moving to main.ts
-		// this.numStarts = numStarts;
-		// if (this.numStarts <= 0) {
-		// 	this.sessionStatus
-		// 		? (this.sessionStatus.textContent = 'Group completed')
-		// 		: null;
-		// 	return;
-		// }
 		this.indicators.forEach((indicator) => {
-			// This will use the timeProperty as the name of the property holding the max time for the timer.
-			// Set timer start value:
-			//  Countdown = max value
-			//  Count-up = 0
+			// Uses the timeProperty as the name of the property holding the max time for the timer.
 
-			// HERE: [240812] Replace console.log with time string for timer the keep filling this component with input from timeController. Remove outer loop (numStarts)  and move to init call in main.ts. See note at bottom of main.ts file
-			// TODO: [240813] See note in timeController for getters. (Afternoon:) The function seems to work for the console.log now. Apply to the element.
-			// TODO: [240813] NEXT: Assign times to timers and compare to console.logs
-			// TODO: [240813] THINK: Maybe we just need to add one second for the init round instead of futzing in timeRemaining method to hack the way the date function is rounding down one second to at the start?
 			if (timeController.duration) {
-				// To satisfy TypeScript when used as object property index
-				const key = `${indicator.timeProperty}Time`;
+				// key for use with timeController for target time reference
+				indicator.targetKey = `${indicator.timeProperty}Time`;
 
-				// now (Not used in init)
-				console.log(
-					`[INIT] Team Start Time: ${
-						timeController.startTime
-					} (Epoch: ${timeController.startTime.getTime()})`
-				);
+				// key for use with timeController for warning time reference
+				indicator.warnKey = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warning'
+				)}Time`;
 
-				// Timer target date/time
-				console.log(
-					`[INIT] Element ${indicator.element.id} target date/time: ${
-						timeController[key]
-					} (Epoch: ${timeController[key].getTime()})`
-				);
+				// key for use with timeController for warning time length
+				indicator.warnSpecKey = `${indicator.timeProperty.replace(
+					/Music|Session/,
+					'Warning'
+				)}`;
 
-				// Timer timeRemaining (display)
-				console.log(
-					`[INIT] Element ${indicator.element.id} timeRemaining (display): ${
-						timeController.remainingTime(timeController[key], now).display
-					}`
-				);
-				// timer timeRemaining (progress)
-				console.log(
-					`[INIT] Element ${indicator.element.id} timeRemaining (progress): ${
-						timeController.remainingTime(timeController[key], now).progress
-					}`
-				);
+				// String of warning time for the timer in seconds
+				indicator.warnTime = `${
+					timeController.sessionSpec[`${indicator.warnSpecKey}`] *
+					timeUnits.minutes
+				}`;
 
-				// end
-				console.log(`[INIT] Team End Time: ${timeController.endTime}`);
-
-				/* 	 				`${indicator.element.id} | ${timeController.duration} | ${
-						indicator.timeProperty
-					} | ${timeController[key]} | ${
-						timeController.remainingTime(timeController[key],now).display
-					} | ${timeController.remainingTime(timeController[key],now).progress}`
- */
 				indicator.maxValue = timeController.remainingTime(
-					timeController[key],
+					timeController[indicator.targetKey],
 					now
 				).progress;
 
@@ -164,12 +172,8 @@ export class ComponentController {
 
 				// Set initial progress value as current progress value (for start)
 				indicator.progressValue = indicator.progressValueInit;
-				//! need an indicator.someThing (indicator.textValue) here for time text
 
 				// Set progress attribute of timer
-				//HERE [240814] Fix this to set timeRemaining text. (I think the timers are working right, but the visuals aren't reflecting the status. Be sure ARIA is updated too.)
-				//! [240814 Last thing] When this attribute changes, progressIndicator component sets bar and text. We will need to split this into two elements
-				//! [FUTURE REFERENCE] The clock can work the same way assigning the same attribute. (Clock change: newTime > oldTime ? update : don't; so it doesn't flash with same number)
 				indicator.element.setAttribute(
 					'progress',
 					indicator.progressValue.toString()
@@ -177,36 +181,22 @@ export class ComponentController {
 
 				indicator.element.setAttribute(
 					'data-progress-count',
-					timeController.remainingTime(timeController[key], now).display
+					timeController.remainingTime(timeController[indicator.targetKey], now)
+						.display
 				);
 
-				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
-
-				console.log(
-					`[INIT] CURRENT TEST: ${indicator.progressValue.toString()}`
-				);
-
-				//! We may not need this. Control passed to timeController
-				/* 				indicator.progressValueInit = indicator.modeValue
-					? indicator.maxValue
-					: 0;
-				indicator.maxValue = Number(
-					indicator.element.getAttribute('value-max')
-				);
-
-				indicator.progressValueInit = indicator.modeValue
-					? indicator.maxValue
-					: 0;
-
-				indicator.progressValue = indicator.progressValueInit;
-
+				// set warning badge
 				indicator.element.setAttribute(
-					'progress',
-					indicator.progressValue.toString()
+					'data-progress-warn',
+					`${indicator.warnTime}`
 				);
+
+				this.setWarnState(indicator, 'false', 'force');
+
 				indicator.element.setAttribute('data-progress-state', 'pending'); //! Sets timer status. Do we need it?
- */
 			}
+
+			this.before = timeController.current;
 		});
 	}
 
@@ -215,99 +205,67 @@ export class ComponentController {
 		 * @Description Get the current time. If `warp` is defined, manipulate time for debug or demo purposes.
 		 * @parameters for `warpJump`: current time and previous time.
 		 */
-		console.log(`[TIMER] WWWWWWWWWWWARP: ${timeController.warp}`);
+
 		const now =
 			timeController.warp === 1
 				? timeController.current
 				: timeController.warpJump(this.before);
 
-		// DELETE
-		this.deleteCurrent.textContent = format(now, 'h:mm:ss');
-		this.deleteBefore.textContent = format(this.before, 'h:mm:ss');
-
 		// initialize progress complete test for each loop
-		//! Use the status attribute?
 		this.progressComplete = true;
 
 		// This may be unused
 		this.sessionStatus
-			? (this.sessionStatus.textContent = this.numStarts.toString())
+			? (this.sessionStatus.textContent = this.numberTeams.toString())
 			: null; //! Display group number. Do we want it?
 
 		// Run the logic only if the time has changed
 		//! Decide if you want this to only run after full second delay as originally written or just let it go.
 		// if (now > this.before) {
 		if (true) {
-			console.log(
-				`[TIMER] ${now}---RUN TIMER LOOP ${this.iterator}---${this.before}`
-			);
-
 			this.indicators.forEach((indicator) => {
 				// Manage timer--not using decrement that was developed with the component. We check the time every loop.
 
 				/**
-				 * @var target
-				 * @description To satisfy TypeScript when used as object property index.
-				 * @example #first-music becomes firstMusicTime
-				 * @use timeController[target]
-				 *      points at timeController->get firstMusic(): Date
-				 */
-				const target = `${indicator.timeProperty}Time`;
-
-				/**
-				 * @var warn
-				 * @description To satisfy TypeScript when used as object property index. Gets the warning time for the current indicator.
-				 * @example #first-music becomes firstWarnTime
-				 * @use timeController[warn]
-				 *      points at timeController->get firstWarn(): Date
-				 */
-				const warn = `${indicator.timeProperty.replace(
-					/Music|Session/,
-					'Warn'
-				)}Time`;
-
-				/**
-				 * @var currentTarget
+				 * @var currentTarget: timeRemaining
 				 * @description Find time remaining to target for each timer. Returns an object of {progressValue:, displayValue:}
 				 */
-				const currentTarget = timeController.remainingTime(
-					timeController[target],
-					now
+				const currentTarget: timeRemaining = { display: '', progress: 0 };
+				Object.assign(
+					currentTarget,
+					timeController.remainingTime(timeController[indicator.targetKey], now)
 				);
-				console.log(
-					`[TIMER] --RUNNING Target [1] ${indicator.timeProperty}[${target}]:`
-				);
-				console.dir(currentTarget);
 
 				/**
-				 * @var currentWarn
+				 * @var currentWarn: timeRemaining
 				 * @description Find time remaining to warning for each timer. Returns and object of {progressValue:, displayValue:}
 				 */
-				const currentWarn = timeController.remainingTime(
-					timeController[warn],
-					now
+				const currentWarn: timeRemaining = { display: '', progress: 0 };
+				Object.assign(
+					currentWarn,
+					timeController.remainingTime(timeController[indicator.warnKey], now)
 				);
+
+				// if (indicator.targetKey === 'firstMusicTime') {
+				// 	console.log(
+				// 		`currentTarget: ${indicator.targetKey} | ${
+				// 			timeController[indicator.targetKey]
+				// 		} | Time Remaining ${currentTarget.display}`
+				// 	);
+				// 	console.log(
+				// 		`Warn: ${indicator.warnKey} | ${
+				// 			timeController[indicator.warnKey]
+				// 		} | Time Remaining ${currentWarn.display}`
+				// 	);
+				// }
 
 				//TODO.future: May be able to refactor progressValue and currentTarget.progress together?
 				indicator.progressValue = currentTarget.progress;
 
-				// Debugging
-				console.log(
-					`[TIMER] --RUNNING Warn ${indicator.timeProperty}:[${warn}]`
-				);
-				console.dir(currentWarn);
-
-				console.log(
-					`[TIMER] --RUNNING Target ${indicator.timeProperty}:[${target}]`
-				);
-				console.dir(currentTarget);
-				// End Debugging
-
 				if (indicator.modeValue) {
 					// Countdown timers
-					console.log(
-						`[TIMER 302] progressValue [${target}]: ${indicator.progressValue.toString()}`
-					);
+
+					// Wrangle counter
 					indicator.element.setAttribute(
 						'progress',
 						indicator.progressValue.toString()
@@ -316,6 +274,43 @@ export class ComponentController {
 						'data-progress-count',
 						currentTarget.display
 					);
+
+					//------------------------------DELETE LINE
+					// Wrangle warning badge state
+					//! combine with the setWarnState func?
+					if (
+						currentWarn.progress <= 0 + timeController.pendingWarn &&
+						indicator.warnState !== 'pending' &&
+						indicator.warnState !== 'true' &&
+						indicator.warnState !== 'end'
+					) {
+						this.setWarnState(indicator, 'pending');
+					}
+
+					// Wrangle warning badge on
+					if (
+						currentWarn.progress <= 0 &&
+						indicator.warnState !== 'true' &&
+						indicator.warnState !== 'end'
+					) {
+						this.setWarnState(indicator, 'true');
+					}
+
+					// Wrangle warning badge session ending
+					if (indicator.id === 'end-session') {
+						if (
+							currentTarget.progress <= 0 + timeController.pendingEndSession &&
+							indicator.warnState !== 'end' &&
+							indicator.warnState !== 'ending'
+						) {
+							this.setWarnState(indicator, 'ending');
+						}
+					}
+
+					// Wrangle warning badge end timer
+					if (currentTarget.progress <= 0 && indicator.warnState !== 'end') {
+						this.setWarnState(indicator, 'end');
+					}
 				} else {
 					// Count-up timers (future use)
 				}
@@ -326,12 +321,6 @@ export class ComponentController {
 				) {
 					this.progressComplete = false;
 				}
-
-				console.log(
-					`[TIMER 324] data-progress-state [${target}]: ${indicator.element.getAttribute(
-						'data-progress-state'
-					)} | timer.progressComplete: ${this.progressComplete}`
-				);
 			});
 		}
 
@@ -339,17 +328,15 @@ export class ComponentController {
 		this.before = now;
 		// Reference value
 		this.iterator++;
-
-		//HERE [240826] Looping seems to work to a certain extent. Count and display work. First progressComplete works. Does not go into next team. Continues counting down into negative numbers. I also think the clocks start at target values and switch to warning values on first tick. Init starts one second short.
-		//! But it's a start!
 	}
 
 	startTimer(timeController: TimeController) {
 		return new Promise<void>((resolve, reject) => {
-			const intervalId = setInterval(() => {
+			const startTimeIntvId = setInterval(() => {
 				this.timer(timeController);
+				// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
 				if (this.progressComplete) {
-					clearInterval(intervalId);
+					clearInterval(startTimeIntvId);
 					resolve();
 				}
 			}, timeController.tick);
@@ -357,7 +344,7 @@ export class ComponentController {
 	}
 
 	complete(): void {
-		console.log(`[COMPLETE] ---Process Complete: ${this.numStarts}`);
+		console.log(`[COMPLETE] ---Process Complete: ${this.numberTeams}`);
 	}
 }
 

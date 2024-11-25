@@ -1,46 +1,63 @@
-:root {
-	--progress-indicator-color-complete: var(--clr-critical-100);
-	--progress-indicator-progress-stroke: var(--clr-active-700);
-	--progress-indicator-bg-stroke: var(--clr-neutral-100);
+progress-indicator {
+	width: 100%;
+	max-width: 50vh;
 }
 
 .progress-indicator {
 	font-family: var(--font-base);
 	line-height: 1.1;
-	color: var(--color-dark);
 	container-type: inline-size;
-	width: var(--progress-indicator-viewbox);
+	/* todo: delete comment. Can probably loose --progress-indicator-viewbox: 100px assignment in component? This has to do with scaling indicator circles.*/
+	/* width: var(--progress-indicator-viewbox); */
+	/* width: 100%; */
 	height: auto;
 }
 
 .progress-indicator__progress-circle {
-	stroke: var(--progress-indicator-progress-stroke, currentColor);
-	transition: stroke-dashoffset var(--transition);
+	stroke: var(--clr-progress-indicator-700, currentColor);
+	transition: stroke-dashoffset var(--transition-s) linear,
+		stroke var(--transition-s) ease-out;
 	/* ! Note: The transform-origin doesn't work in Safari, so I moved the rotation to the SVG */
 	/* rotate: -90deg;
 	transform-origin: 50% 50%; */
 }
 
 .progress-indicator__background-circle {
-	stroke: var(--progress-indicator-bg-stroke, gray);
+	stroke: var(--clr-progress-indicator-100);
+	fill: var(--clr-progress-indicator-400);
+	transition: fill var(--transition-s) ease-out,
+		stroke var(--transition-s) ease-out;
 }
 
 .progress-indicator__check {
 	width: var(--progress-indicator-check-size, 60cqw);
 	height: auto;
-	display: none;
+	opacity: 0;
+	color: var(--clr-neutral-900);
+	transition: opacity var(--transition-s) ease-out;
+}
+
+.progress-indicator__count-container {
+	display: grid;
+	grid-template-rows: 1.5fr 1fr;
+	justify-items: center;
+	align-items: center;
+	text-align: center;
 }
 
 .progress-indicator__count {
 	font-size: var(--progress-indicator-count-size, max(25cqw, 1rem));
 	z-index: 1;
+	opacity: 1;
+	transition: opacity var(--transition-s) ease-out;
 }
 
 .progress-indicator__visual {
 	display: grid;
 	grid-template-areas: 'stack';
-	align-items: center;
+	/* align-items: center; */
 	place-items: center;
+	color: var(--clr-neutral-900);
 }
 
 .progress-indicator__visual > * {
@@ -48,14 +65,120 @@
 }
 
 /* Respond to data-progress-state change in JS */
-[data-progress-state='complete'] .progress-indicator__progress-circle {
-	fill: var(--progress-indicator-color-complete);
+[data-progress-state='complete'] {
+	--clr-progress-indicator-700: var(--clr-active-700);
+	--clr-progress-indicator-400: var(--clr-active-100);
+
+	/* .progress-indicator__progress-circle {
+		fill: var(--clr-progress-indicator-700);
+	}
+	.progress-indicator__background-circle {
+		stroke: var(--clr-progress-indicator-700);
+	} */
+	.progress-indicator__count {
+		opacity: 0;
+		transition: opacity var(--transition-m) ease-out 8s;
+	}
+	.progress-indicator__check {
+		opacity: 1;
+		transition: opacity var(--transition-m) ease-out 8.5s;
+	}
 }
 
-[data-progress-state='complete'] .progress-indicator__count {
-	display: none;
+/* Handle changes in warning states
+/* States: false, pending, true, ending, end */
+
+/* Colors */
+/* Before timers start */
+[data-progress-warn-state='false'] {
+	--clr-progress-indicator-700: var(--clr-active-700);
+	--clr-progress-indicator-400: var(--clr-neutral-000);
 }
 
-[data-progress-state='complete'] .progress-indicator__check {
-	display: revert;
+/* Before warning state (green) */
+[data-progress-warn-state='pending'] {
+	--clr-progress-indicator-700: var(--clr-active-700);
+	--clr-progress-indicator-400: var(--clr-neutral-000);
+}
+
+/* "Current" timer highlighted */
+:nth-child(1 of [data-progress-state='pending']) {
+	&[data-progress-warn-state='false'],
+	&[data-progress-warn-state='pending'] {
+		--clr-progress-indicator-400: var(--clr-active-100);
+		--clr-progress-indicator-100: var(--clr-neutral-000);
+	}
+
+	&[data-progress-warn-state='true'] {
+		--clr-progress-indicator-100: var(--clr-neutral-000);
+	}
+}
+
+/* Warning state (yellow) */
+[data-progress-warn-state='true'] {
+	--clr-progress-indicator-700: var(--clr-warning-700);
+	--clr-progress-indicator-400: var(--clr-warning-100);
+}
+
+/* End state (red) */
+[data-progress-warn-state='ending'],
+[data-progress-warn-state='end'] {
+	--clr-progress-indicator-700: var(--clr-critical-700);
+	--clr-progress-indicator-400: var(--clr-critical-100);
+}
+
+/* Handle changes in warning states: Badge visibility
+/* States: false, pending, true, ending, end */
+
+/* Return to start */
+[data-progress-warn-state='false'] {
+	[data-progress-warn-el] {
+		/* display: none; */
+		opacity: 0;
+		transition: opacity var(--transition-s) ease-out;
+	}
+}
+
+/* #end-session {
+	&[data-progress-warn-state='false'],
+	&[data-progress-state='complete'] {
+		[data-progress-warn-el] {
+			display: none;
+			opacity: 0;
+			transition: opacity var(--transition-s) ease-out 0s;
+		}
+	}
+} */
+
+/* Middle states */
+[data-progress-warn-state='pending'],
+[data-progress-warn-state='true'] {
+	[data-progress-warn-el] {
+		/* display: revert; */
+		opacity: 1;
+		transition: opacity var(--transition-s) ease-out;
+	}
+}
+
+/* End state */
+[data-progress-state='complete'] {
+	[data-progress-warn-el] {
+		/* display: none; */
+		opacity: 0;
+		transition: opacity var(--transition-m) ease-out 8.5s;
+	}
+}
+
+/* Special space for pulse state */
+[data-progress-warn-state='pending'] [data-progress-warn-el] {
+	&::part(base) {
+		padding: 1em;
+	}
+	slot {
+		display: none;
+	}
+}
+
+[data-progress-title] {
+	text-align: center;
 }

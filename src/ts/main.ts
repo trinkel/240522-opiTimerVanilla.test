@@ -1,62 +1,153 @@
+// ProgressIndicator Component
 import ProgressIndicator from '../components/progressIndicator';
-// sample data: remove or add a demo switch
+
+// Shoelace Components
+import '@shoelace-style/shoelace/dist/components/badge/badge.js';
+import '@shoelace-style/shoelace/dist/components/button-group/button-group.js';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/card/card.js';
+import '@shoelace-style/shoelace/dist/components/drawer/drawer.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@shoelace-style/shoelace/dist/components/input/input.js';
+import '@shoelace-style/shoelace/dist/components/option/option.js';
+import '@shoelace-style/shoelace/dist/components/radio-button/radio-button.js';
+import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@shoelace-style/shoelace/dist/components/select/select.js';
+import '@shoelace-style/shoelace/dist/components/textarea/textarea.js';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
+
+// DateFNS Utility
 import { isBefore } from 'date-fns';
+
+// Settings
 import { Parameters } from '../components/parameters';
+
+// Layout and Control
+import { ClockBadges } from './clockBadges';
 import { ComponentController } from './componentController';
+import { ControlButtons } from './controlButtons';
 import { TimeController } from './timeController';
 
 // Passthrough component module
 export * from '../components/progressIndicator';
 export default ProgressIndicator;
 
+// Application settings (includes settings form)
 const parameters = new Parameters();
 
-const sessionStatus = document.querySelector('[data-session-status]'); // Temporary status label at bottom of page --- //! Now it's in ComponentController.ts?
-//TODO: [240716]: •Figure out loop •Figure out how `groupStartTime` works
-//TODO: ANSWER: groupStartTime isn't passed to timeController (as I originally had it). It is used for the initial start of the session. startTime inside of timeController is set to current time on instantiation (beginning of each team) and is the basis for the timing of each team--[rewrite this as a permanent comment of explanation rather than explaining change]--
+const clockOn: boolean = false; //! Flag. Change to parameters.idle? Receives click to start timer in manual mode
 
 const timeController = new TimeController(
-	parameters.sessionLength,
+	parameters.practiceLength,
 	parameters.tick,
-	parameters.warp
+	parameters.pendingWarn,
+	parameters.pendingEndSession,
+	parameters.warp,
+	parameters.groupStartType,
+	parameters.groupStartTime
 );
 
-//TODO [240812 Start integrating practice time data]
-//TODO Should timeController instantiate here and pass to componentController or instantiate in componentController? At this point, yes. See pseudo code at bottom of file
+// Instantiate clock badges. Start current time badge
+const clockBadges = new ClockBadges(new Date(), timeController.tick);
 
-//TODO [240812 (later)] add method to timer component to rewind clock at team complete
-
-console.log(`Group Start Time: ${parameters.groupStartTime}`);
 // Instantiate main control loop
+//ToDo:
 // Start based on parameters.groupStartTime or a start button
 const componentController = new ComponentController();
+
+const controlButtons = new ControlButtons();
 
 // Initialize the timers, wait for start time
 // TODO [240813 (soon)] init on app launch (or param set) to set duration in timers. Start timer functions on groupStartTime or start button
 componentController.init(timeController);
 
-//! TODO Initial attempt at initializing and then waiting to run timers. Make this prettier.
+//! TODO Initial attempt at initializing and then waiting to run timers. Make this prettier. (Not being used, but save for reference)
 // Initialize and run the timers
-const waitTimer = (): void => {
-	if (isBefore(new Date(), parameters.groupStartTime)) {
-		console.log('.');
-		setTimeout(waitTimer, 2000);
-	} else {
-		componentController.init(timeController);
-	}
-};
+
+async function waitTimer(): Promise<void> {
+	return new Promise<void>(() => {
+		const waitTimeIntvId = setInterval(() => {
+			parameters.scheduleSet
+				? console.log('waitTimer: pending')
+				: console.log('waitTimer: hold');
+			const goTimer = (): void => {
+				switch (parameters.groupStartType) {
+					case 'manual':
+						if (clockOn) {
+							clearInterval(waitTimeIntvId);
+							startPracticeGroup(timeController);
+						}
+						break;
+					case 'scheduled':
+						if (!parameters.scheduleSet) {
+							break;
+						}
+
+						if (parameters.groupStartTime && !parameters.clocksSet) {
+							const timeController = new TimeController(
+								parameters.practiceLength,
+								parameters.tick,
+								parameters.pendingWarn,
+								parameters.pendingEndSession,
+								parameters.warp,
+								parameters.groupStartType,
+								parameters.groupStartTime
+							);
+							console.log(
+								`[waitTimer] parameters.groupStartTime: ${parameters.groupStartTime}`
+							);
+
+							console.log(
+								`[waitTimer] timeController.groupStartTime: ${timeController.groupStartTime}`
+							);
+							clockBadges.setClocksStartTime(timeController.groupStartTime);
+							clockBadges.setClocksEndTime(timeController.endSession);
+							parameters.clocksSet = true;
+						}
+
+						if (!isBefore(new Date(), parameters.groupStartTime)) {
+							clearInterval(waitTimeIntvId);
+							startPracticeGroup(timeController);
+						}
+						break;
+					default:
+						clearInterval(waitTimeIntvId);
+						startPracticeGroup(timeController);
+				}
+			};
+			// console.log('timerWait');
+			goTimer();
+		}, 1000); //parameters.tick
+		// ToDo: add a slow tick, maybe 1000?
+	});
+}
 
 // Start a group of teams
 async function startPracticeGroup(timeController: TimeController) {
 	try {
-		for (let i = 0; i < parameters.numStarts; i++) {
+		for (let i = 0; i < parameters.numberTeams; i++) {
 			console.log(
 				`[START PRACTICE GROUP] ---START TEAM NUMBER ${i + 1} out of ${
-					parameters.numStarts
+					parameters.numberTeams
 				}---`
 			);
+			timeController = new TimeController(
+				parameters.practiceLength,
+				parameters.tick,
+				parameters.pendingWarn,
+				parameters.pendingEndSession,
+				parameters.warp,
+				parameters.groupStartType,
+				i ? timeController.endSessionTime : parameters.groupStartTime
+				// parameters.groupStartTime
+				//! 241121  Not passing a parameter here relies on new Date() in time controller to set the next start time. That may not be all that accurate. At least once we were off by a second for the startTime. Could have been caused by the slower tick? Maybe what we need to do is reset individual properties rather than re-instantiate. Maybe just run the constructor (or it's functions) again. Or endTime becomes startTime and figure new endTime. Would be a good place to insert new session lengths.
+			);
+
+			// Initialize new team session
 			componentController.init(timeController);
-			//! The time is off because first time through delays the tick amount?
+			clockBadges.setClocksStartTime(timeController.teamStartTime);
+			clockBadges.setClocksEndTime(timeController.endSession);
+			// Run new team session
 			await componentController.startTimer(timeController);
 		}
 	} catch (error) {
@@ -68,22 +159,11 @@ async function startPracticeGroup(timeController: TimeController) {
 }
 
 //! Call waitTimer
-// waitTimer();
+waitTimer();
 
 // Call appRunner (Replaces waitTimer)
-startPracticeGroup(timeController);
-
-//! Original appRunner (until 240826-AsyncAwait)
-/* componentController.init(timeController);
-
-for (let i = 0; i < parameters.numStarts; i++) {
-	console.log(
-		`---START TEAM NUMBER ${i + 1} out of ${parameters.numStarts}---`
-	);
-	componentController.init(timeController);
-	componentController.startTimer(timeController); //async? startTimer (can have .then)?
-}
- */
+//!241114
+// startPracticeGroup(timeController);
 
 //! This one will not be held back
 componentController.complete();
@@ -91,29 +171,10 @@ componentController.complete();
 //! OK, so here's the deal
 /*
  * Instantiate a new instance of Parameters
- * Instantiate a new instance of ComponentController passing it numStarts (instead of looping on number of teams?) (see wrangling above. Should that be changing params.numStart rather than a new var?)
+ * Instantiate a new instance of ComponentController passing it numberTeams (instead of looping on number of teams?) (see wrangling above. Should that be changing params.numStart rather than a new var?)
  * Instantiate a new instance of TimeController passing it params[sessionLength,groupStartTime(?)]
  *     // Actually, do we need to call this before we have a startTime, or even before startTime arrives?
  *     // groupStartTime is already a Date object
  *     // There has to be a start time. If session hasn't started and it's manual, start is now and duration is 0? Then call with duration on start click?
  *     // constructor needs to be rewritten to do what it's doing, but without the loop.
- */
-
-//! Timer Loop
-/* const componentController = new ComponentController(parameters);
-
-for (let i = 0; i <= parameters.numStarts; i++) {
-	// if teamMode = list
-	//teams[i].duration
-	let timeController = new TimeController(
-		parameters.sessionLength,
-		parameters.groupStartTime
-	)
-
-	componentController.init(timeController)
-}
-
-
-//export class ComponentController
-constructor(parmeters.tick) {
  */
