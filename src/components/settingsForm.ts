@@ -93,12 +93,12 @@ export class SettingsForm {
 						this.operationMode
 					}" required>
 						<sl-tooltip content="Group based on Number of teams only">
-							<sl-radio-button value="anonymous" pill>
+							<sl-radio-button id="anonymous-mode" name="anonymous-mode" value="anonymous" pill>
 								Anonymous
 							</sl-radio-button>
 						</sl-tooltip>
 						<sl-tooltip content="Supply list of teams">
-							<sl-radio-button id="team-list" name="team-list" value="list" pill>
+							<sl-radio-button id="team-list-mode" name="team-list-mode" value="list" pill>
 								Team List
 							</sl-radio-button>
 						</sl-tooltip>
