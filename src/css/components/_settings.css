@@ -80,7 +80,7 @@ form {
 :not(#team-list) {
 	&::part(form-control-input),
 	&::part(display-input) {
-		width: min-content;
+		width: max-content;
 	}
 }
 
