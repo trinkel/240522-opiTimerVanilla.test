@@ -94,10 +94,7 @@ div.save {
 
 /* Form reveals: Initially hidden */
 
-#pause-between-selector[value='no'] ~ #pause-length,
-#operation-mode-selector[value='anonymous']
-	~ #team-list-mode
-	#operation-mode-selector[value='list']
-	~ #number-teams {
-	display: none;
+form [disabled] {
+	opacity: 0.4;
+	transition: opacity 3ms ease-in-out;
 }
