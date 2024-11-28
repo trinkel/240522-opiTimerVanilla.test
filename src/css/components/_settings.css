@@ -35,16 +35,19 @@
 /* Form */
 /* Form general style */
 form {
+	--row-gap: 0.25rem;
+	--column-gap: 2rem;
+
 	display: grid;
 	grid-template-rows: auto;
-	gap: 0rem 2rem;
+	gap: var(--row-gap) var(--column-gap);
 	max-width: max-content;
 
 	text-align: left;
 
 	fieldset {
 		display: grid;
-		gap: 0rem 2rem;
+		gap: var(--row-gap) var(--column-gap);
 		/* grid-template-columns: 1fr 1fr; */
 		grid-template-rows: auto;
 		border: none;
@@ -57,12 +60,15 @@ form {
 	@media (width > 32rem) {
 		fieldset,
 		.save {
-			grid-template-columns: 1fr 1fr;
-			gap: 0rem 2rem;
+			grid-template-columns: repeat(2, 1fr);
 		}
 		#close-drawer {
 			grid-column: 2 /-1;
 		}
+	}
+
+	#team-list {
+		grid-column: 1 / -1;
 	}
 }
 
@@ -71,16 +77,19 @@ form {
 	font-weight: 700;
 }
 
+:not(#team-list) {
+	&::part(form-control-input),
+	&::part(display-input) {
+		width: min-content;
+	}
+}
+
 div.save {
 	display: grid;
 }
 
 #close-drawer {
 	width: 100%;
-}
-
-#team-list {
-	grid-column: 1 / -1;
 }
 
 /* Form reveals: Initially hidden */

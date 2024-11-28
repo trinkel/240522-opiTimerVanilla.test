@@ -34,7 +34,7 @@ export class SettingsForm {
 		public demo: boolean
 	) {
 		const settingsForm: string = `
-		<sl-drawer label="Settings" id="settings" style="--size: max-content">
+		<sl-drawer label="Settings" id="settings" style="--size: max-content" open>
 			<form id="settings-form">
 				<fieldset id="start">
 					<sl-radio-group id="start-type"
@@ -56,9 +56,6 @@ export class SettingsForm {
 							this.groupStartTimeStr
 						}" autofocus
 						required></sl-input>
-				</fieldset>
-
-				<fieldset id="timing">
 					<sl-select id="practice-length" name="practice-length"
 						class="label-on-left" label="Practice Length"
 						help-text="Practice Length from schedule or 104" value="${this.practiceLength.toString()}" clearable
@@ -71,6 +68,9 @@ export class SettingsForm {
 						<sl-option value="11">11 minutes</sl-option>
 						<sl-option value="12">12 minutes</sl-option>
 					</sl-select>
+				</fieldset>
+
+				<fieldset id="timing">
 					<sl-radio-group id="pause-between-selector"
 						name="pause-between-selector" class="label-on-left"
 						label="Pause between teams"
