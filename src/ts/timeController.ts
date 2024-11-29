@@ -10,7 +10,7 @@ import {
 
 import { groupStartTypeTypes, warpFactors } from '../components/parameters';
 import { practiceTimes } from '../data/practiceTimes';
-import { timeUnits } from './timeUtilities';
+import { timeUnits } from '../utilities/timeUtilities';
 
 interface sessionSpec {
 	[specKey: string]: any; // Index Signature (Parameter): used as array index string for indicator.maxValue in componentController.ts to keep TypeScript happy

@@ -1,7 +1,7 @@
 import { TimeController } from './timeController';
 
+import { timeUnits } from '../utilities/timeUtilities';
 import { timeRemaining } from './timeController';
-import { timeUnits } from './timeUtilities';
 
 /**
  * Indicators - array of indicator element objects

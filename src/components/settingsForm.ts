@@ -1,4 +1,4 @@
-import { stringifySeconds } from '../ts/timeUtilities';
+import { stringifySeconds } from '../utilities/timeUtilities';
 
 import {
 	groupStartTypeTypes,
