@@ -95,9 +95,13 @@ async function waitTimer(): Promise<void> {
 			const goTimer = (): void => {
 				switch (parameters.groupStartType) {
 					case 'manual':
-						if (clockOn) {
+						if (!parameters.scheduleSet) {
+							break;
+						} else {
+							setClocks();
 							clearInterval(waitTimeIntvId);
 							startPracticeGroup(timeController);
+							// Start the stuff
 						}
 						break;
 					case 'scheduled':

@@ -39,6 +39,15 @@ export class ControlButtons {
 
 			case 'current-start':
 				console.log(`target: ${targetId}`);
+				//! start button
+				// set parameters.groupStartType to manual
+				// set parameters.groupStartTime = now
+				// set parameters.scheduleSet
+				// set parameters.idle false
+				// change to stop button
+				//! pause button
+				// No stop, just pause? Stop would be "next team"?
+				// set idle true
 				break;
 
 			case 'current-skip-end':
