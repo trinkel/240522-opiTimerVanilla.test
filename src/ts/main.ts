@@ -50,6 +50,28 @@ const timeController = new TimeController(
 // Instantiate clock badges. Start current time badge
 const clockBadges = new ClockBadges(new Date(), timeController.tick);
 
+const setClocks = () => {
+	const timeController = new TimeController(
+		parameters.practiceLength,
+		parameters.tick,
+		parameters.pendingWarn,
+		parameters.pendingEndSession,
+		parameters.warp,
+		parameters.groupStartType,
+		parameters.groupStartTime
+	);
+	console.log(
+		`[waitTimer] parameters.groupStartTime: ${parameters.groupStartTime}`
+	);
+
+	console.log(
+		`[waitTimer] timeController.groupStartTime: ${timeController.groupStartTime}`
+	);
+	clockBadges.setClocksStartTime(timeController.groupStartTime);
+	clockBadges.setClocksEndTime(timeController.endSession);
+	parameters.clocksSet = true;
+};
+
 // Instantiate main control loop
 //ToDo:
 // Start based on parameters.groupStartTime or a start button
@@ -84,25 +106,8 @@ async function waitTimer(): Promise<void> {
 						}
 
 						if (parameters.groupStartTime && !parameters.clocksSet) {
-							const timeController = new TimeController(
-								parameters.practiceLength,
-								parameters.tick,
-								parameters.pendingWarn,
-								parameters.pendingEndSession,
-								parameters.warp,
-								parameters.groupStartType,
-								parameters.groupStartTime
-							);
-							console.log(
-								`[waitTimer] parameters.groupStartTime: ${parameters.groupStartTime}`
-							);
-
-							console.log(
-								`[waitTimer] timeController.groupStartTime: ${timeController.groupStartTime}`
-							);
-							clockBadges.setClocksStartTime(timeController.groupStartTime);
-							clockBadges.setClocksEndTime(timeController.endSession);
-							parameters.clocksSet = true;
+							setClocks();
+							//! Need an error handler for if no groupStartTime. Otherwise, don't bother checking for it.
 						}
 
 						if (!isBefore(new Date(), parameters.groupStartTime)) {
