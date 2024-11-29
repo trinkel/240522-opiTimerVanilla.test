@@ -9,6 +9,7 @@ import {
 import { format } from 'date-fns';
 
 import { SettingsForm } from '../components/settingsForm';
+import { elementError } from '../utilities/elementError';
 
 export type operationModes = 'anonymous' | 'list';
 export type practiceLengthTimes = 1 | 2 | 6 | 7 | 8 | 10 | 11 | 12;
@@ -126,7 +127,7 @@ export class Parameters {
 
 		// form
 		// 	? (this.formData = new FormData(form))
-		// 	: this.elementError('form', 'new FormData');
+		// 	: elementError('form', 'new FormData');
 		//! setParameters(form) was here
 
 		// Event Builder
@@ -136,8 +137,8 @@ export class Parameters {
 			this.setParameters(form);
 			this.submitForm(form, drawer);
 		} else {
-			!form ? this.elementError('form', 'eventBuilder') : null;
-			!drawer ? this.elementError('drawer', 'eventBuilder') : null;
+			!form ? elementError('form', 'eventBuilder') : null;
+			!drawer ? elementError('drawer', 'eventBuilder') : null;
 		}
 
 		// ----- Above: New deploy form
@@ -240,13 +241,6 @@ export class Parameters {
 	}
 
 	// Methods
-
-	elementError = (element: string, location?: string) => {
-		console.log(
-			`Element does not exist: ${element}${location ? ` at ${location}` : ``}`
-		);
-	};
-
 	openDrawer(button: SlButton, drawer: SlDrawer): void {
 		button.addEventListener('click', () => {
 			drawer.show();
@@ -259,7 +253,7 @@ export class Parameters {
 
 		form
 			? (this.formData = new FormData(form))
-			: this.elementError('form', 'new FormData');
+			: elementError('form', 'new FormData');
 
 		// Get user defaults from settings form
 		this.practiceLength = Number(this.practiceLengthVal) as practiceLengthTimes; // Length of each practice session.
@@ -326,7 +320,7 @@ export class Parameters {
 					if (drawer) {
 						drawer.hide();
 					} else {
-						this.elementError('drawer', 'form addEventListener');
+						elementError('drawer', 'form addEventListener');
 					}
 				});
 			})
