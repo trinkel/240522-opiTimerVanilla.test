@@ -26,7 +26,7 @@ dist-ssr
 # oversize resources like original image files
 bigResource/
 
-# JS files inadvertantly created by Vite while compiling Typescript with `"noEmit": false` (I was testing something)
+# JS files inadvertently created by Vite while compiling Typescript with `"noEmit": false` (I was testing something)
 RandomJS-files(root)
 
 # Playground and contents, Misc scratch files
