@@ -6,7 +6,7 @@ import {
 	SlTextarea,
 } from '@shoelace-style/shoelace';
 
-import { SettingsForm } from '../components/settingsForm';
+import { settingsForm } from '../components/settingsForm';
 import { appConfig } from '../data/appConfig';
 import { elementError } from '../utilities/elementError';
 
@@ -80,18 +80,25 @@ export class Parameters {
 	 * ---------------------------
 	 */
 
-	// Set start time. Default to now
-	//! groupStartTime: Date = new Date();
-	//! groupStartTimeString: string = ''; // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
-	//! pm: boolean = false;
-
 	// Reserve FormData object
 	formData: FormData = new FormData();
 
 	constructor() {
 		console.log(`appD GST: ${this.groupStartTime}`); //! Correct
 
-		const appSettings = new SettingsForm(
+		// const appSettings = new SettingsForm(
+		// 	this.groupStartType,
+		// 	this.groupStartTimeStr,
+		// 	this.practiceLength,
+		// 	this.pauseBetweenSelector,
+		// 	this.pauseLength,
+		// 	this.operationMode,
+		// 	this.numberTeams,
+		// 	this.teamList,
+		// 	this.demo
+		// );
+
+		settingsForm(
 			this.groupStartType,
 			this.groupStartTimeStr,
 			this.practiceLength,
