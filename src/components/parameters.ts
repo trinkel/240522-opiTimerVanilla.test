@@ -6,9 +6,8 @@ import {
 	SlTextarea,
 } from '@shoelace-style/shoelace';
 
-import { format } from 'date-fns';
-
 import { SettingsForm } from '../components/settingsForm';
+import { appConfig } from '../data/appConfig';
 import { elementError } from '../utilities/elementError';
 
 export type operationModes = 'anonymous' | 'list';
@@ -49,31 +48,32 @@ export class Parameters {
 	 * ---------------------------
 	 * Set application defaults here
 	 * ---------------------------
-	 * User editable settings   */
-	practiceLength: practiceLengthTimes = 2; // Length of each practice session
-	pauseBetweenSelector: pauseBetweenSelectorTypes = 'no';
-	pauseLength: number = 0; // Length of pause between sessions
-	groupStartType: groupStartTypeTypes = 'scheduled';
-	groupStartTime: Date = new Date(new Date().setHours(0, 0, 0));
+	 * User editable settings
+	 */
+	practiceLength = appConfig.practiceLength; // Length of each practice session
+	pauseBetweenSelector = appConfig.pauseBetweenSelector;
+	pauseLength = appConfig.pauseLength; // Length of pause between sessions
+	groupStartType = appConfig.groupStartType;
+	groupStartTime = appConfig.groupStartTime;
 
 	// Create string from `groupStartTime: Date`
-	groupStartTimeStr: string = format(this.groupStartTime, 'HH:mm:ss');
+	groupStartTimeStr = appConfig.groupStartTimeStr();
 
-	operationMode: operationModes = 'anonymous'; // anonymous | list
-	teamList: string[] = [''];
-	numberTeams: number = 6;
+	operationMode = appConfig.operationMode; // anonymous | list
+	teamList = appConfig.teamList;
+	numberTeams = appConfig.numberTeams;
 
 	/*
 	 * Application passthrough settings  */
-	dBugg: number = 0;
-	demo: boolean = true; // Allows for some demo parameters. Mostly to speed things up
-	warp: warpFactors = 1; // Speed factor for demos (1-8)
-	tick: number = 200; // Component timeout interval in milliseconds (200)
-	idle: boolean = true; // True when session is not running
-	clocksSet: boolean = false; //
-	scheduleSet: boolean = false;
-	pendingWarn: number = 5000; // Time before warning-time to flash badge "pending" in milliseconds (3000)
-	pendingEndSession: number = 15000; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
+	dBugg = appConfig.dBugg;
+	demo = appConfig.demo; // Allows for some demo parameters. Mostly to speed things up
+	warp = appConfig.warp; // Speed factor for demos (1-8)
+	tick = appConfig.tick; // Component timeout interval in milliseconds (200)
+	idle = appConfig.idle; // True when session is not running
+	clocksSet = appConfig.clocksSet; //
+	scheduleSet = appConfig.scheduleSet;
+	pendingWarn = appConfig.pendingWarn; // Time before warning-time to flash badge "pending" in milliseconds (3000)
+	pendingEndSession = appConfig.pendingEndSession; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
 	/*
 	 * ---------------------------
 	 * End application defaults
