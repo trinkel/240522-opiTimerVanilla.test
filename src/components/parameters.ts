@@ -16,6 +16,16 @@ export type warpFactors = 1 | 2 | 6 | 7 | 8;
 export type groupStartTypeTypes = 'scheduled' | 'manual' | 'dbugg';
 export type pauseBetweenSelectorTypes = 'yes' | 'no';
 
+export interface FormControls {
+	form: HTMLFormElement | null;
+	startType: SlRadioGroup | null;
+	pauseSelector: SlRadioGroup | null;
+	pauseInput: SlInput | null;
+	operationModeSelector: SlRadioGroup | null;
+	numberInput: SlInput | null;
+	teamsInput: SlTextarea | null;
+}
+
 /**
  * Parameters: Application settings.
  * Application defaults are defined at the top of the class definition
@@ -80,6 +90,27 @@ export class Parameters {
 	 * ---------------------------
 	 */
 
+	/*
+	 * ---------------------------
+	 * Form elements
+	 * ---------------------------
+	 */
+
+	// Connect form controls
+	formControls: FormControls = {
+		form: document.querySelector<HTMLFormElement>('form'),
+		startType: document.querySelector<SlRadioGroup>('#start-type'),
+		pauseSelector: document.querySelector<SlRadioGroup>(
+			'#pause-between-selector'
+		),
+		pauseInput: document.querySelector<SlInput>('#pause-length'),
+		operationModeSelector: document.querySelector<SlRadioGroup>(
+			'#operation-mode-selector'
+		),
+		numberInput: document.querySelector<SlInput>('#number-teams'),
+		teamsInput: document.querySelector<SlTextarea>('#team-list'),
+	};
+
 	// Reserve FormData object
 	formData: FormData = new FormData();
 
@@ -114,18 +145,6 @@ export class Parameters {
 		const openButton = document.querySelector<SlButton>('#settings-btn');
 		const drawer = document.querySelector<SlDrawer>('#settings');
 
-		// Connect form controls
-		const form = document.querySelector<HTMLFormElement>('form');
-		const pauseSelector = document.querySelector<SlRadioGroup>(
-			'#pause-between-selector'
-		);
-		const pauseInput = document.querySelector<SlInput>('#pause-length');
-		const modeSelector = document.querySelector<SlRadioGroup>(
-			'#operation-mode-selector'
-		);
-		const numberInput = document.querySelector<SlInput>('#number-teams');
-		const teamsInput = document.querySelector<SlTextarea>('#team-list');
-
 		// Add event listeners for drawer controls
 		//TODO: Does the really need to call a function? Move the event here?
 		openButton && drawer
@@ -139,12 +158,12 @@ export class Parameters {
 
 		// Event Builder
 		// get parameters back from form
-		if (form && drawer) {
+		if (this.formControls.form && drawer) {
 			// get parameters back from form
-			this.setParameters(form);
-			this.submitForm(form, drawer);
+			this.setParameters(this.formControls.form);
+			this.submitForm(this.formControls.form, drawer);
 		} else {
-			!form ? elementError('form', 'eventBuilder') : null;
+			!this.formControls.form ? elementError('form', 'eventBuilder') : null;
 			!drawer ? elementError('drawer', 'eventBuilder') : null;
 		}
 
