@@ -59,29 +59,30 @@
 		</section>
 
 		<section id="control_block" class="wrapper">
-			<sl-button id="previous-team" class="session-control" size="large"
-				variant="neutral" pill>
+			<sl-button id="previous-team" aria-label="Skip to start of previous team"
+				class="session-control" size="large" variant="neutral" pill>
 				<sl-icon name="skip-backward-fill" slot="prefix"></sl-icon>
 				Previous Team</sl-button>
 			<sl-button-group id="current-team" class="session-control-group">
-				<sl-button id="current-skip-begin" label="Skip to start of session"
+				<sl-button id="current-skip-begin" aria-label="Skip to start of session"
 					name="current-skip-begin" size="large" class="session-control"
 					variant="neutral" pill>
 					<sl-icon name="skip-start-fill" slot="prefix"></sl-icon>
 				</sl-button>
-				<sl-button id="current-start" label="start" name="current-start"
-					size="large" class="session-control" variant="neutral" pill>Current
+				<sl-button id="current-start" aria-label="Start session"
+					name="current-start" size="large" class="session-control"
+					variant="neutral" pill>Current
 					Team
 					<sl-icon name="play-fill" slot="suffix"></sl-icon>
 				</sl-button>
-				<sl-button id="current-skip-end" label="Skip to end of session"
+				<sl-button id="current-skip-end" aria-label="Skip to end of session"
 					name="current-skip-end" size="large" class="session-control"
 					variant="neutral" pill>
 					<sl-icon name="skip-end-fill" slot="suffix"></sl-icon>
 				</sl-button>
 			</sl-button-group>
-			<sl-button id="next-team" class="session-control" size="large"
-				variant="neutral" pill>Next Team
+			<sl-button id="next-team" aria-label="Skip to start of next team"
+				class="session-control" size="large" variant="neutral" pill>Next Team
 				<sl-icon name="skip-forward-fill" slot="suffix"></sl-icon>
 			</sl-button>
 
