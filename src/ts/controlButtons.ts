@@ -1,4 +1,5 @@
-import { SlButton } from '@shoelace-style/shoelace';
+import { SlButton, SlIcon } from '@shoelace-style/shoelace';
+import { Parameters } from '../components/parameters';
 
 export class ControlButtons {
 	constructor() {

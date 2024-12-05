@@ -8,6 +8,7 @@ import {
 
 import { settingsForm } from '../components/settingsForm';
 import { appConfig } from '../data/appConfig';
+import { ControlButtons } from '../ts/controlButtons';
 import { elementError } from '../utilities/elementError';
 
 export type operationModes = 'anonymous' | 'list';
@@ -207,6 +208,9 @@ export class Parameters {
 		if (this.operationMode === 'list' && this.teamList) {
 			this.numberTeams = this.teamList.length;
 		}
+
+		// Initialize control buttons
+		const controlButtons = new ControlButtons(this);
 	} // end constructor()
 
 	// Get User Defaults formData object
