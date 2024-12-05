@@ -1,33 +1,38 @@
 import { SlButton, SlIcon } from '@shoelace-style/shoelace';
 import { Parameters } from '../components/parameters';
+import { elementError } from '../utilities/elementError';
 
 export class ControlButtons {
-	constructor() {
-		// attach buttons
-		const controlBlock =
-			document.querySelector<HTMLDivElement>('#control_block');
+	// attach buttons
+	controlBlock = document.querySelector<HTMLDivElement>('#control_block');
 
-		const previousTeam = document.querySelector<SlButton>('#previous-team');
+	previousTeam = document.querySelector<SlButton>('#previous-team');
 
-		const currentSkipBegin = document.querySelector<SlButton>(
-			'#current-skip-begin'
-		);
+	currentSkipBegin = document.querySelector<SlButton>('#current-skip-begin');
 
-		const currentStart = document.querySelector<SlButton>('#current-start');
+	currentStart = document.querySelector<SlButton>('#current-start');
+	currentStartIcon = document.querySelector<SlIcon>('#current-start > sl-icon');
 
-		const currentSkipEnd =
-			document.querySelector<SlButton>('#current-skip-end');
+	currentSkipEnd = document.querySelector<SlButton>('#current-skip-end');
 
-		const nextTeam = document.querySelector<SlButton>('#next-team');
+	nextTeam = document.querySelector<SlButton>('#next-team');
 
-		if (controlBlock) {
-			controlBlock.addEventListener('click', (event: Event) => {
-				this.handleControlBlockClick(event);
+	// Constructor
+	constructor(parameters: Parameters) {
+		if (this.controlBlock) {
+			this.controlBlock.addEventListener('click', (event: Event) => {
+				this.handleControlBlockClick(event, parameters);
 			});
 		}
 	} // end constructor
 
-	handleControlBlockClick(event: Event) {
+	/*
+	 * Handle click events in controlButtons
+	 *   if any element gets more than one action,
+	 *   consider using `setAttribute and
+	 *   `static get observedAttributes()` to batch them
+	 */
+	handleControlBlockClick(event: Event, parameters: Parameters) {
 		const targetId = (event.target as HTMLElement).getAttribute('id');
 		switch (targetId) {
 			case 'previous-team':
@@ -39,7 +44,22 @@ export class ControlButtons {
 				break;
 
 			case 'current-start':
-				console.log(`target: ${targetId}`);
+				if (
+					(event.target as HTMLElement).getAttribute('data-state') === 'paused'
+				) {
+					this.currentStartIcon
+						? this.currentStartIcon.setAttribute('name', 'pause-fill')
+						: elementError('currentStartIcon', 'controlButtons: currentStart');
+					if (this.currentStart) {
+						this.currentStart.setAttribute('aria-label', 'Pause session');
+						this.currentStart.setAttribute('data-state', 'running');
+					} else {
+						elementError('currentStart', 'change data-state and aria-label');
+					}
+					parameters.toggleCurrent();
+				} else {
+				}
+
 				//! start button
 				// set parameters.groupStartType to manual
 				// set parameters.groupStartTime = now
@@ -74,3 +94,11 @@ export class ControlButtons {
 		// }
 	}
 }
+
+// !DELETE
+// export function tellParam(parameters: Parameters) {
+// 	console.log(`[controlButton] ${parameters.groupStartTime}`);
+// 	const startTime = new Date();
+// 	parameters.groupStartTime = startTime;
+// 	console.log(`[controlButton] ${parameters.groupStartTime}`);
+// }

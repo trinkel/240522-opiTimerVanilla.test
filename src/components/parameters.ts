@@ -359,6 +359,18 @@ export class Parameters {
 			});
 	}
 
+	// State actions from controlButtons
+
+	toggleCurrent() {
+		this.groupStartType = 'manual';
+		this.formControls.startType
+			? this.formControls.startType.setAttribute('value', 'manual')
+			: elementError('startType', 'controlButtons: currentStart');
+		this.groupStartTime = new Date();
+		this.scheduleSet = true;
+		this.idle = false;
+	}
+
 	// ! 241105
 	// TODO: rest of form functions go here (pass elements)
 	// TODO: Update documentation on different forms of Shoelace imports: • Import JS file in main.ts (element is not called in TS, but is there for HTML elements). • Import individual elements in component file (like parameter.ts and ??.ts) where element is referenced in code. These should be added automatically.
