@@ -25,7 +25,6 @@ import { Parameters } from '../components/parameters';
 // Layout and Control
 import { ClockBadges } from './clockBadges';
 import { ComponentController } from './componentController';
-import { ControlButtons } from './controlButtons';
 import { TimeController } from './timeController';
 
 // Passthrough component module
@@ -77,7 +76,8 @@ const setClocks = () => {
 // Start based on parameters.groupStartTime or a start button
 const componentController = new ComponentController();
 
-const controlButtons = new ControlButtons();
+// ! Delete
+// const controlButtons = new ControlButtons();
 
 // Initialize the timers, wait for start time
 // TODO [240813 (soon)] init on app launch (or param set) to set duration in timers. Start timer functions on groupStartTime or start button
@@ -92,6 +92,8 @@ async function waitTimer(): Promise<void> {
 			parameters.scheduleSet
 				? console.log('waitTimer: pending')
 				: console.log('waitTimer: hold');
+			console.log(`[waitTimer] start time: ${parameters.groupStartTime}`);
+
 			const goTimer = (): void => {
 				switch (parameters.groupStartType) {
 					case 'manual':
