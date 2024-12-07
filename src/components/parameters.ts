@@ -8,7 +8,12 @@ import {
 
 import { settingsForm } from '../components/settingsForm';
 import { appConfig } from '../data/appConfig';
-import { ControlButtons } from '../ts/controlButtons';
+// import { ControlButtons } from '../ts/controlButtons';
+import {
+	ClickedButton,
+	controlBlockButtons,
+	handleControlBlockClick,
+} from '../ts/controlButtons';
 import { elementError } from '../utilities/elementError';
 
 export type operationModes = 'anonymous' | 'list';
@@ -210,7 +215,16 @@ export class Parameters {
 		}
 
 		// Initialize control buttons
-		const controlButtons = new ControlButtons(this);
+		// controlBlockButtons defined in controlButtons.ts;
+		// addEventListeners(controlBlockButtons.controlBlock);
+		if (controlBlockButtons.controlBlock.element) {
+			controlBlockButtons.controlBlock.element.addEventListener(
+				'click',
+				(event: Event) => {
+					this.sessionState(handleControlBlockClick(event));
+				}
+			);
+		}
 	} // end constructor()
 
 	// Get User Defaults formData object
@@ -361,14 +375,19 @@ export class Parameters {
 
 	// State actions from controlButtons
 
-	toggleCurrent() {
-		this.groupStartType = 'manual';
-		this.formControls.startType
-			? this.formControls.startType.setAttribute('value', 'manual')
-			: elementError('startType', 'controlButtons: currentStart');
-		this.groupStartTime = new Date();
-		this.scheduleSet = true;
-		this.idle = false;
+	sessionState(clickedButton: ClickedButton): void {
+		switch (clickedButton.target) {
+			case 'current-start':
+				if ((clickedButton.state = 'paused')) {
+					this.groupStartType = 'manual';
+					this.formControls.startType
+						? this.formControls.startType.setAttribute('value', 'manual')
+						: elementError('startType', 'controlButtons: currentStart');
+					this.groupStartTime = new Date();
+					this.scheduleSet = true;
+					this.idle = false;
+				}
+		}
 	}
 
 	// ! 241105
