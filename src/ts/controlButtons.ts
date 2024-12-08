@@ -39,8 +39,19 @@ export interface ControlBlockButton<T extends ButtonKey> {
 	state: ButtonStateMap[T];
 }
 
-// Define the controlBlockButtons object
+//
 // using the interface with state map type generics
+/**
+ * controlBlockButtons control manual start and stop for the session
+ * Define the controlBlockButtons object
+ * using the interface with state map type generics
+ *
+ * @type {{ [K in ButtonKey]: ControlBlockButton<K> }}
+ * typeDef: object key is typed as member of ButtonKey (and list assigned to var K);
+ *          object is typed by interface ControlBlockButton<>;
+ *          K is passed as argument which is picked up at T in interface;
+ *          state is typed as member T (aka K) of ButtonStateMap object;
+ */
 export const controlBlockButtons: { [K in ButtonKey]: ControlBlockButton<K> } =
 	{
 		controlBlock: {
