@@ -1,5 +1,7 @@
 export const elementError = (element: string, location?: string) => {
-	console.log(
-		`Element does not exist: ${element}${location ? ` at ${location}` : ``}`
+	console.error(
+		`[ELEMENT ERROR] Element does not exist: ${element}${
+			location ? ` at ${location}` : ``
+		}`
 	);
 };
