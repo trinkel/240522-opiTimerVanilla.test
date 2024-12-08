@@ -96,26 +96,8 @@ export class Parameters {
 	 * ---------------------------
 	 */
 
-	/*
-	 * ---------------------------
-	 * Form elements
-	 * ---------------------------
-	 */
-
-	// Connect form controls
-	formControls: FormControls = {
-		form: document.querySelector<HTMLFormElement>('form'),
-		startType: document.querySelector<SlRadioGroup>('#start-type'),
-		pauseSelector: document.querySelector<SlRadioGroup>(
-			'#pause-between-selector'
-		),
-		pauseInput: document.querySelector<SlInput>('#pause-length'),
-		operationModeSelector: document.querySelector<SlRadioGroup>(
-			'#operation-mode-selector'
-		),
-		numberInput: document.querySelector<SlInput>('#number-teams'),
-		teamsInput: document.querySelector<SlTextarea>('#team-list'),
-	};
+	// Declare formControls object
+	formControls: FormControls;
 
 	// Reserve FormData object
 	formData: FormData = new FormData();
@@ -135,6 +117,7 @@ export class Parameters {
 		// 	this.demo
 		// );
 
+		// Build settings form
 		settingsForm(
 			this.groupStartType,
 			this.groupStartTimeStr,
@@ -151,7 +134,27 @@ export class Parameters {
 		const openButton = document.querySelector<SlButton>('#settings-btn');
 		const drawer = document.querySelector<SlDrawer>('#settings');
 
-		// Add event listeners for drawer controls
+		/*
+		 * ---------------------------
+		 * Form elements
+		 * ---------------------------
+		 */
+
+		// Connect form controls
+		this.formControls = {
+			form: document.querySelector<HTMLFormElement>('form'),
+			startType: document.querySelector<SlRadioGroup>('#start-type'),
+			pauseSelector: document.querySelector<SlRadioGroup>(
+				'#pause-between-selector'
+			),
+			pauseInput: document.querySelector<SlInput>('#pause-length'),
+			operationModeSelector: document.querySelector<SlRadioGroup>(
+				'#operation-mode-selector'
+			),
+			numberInput: document.querySelector<SlInput>('#number-teams'),
+			teamsInput: document.querySelector<SlTextarea>('#team-list'),
+		};
+
 		//TODO: Does the really need to call a function? Move the event here?
 		openButton && drawer
 			? this.openDrawer(openButton, drawer)
@@ -294,7 +297,6 @@ export class Parameters {
 	setParameters(form: HTMLFormElement): void {
 		console.dir(`[FORM]: `);
 		console.dir(form);
-
 		form
 			? (this.formData = new FormData(form))
 			: elementError('form', 'new FormData');
@@ -375,6 +377,7 @@ export class Parameters {
 
 	// State actions from controlButtons
 
+	//!!!!!!!!!!!!!!!!!!!!!!!!
 	sessionState(clickedButton: ClickedButton): void {
 		switch (clickedButton.target) {
 			case 'current-start':
