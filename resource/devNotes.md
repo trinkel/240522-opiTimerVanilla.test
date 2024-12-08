@@ -611,6 +611,74 @@ practiceTimes = [
 ];
 ```
 
+### Accessing properties defined in the `constructor()` of a class
+
+Properties (functions, variables, whatever) defined in the constructor of a class a scoped to the class and not available to the rest of the class. Yes, that's the definition of "scope". To allow access to these properties, declare them as a class property outside of the constructor without an initializer and then initialize them in the `constructor()`. One issue that I ran into was the TypeScript complained that the declaration was not initialized and was not seeing the initialization in the `constructor()`. I was mainly running into this in the case of objects, but it was probably other cases as well. The problem was that I was trying to define the entire object rather than just the header. The following shows examples for an object and a variable with a custom type:
+
+```ts
+// Parameters.ts
+
+// Object interface definition
+export interface FormControls {
+	form: HTMLFormElement | null;
+	startType: SlRadioGroup | null;
+	pauseSelector: SlRadioGroup | null;
+	pauseInput: SlInput | null;
+	operationModeSelector: SlRadioGroup | null;
+	numberInput: SlInput | null;
+	teamsInput: SlTextarea | null;
+}
+
+// Variable custom type union definition
+export type operationModes = 'anonymous' | 'list';
+
+export class Parameters {
+	// formControls object declared
+	// Without the object members, there is no error
+	formControls: FormControls;
+
+	// mode variable declared
+	// Note that const/let are not used for class members
+	// However, they are used for variables inside of a class member that is a method or function
+	mode: operationModes;
+
+	constructor() {
+		// Call function to create the form
+		settingsForm(
+			this.groupStartType,
+			this.groupStartTimeStr,
+			this.practiceLength,
+			this.pauseBetweenSelector,
+			this.pauseLength,
+			this.operationMode,
+			this.numberTeams,
+			this.teamList,
+			this.demo
+		);
+
+		// Initialize formControls now that the form exists
+		// This object is also available to class members outside of the constructor
+		// Notice that it references `this` and does not reference the `interface`
+		this.formControls = {
+			form: document.querySelector<HTMLFormElement>('form'),
+			startType: document.querySelector<SlRadioGroup>('#start-type'),
+			pauseSelector: document.querySelector<SlRadioGroup>(
+				'#pause-between-selector'
+			),
+			pauseInput: document.querySelector<SlInput>('#pause-length'),
+			operationModeSelector: document.querySelector<SlRadioGroup>(
+				'#operation-mode-selector'
+			),
+			numberInput: document.querySelector<SlInput>('#number-teams'),
+			teamsInput: document.querySelector<SlTextarea>('#team-list'),
+		};
+
+		// Initialize mode
+		mode = 'anonymous';
+	}
+}
+```
+
 ### Destructuring Objects on Assignment
 
 I'm using this as input to the teamSession (or timer session) class (or at least that's what it is as of June 4). [How to Use Object Destructuring in JavaScript](https://dmitripavlutin.com/javascript-object-destructuring/), by Dmitri Pavlutin has a good walkthrough and straight forward examples of the different options. Basically its:
