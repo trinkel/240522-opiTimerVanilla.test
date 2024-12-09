@@ -10,6 +10,7 @@ import { settingsForm } from '../components/settingsForm';
 import { appConfig } from '../data/appConfig';
 // import { ControlButtons } from '../ts/controlButtons';
 import {
+	ButtonKey,
 	ClickedButton,
 	controlBlockButtons,
 	handleControlBlockClick,
@@ -377,8 +378,8 @@ export class Parameters {
 
 	// State actions from controlButtons
 
-	//!!!!!!!!!!!!!!!!!!!!!!!!
-	sessionState(clickedButton: ClickedButton): void {
+	//ToDo: Make types limit values or currentButton.state correctly and show list in tooltip
+	sessionState<T extends ButtonKey>(clickedButton: ClickedButton<T>): void {
 		switch (clickedButton.target) {
 			case 'current-start':
 				if (clickedButton.state === 'paused') {

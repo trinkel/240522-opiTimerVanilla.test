@@ -2,7 +2,7 @@ import { SlButton, SlIcon } from '@shoelace-style/shoelace';
 import { elementError } from '../utilities/elementError';
 
 // Define valid button ids (#id)
-type ButtonId =
+export type ButtonId =
 	| 'control_block'
 	| 'previous-team'
 	| 'current-skip-begin'
@@ -12,7 +12,7 @@ type ButtonId =
 	| 'next-team';
 
 // Define valid button TS objects (const id: {})
-type ButtonKey =
+export type ButtonKey =
 	| 'controlBlock'
 	| 'previousTeam'
 	| 'currentSkipBegin'
@@ -22,7 +22,7 @@ type ButtonKey =
 	| 'nextTeam';
 
 // Define a mapping of ButtonKey to valid states
-type ButtonStateMap = {
+export type ButtonStateMap = {
 	controlBlock: '';
 	previousTeam: 'true' | 'false';
 	currentSkipBegin: 'true' | 'false';
@@ -36,6 +36,12 @@ type ButtonStateMap = {
 export interface ControlBlockButton<T extends ButtonKey> {
 	element: HTMLDivElement | SlButton | SlIcon | null;
 	id: ButtonId;
+	state: ButtonStateMap[T];
+}
+
+// Define the interface for clicked button which is passed to parameters when button is clicked
+export interface ClickedButton<T extends ButtonKey> {
+	target: ButtonId;
 	state: ButtonStateMap[T];
 }
 
@@ -102,11 +108,6 @@ export function addEventListeners(
 			handleControlBlockClick(event);
 		});
 	}
-}
-
-export interface ClickedButton<T extends ButtonKey> {
-	target: ButtonId;
-	state: ButtonStateMap[T];
 }
 
 /*
