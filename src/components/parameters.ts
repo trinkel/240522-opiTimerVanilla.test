@@ -390,6 +390,15 @@ export class Parameters {
 					this.groupStartTime = new Date();
 					this.scheduleSet = true;
 					this.idle = false;
+				} else {
+					console.log(`[parameters.ts] Pause button clicked`);
+					this.groupStartType = 'manual';
+					this.formControls.startType
+						? this.formControls.startType.setAttribute('value', 'manual')
+						: elementError('startType', 'controlButtons: currentStart');
+					// this.groupStartTime = new Date(); // move to nullDate?
+					this.scheduleSet = false; // move to nullDate?
+					this.idle = true;
 				}
 		}
 	}
