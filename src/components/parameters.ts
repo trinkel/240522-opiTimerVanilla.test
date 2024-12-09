@@ -381,7 +381,7 @@ export class Parameters {
 	sessionState(clickedButton: ClickedButton): void {
 		switch (clickedButton.target) {
 			case 'current-start':
-				if ((clickedButton.state = 'paused')) {
+				if (clickedButton.state === 'paused') {
 					this.groupStartType = 'manual';
 					this.formControls.startType
 						? this.formControls.startType.setAttribute('value', 'manual')
