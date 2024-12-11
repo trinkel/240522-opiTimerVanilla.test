@@ -180,3 +180,17 @@ export function formatTime(timeStamp: number): string {
 		return `${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
 	}
 }
+
+/**
+ * If date/time is in the past, sets it in the future
+ * Default is 1 day
+ *
+ * @export
+ * @param {Date} date
+ * @param {number} [days=1]
+ * @returns {Date}
+ */
+export function futureDate(date: Date, days: number = 1): Date {
+	date < new Date() ? date.setUTCDate(date.getUTCDate() + days) : date;
+	return date;
+}

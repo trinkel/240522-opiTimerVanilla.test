@@ -16,6 +16,7 @@ import {
 	handleControlBlockClick,
 } from '../ts/controlButtons';
 import { elementError } from '../utilities/elementError';
+import { futureDate } from '../utilities/timeUtilities';
 
 export type operationModes = 'anonymous' | 'list';
 export type practiceLengthTimes = 1 | 2 | 6 | 7 | 8 | 10 | 11 | 12;
@@ -307,6 +308,7 @@ export class Parameters {
 		this.pauseLength = Number(this.pauseLengthVal); // Length of pause between sessions
 
 		this.groupStartType = this.startTypeVal as groupStartTypeTypes; // Manual or Scheduled
+		// Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
 		if (this.groupStartType == 'scheduled') {
 			const time = this.startTimeVal.split(':').map((x) => Number(x));
 			if (time.length === 3) {
@@ -317,7 +319,9 @@ export class Parameters {
 				this.groupStartTime = new Date(
 					new Date().setHours(time[0], time[1], 0)
 				);
-			} // Time group starts if StartTime:Scheduled is selected. Text converted to `Date` for object later
+			}
+			// If time (date) is before current time add one day
+			this.groupStartTime = futureDate(this.groupStartTime);
 		} else {
 			this.groupStartTime = new Date(0);
 		}
