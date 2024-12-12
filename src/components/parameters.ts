@@ -167,12 +167,11 @@ export class Parameters {
 		// 	: elementError('form', 'new FormData');
 		//! setParameters(form) was here
 
-		// Event Builder
+		// Connect Settings Form
 		// get parameters back from form
 		if (this.formControls.form && drawer) {
-			// get parameters back from form
-			this.setParameters(this.formControls.form);
-			this.submitForm(this.formControls.form, drawer);
+			//// this.setParameters(this.formControls.form);
+			this.formSubmitAction(this.formControls.form, drawer);
 		} else {
 			!this.formControls.form ? elementError('form', 'eventBuilder') : null;
 			!drawer ? elementError('drawer', 'eventBuilder') : null;
@@ -351,7 +350,7 @@ export class Parameters {
 		}
 	}
 
-	submitForm(form: HTMLFormElement, drawer: SlDrawer) {
+	formSubmitAction(form: HTMLFormElement, drawer: SlDrawer) {
 		Promise.all([
 			customElements.whenDefined('sl-input'),
 			customElements.whenDefined('sl-select'),
