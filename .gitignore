@@ -22,6 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Excel temp file
+~*.xls?
 
 # oversize resources like original image files
 bigResource/
@@ -32,6 +34,7 @@ RandomJS-files(root)
 # Playground and contents, Misc scratch files
 Playground/
 resource/commitBuilder.md
+resource/SessionTimeCalculator.xlsx
 
 # Files removed from project
 resource/archive/*
