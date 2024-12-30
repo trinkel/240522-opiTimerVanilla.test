@@ -28,6 +28,7 @@ export type pauseBetweenSelectorTypes = 'yes' | 'no';
  * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
  * @prop {boolean} idle True when session is not running
+ * @prop {boolean} progressComplete True when componentController.startTimer() loop is complete
  * @prop {boolean} clocksSet True when start and end clocks set by setClocks()
  * @prop {boolean} scheduleSet True when schedule defined or manual button clicked
  * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
@@ -55,6 +56,7 @@ export interface AppConfig {
 	warp: warpFactors; // Speed factor for demos (1-8)
 	tick: number; // Component timeout interval in milliseconds (200)
 	idle: boolean; // True when session is not running
+	progressComplete: boolean; //  True when componentController.startTimer() loop is complete	clocksSet: boolean; // True when start and end clocks set by setClocks()
 	clocksSet: boolean; // True when start and end clocks set by setClocks()
 	scheduleSet: boolean; // True when schedule defined or manual button clicked
 	pendingWarn: number; // Time before warning-time to flash badge "pending" in milliseconds (3000)
@@ -89,6 +91,7 @@ export const appConfig: AppConfig = {
 	warp: 1, // Speed factor for demos (1-8)
 	tick: 200, // Component timeout interval in milliseconds (200)
 	idle: true, // True when session is not running
+	progressComplete: false, //  True when componentController.startTimer() loop is complete	clocksSet: false, // True when start and end clocks set by setClocks()
 	clocksSet: false, // True when start and end clocks set by setClocks()
 	scheduleSet: false, //True when schedule defined or manual button clicked
 	pendingWarn: 5000, // Time before warning-time to flash badge "pending" in milliseconds (3000)

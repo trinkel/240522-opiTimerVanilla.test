@@ -56,6 +56,7 @@ export interface FormControls {
  * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
  * @prop {boolean} idle True when session is not running
+ * @prop {boolean} progressComplete True when componentController.startTimer() loop is complete
  * @prop {boolean} clocksSet True when start and end clocks set by setClocks()
  * @prop {boolean} scheduleSet True when schedule defined or manual button clicked
  * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
@@ -88,6 +89,7 @@ export class Parameters {
 	warp = appConfig.warp; // Speed factor for demos (1-8)
 	tick = appConfig.tick; // Component timeout interval in milliseconds (200)
 	idle = appConfig.idle; // True when session is not running
+	progressComplete = false; //  True when componentController.startTimer() loop is complete
 	clocksSet = appConfig.clocksSet; // True when start and end clocks set by setClocks()
 	scheduleSet = appConfig.scheduleSet; // True when schedule defined or manual button clicked
 	pendingWarn = appConfig.pendingWarn; // Time before warning-time to flash badge "pending" in milliseconds (3000)
