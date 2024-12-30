@@ -220,7 +220,14 @@ export class Parameters {
 
 		// Initialize control buttons
 		// controlBlockButtons defined in controlButtons.ts;
-		// addEventListeners(controlBlockButtons.controlBlock);
+		// Add eventListener to controlBlock
+		// Callback is sessionState()
+		//   argument is the return of controlButtons.handleControlBlockClick()
+		//     which determines button clicked and handles visual changes
+		//     and returns the button clicked
+		//   button clicked it passed to sessionState() which controls
+		//     running state of timers
+
 		if (controlBlockButtons.controlBlock.element) {
 			controlBlockButtons.controlBlock.element.addEventListener(
 				'click',
