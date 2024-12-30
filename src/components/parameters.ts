@@ -56,7 +56,7 @@ export interface FormControls {
  * @prop {warpFactors} warp Speed factor for demos (1-8 typical)
  * @prop {number} tick Component sleep interval in milliseconds
  * @prop {boolean} idle True when session is not running
- * @prop {boolean} clocksSet True when clocks have been set after schedule has been set
+ * @prop {boolean} clocksSet True when start and end clocks set by setClocks()
  * @prop {boolean} scheduleSet True when schedule defined or manual button clicked
  * @prop {number} pendingWarn Time before warning-time to flash badge "pending" in milliseconds
  * @prop {number} pendingEndSession Time before end-session to display "leave the ice" badge in milliseconds
@@ -88,8 +88,8 @@ export class Parameters {
 	warp = appConfig.warp; // Speed factor for demos (1-8)
 	tick = appConfig.tick; // Component timeout interval in milliseconds (200)
 	idle = appConfig.idle; // True when session is not running
-	clocksSet = appConfig.clocksSet; //
-	scheduleSet = appConfig.scheduleSet;
+	clocksSet = appConfig.clocksSet; // True when start and end clocks set by setClocks()
+	scheduleSet = appConfig.scheduleSet; // True when schedule defined or manual button clicked
 	pendingWarn = appConfig.pendingWarn; // Time before warning-time to flash badge "pending" in milliseconds (3000)
 	pendingEndSession = appConfig.pendingEndSession; // Time before end-session to display "leave the ice" badge in milliseconds (15000)
 	/*
