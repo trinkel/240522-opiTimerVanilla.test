@@ -83,7 +83,8 @@ export class Parameters {
 	numberTeams = appConfig.numberTeams;
 
 	/*
-	 * Application passthrough settings  */
+	 * Application passthrough settings
+	 */
 	dBugg = appConfig.dBugg;
 	demo = appConfig.demo; // Allows for some demo parameters. Mostly to speed things up
 	warp = appConfig.warp; // Speed factor for demos (1-8)
