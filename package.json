@@ -11,15 +11,15 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"cssnano": "^7.0.1",
+		"cssnano": "^7.0.6",
 		"postcss-import": "^16.1.0",
-		"postcss-preset-env": "^9.5.13",
-		"typescript": "^5.4.5",
-		"vite": "^5.2.11",
+		"postcss-preset-env": "^9.6.0",
+		"typescript": "^5.7.2",
+		"vite": "^5.4.11",
 		"vite-plugin-static-copy": "^1.0.6"
 	},
 	"dependencies": {
-		"@shoelace-style/shoelace": "^2.16.0",
+		"@shoelace-style/shoelace": "^2.19.1",
 		"date-fns": "^3.6.0"
 	}
 }
