@@ -200,7 +200,7 @@ export class ComponentController {
 		});
 	}
 
-	timer(timeController: TimeController): void {
+	timer(timeController: TimeController, progressComplete: boolean): Date {
 		/**
 		 * @Description Get the current time. If `warp` is defined, manipulate time for debug or demo purposes.
 		 * @parameters for `warpJump`: current time and previous time.
@@ -212,7 +212,7 @@ export class ComponentController {
 				: timeController.warpJump(this.before);
 
 		// initialize progress complete test for each loop
-		this.progressComplete = true;
+		progressComplete = true;
 
 		// This may be unused
 		this.sessionStatus
@@ -319,29 +319,20 @@ export class ComponentController {
 					(indicator.element.getAttribute('data-progress-state') as string) !==
 					'complete'
 				) {
-					this.progressComplete = false;
+					progressComplete = false;
 				}
 			});
 		}
 
 		// Hold value of current time for next loop
 		this.before = now;
-		// Reference value
+		// Reference value (Not used)
 		this.iterator++;
+
+		return this.before;
 	}
 
-	startTimer(timeController: TimeController) {
-		return new Promise<void>((resolve, reject) => {
-			const startTimeIntvId = setInterval(() => {
-				this.timer(timeController);
-				// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
-				if (this.progressComplete) {
-					clearInterval(startTimeIntvId);
-					resolve();
-				}
-			}, timeController.tick);
-		});
-	}
+	//! startTimer() Moved to main.ts
 
 	complete(): void {
 		console.log(`[COMPLETE] ---Process Complete: ${this.numberTeams}`);

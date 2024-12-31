@@ -159,7 +159,7 @@ async function startPracticeGroup(timeController: TimeController) {
 			clockBadges.setClocksStartTime(timeController.teamStartTime);
 			clockBadges.setClocksEndTime(timeController.endSession);
 			// Run new team session
-			await componentController.startTimer(timeController);
+			await startTimer(timeController);
 		}
 	} catch (error) {
 		console.log((error as Error).message);
@@ -167,6 +167,24 @@ async function startPracticeGroup(timeController: TimeController) {
 
 	//! This one will be held back
 	console.log(`---End of Async function---`);
+}
+
+function startTimer(timeController: TimeController) {
+	return new Promise<void>((resolve, reject) => {
+		const startTimeIntvId = setInterval(() => {
+				lastLoop = componentController.timer(
+					timeController,
+					parameters.progressComplete //! Not needed (when did we add)?
+				);
+			}
+
+			// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
+			if (parameters.progressComplete) {
+				clearInterval(startTimeIntvId);
+				resolve();
+			}
+		}, timeController.tick);
+	});
 }
 
 //! Call waitTimer
