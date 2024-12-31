@@ -164,6 +164,11 @@ export class TimeController {
 		return addMinutes(this.endSession, this.sessionSpec.endWarning * -1);
 	}
 
+	set extendSession(endSession: Date) {
+		this.endSessionTime = addSeconds(endSession, 1);
+		console.log(`[setter endSessionTime: ${this.endSessionTime}]`);
+	}
+
 	/**
 	 * Calculates the remaining time between the current time and a target time.
 	 *

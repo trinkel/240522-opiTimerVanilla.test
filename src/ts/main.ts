@@ -17,7 +17,7 @@ import '@shoelace-style/shoelace/dist/components/textarea/textarea.js';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 // DateFNS Utility
-import { isBefore } from 'date-fns';
+import { isBefore, isThisSecond } from 'date-fns';
 
 // Settings
 import { Parameters } from '../components/parameters';
@@ -49,6 +49,7 @@ const timeController = new TimeController(
 // Instantiate clock badges. Start current time badge
 const clockBadges = new ClockBadges(new Date(), timeController.tick);
 
+// Set group start and stop clocks
 const setClocks = () => {
 	const timeController = new TimeController(
 		parameters.practiceLength,
@@ -171,7 +172,16 @@ async function startPracticeGroup(timeController: TimeController) {
 
 function startTimer(timeController: TimeController) {
 	return new Promise<void>((resolve, reject) => {
+		let lastLoop: Date = timeController.current;
 		const startTimeIntvId = setInterval(() => {
+			console.log(`global idle: ${parameters.idle}`);
+			if (parameters.idle) {
+				const now: Date = timeController.current;
+				console.log(`${lastLoop.getTime()} | ${now.getTime()}`);
+				if (isBefore(lastLoop, now) && !isThisSecond(lastLoop)) {
+					lastLoop = pauseTimer(timeController, lastLoop);
+				}
+			} else {
 				lastLoop = componentController.timer(
 					timeController,
 					parameters.progressComplete //! Not needed (when did we add)?
@@ -187,6 +197,15 @@ function startTimer(timeController: TimeController) {
 	});
 }
 
+// pause Timer
+function pauseTimer(timeController: TimeController, lastLoop: Date) {
+	console.log(`[pauseTimer]`);
+	timeController.extendSession = timeController.endSessionTime;
+	console.log(`endSessionTime: ${timeController.endSessionTime}`);
+	clockBadges.setClocksEndTime(timeController.endSessionTime);
+	console.log(`endSessionTime: ${timeController.endSessionTime}`);
+	return timeController.current;
+}
 //! Call waitTimer
 waitTimer();
 
