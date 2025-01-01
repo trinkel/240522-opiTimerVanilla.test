@@ -159,6 +159,7 @@ async function startPracticeGroup(timeController: TimeController) {
 			componentController.init(timeController);
 			clockBadges.setClocksStartTime(timeController.teamStartTime);
 			clockBadges.setClocksEndTime(timeController.endSession);
+
 			// Run new team session
 			await startTimer(timeController);
 		}
@@ -173,15 +174,35 @@ async function startPracticeGroup(timeController: TimeController) {
 function startTimer(timeController: TimeController) {
 	return new Promise<void>((resolve, reject) => {
 		let lastLoop: Date = timeController.current;
+		let pauseStart: boolean = false;
+		const pauseTime = {
+			start: new Date(),
+			end: new Date(),
+		};
 		const startTimeIntvId = setInterval(() => {
-			console.log(`global idle: ${parameters.idle}`);
+			// console.log(`global idle: ${parameters.idle}`);
 			if (parameters.idle) {
+				// Pause timer
 				const now: Date = timeController.current;
-				console.log(`${lastLoop.getTime()} | ${now.getTime()}`);
+
+				if (!pauseStart) {
+					pauseTime.start = timeController.current;
+					pauseStart = true;
+				}
+
+				// console.log(`${lastLoop.getTime()} | ${now.getTime()}`);
 				if (isBefore(lastLoop, now) && !isThisSecond(lastLoop)) {
-					lastLoop = pauseTimer(timeController, lastLoop);
+					lastLoop = pauseTimer(timeController);
 				}
 			} else {
+				// Run timer loop
+				if (pauseStart) {
+					pauseTime.end = timeController.current;
+					timeController.extendSession(pauseTime);
+
+					pauseStart = false;
+				}
+
 				const passBack = componentController.timer(
 					timeController,
 					parameters.progressComplete
@@ -190,7 +211,7 @@ function startTimer(timeController: TimeController) {
 				parameters.progressComplete = passBack.progressComplete;
 			}
 
-			// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
+			// Clear startTimeInterval loop (One timer complete)
 			if (parameters.progressComplete) {
 				clearInterval(startTimeIntvId);
 				resolve();
@@ -200,14 +221,12 @@ function startTimer(timeController: TimeController) {
 }
 
 // pause Timer
-function pauseTimer(timeController: TimeController, lastLoop: Date) {
-	console.log(`[pauseTimer]`);
-	timeController.extendSession = timeController.endSessionTime;
-	console.log(`endSessionTime: ${timeController.endSessionTime}`);
+function pauseTimer(timeController: TimeController) {
+	timeController.extendEndSession = timeController.endSessionTime;
 	clockBadges.setClocksEndTime(timeController.endSessionTime);
-	console.log(`endSessionTime: ${timeController.endSessionTime}`);
 	return timeController.current;
 }
+
 //! Call waitTimer
 waitTimer();
 

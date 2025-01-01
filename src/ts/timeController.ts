@@ -112,13 +112,9 @@ export class TimeController {
 
 		// TODO: [240813] (turn into explainer comment) getters return an array or object of a string ([hours]:minutes:seconds) and a number (seconds) until that goal. Initial defs above should change to that.
 		// TODOcont: First, we do need a date/time for each goal set on init. Then, in each loop, we need to get the array/object to set the timer. I think the getters (set times) and methods (run timers) are already set up below, they just need to be used.
-		// Set variables: Date
-		this.firstWarningTime = this.firstWarning;
-		this.firstMusicTime = this.firstMusic;
-		this.secondWarningTime = this.secondWarning;
-		this.secondMusicTime = this.secondMusic;
-		this.endWarningTime = this.endWarning;
-		this.endSessionTime = this.endSession;
+
+		// Set timer variables
+		this.setTimerTimes();
 	} // end constructor
 
 	//Getters set initial times. remainingTime() does the work during control loop.
@@ -164,9 +160,30 @@ export class TimeController {
 		return addMinutes(this.endSession, this.sessionSpec.endWarning * -1);
 	}
 
-	set extendSession(endSession: Date) {
+	set extendStartSession(pauseDifference: number) {
+		this.teamStartTime = addSeconds(this.teamStartTime, pauseDifference);
+	}
+
+	set extendEndSession(endSession: Date) {
 		this.endSessionTime = addSeconds(endSession, 1);
-		console.log(`[setter endSessionTime: ${this.endSessionTime}]`);
+	}
+
+	extendSession({ start, end }: { start: Date; end: Date }) {
+		const pauseDifference =
+			(end.getTime() - start.getTime()) / timeUnits.millies;
+		this.extendStartSession = pauseDifference;
+		this.setTimerTimes();
+		console.dir(this);
+	}
+
+	/** Set variables for timer implementation */
+	setTimerTimes() {
+		this.firstWarningTime = this.firstWarning;
+		this.firstMusicTime = this.firstMusic;
+		this.secondWarningTime = this.secondWarning;
+		this.secondMusicTime = this.secondMusic;
+		this.endWarningTime = this.endWarning;
+		this.endSessionTime = this.endSession;
 	}
 
 	/**
