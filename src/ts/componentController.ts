@@ -200,7 +200,13 @@ export class ComponentController {
 		});
 	}
 
-	timer(timeController: TimeController, progressComplete: boolean): Date {
+	timer(
+		timeController: TimeController,
+		progressComplete: boolean
+	): {
+		lastLoop: Date;
+		progressComplete: boolean;
+	} {
 		/**
 		 * @Description Get the current time. If `warp` is defined, manipulate time for debug or demo purposes.
 		 * @parameters for `warpJump`: current time and previous time.
@@ -329,7 +335,12 @@ export class ComponentController {
 		// Reference value (Not used)
 		this.iterator++;
 
-		return this.before;
+		const passBack = {
+			lastLoop: this.before,
+			progressComplete: progressComplete,
+		};
+
+		return passBack;
 	}
 
 	//! startTimer() Moved to main.ts

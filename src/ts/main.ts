@@ -182,10 +182,12 @@ function startTimer(timeController: TimeController) {
 					lastLoop = pauseTimer(timeController, lastLoop);
 				}
 			} else {
-				lastLoop = componentController.timer(
+				const passBack = componentController.timer(
 					timeController,
-					parameters.progressComplete //! Not needed (when did we add)?
+					parameters.progressComplete
 				);
+				lastLoop = passBack.lastLoop;
+				parameters.progressComplete = passBack.progressComplete;
 			}
 
 			// Here 241004: Something to set state of active indicator goes here. Switch that falls through to set a data-state attribute?
