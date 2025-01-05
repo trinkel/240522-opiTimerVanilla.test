@@ -220,22 +220,4 @@ export function handleControlBlockClick<T extends ButtonKey>(
 		default:
 	}
 	return clickedButton;
-
-	// const et = event.target as HTMLElement;
-	// console.dir(et);
-	// if (et) {
-	// 	et.getAttribute('id') == 'previous-team'
-	// 		? console.log(`Previous Team`)
-	// 		: console.log(event.target);
-	// } else {
-	// 	null;
-	// }
 }
-
-// !DELETE
-// export function tellParam(parameters: Parameters) {
-// 	console.log(`[controlButton] ${parameters.groupStartTime}`);
-// 	const startTime = new Date();
-// 	parameters.groupStartTime = startTime;
-// 	console.log(`[controlButton] ${parameters.groupStartTime}`);
-// }
