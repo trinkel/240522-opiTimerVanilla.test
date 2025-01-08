@@ -136,6 +136,7 @@ async function waitTimer(): Promise<void> {
 
 // Start a group of teams
 async function startPracticeGroup(timeController: TimeController) {
+	parameters.idle = false;
 	try {
 		for (let i = 0; i < parameters.numberTeams; i++) {
 			console.log(
@@ -166,6 +167,10 @@ async function startPracticeGroup(timeController: TimeController) {
 	} catch (error) {
 		console.log((error as Error).message);
 	}
+
+	// Reset timers
+	parameters.resetTimers();
+	waitTimer();
 
 	//! This one will be held back
 	console.log(`---End of Async function---`);

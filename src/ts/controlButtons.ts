@@ -142,54 +142,20 @@ export function handleControlBlockClick<T extends ButtonKey>(
 			break;
 
 		case 'current-start':
-			if (
-				(event.target as HTMLElement).getAttribute('data-state') === 'paused'
-			) {
-				// Paused to running
-				controlBlockButtons.currentStartIcon.element
-					? controlBlockButtons.currentStartIcon.element.setAttribute(
-							'name',
-							'pause-fill'
-					  )
-					: elementError('currentStartIcon', 'controlButtons: currentStart');
-				if (controlBlockButtons.currentStart.element) {
-					controlBlockButtons.currentStart.element.setAttribute(
-						'aria-label',
-						'Pause session'
-					);
-					controlBlockButtons.currentStart.element.setAttribute(
-						'data-state',
-						'running'
-					);
+			if ((event.target as HTMLElement).getAttribute('data-state')) {
+				const state: ButtonStateMap['currentStart'] = (
+					event.target as HTMLElement
+				).getAttribute('data-state') as ButtonStateMap['currentStart'];
+
+				if (state === 'paused') {
+					handleCurrentStart('start');
 				} else {
-					elementError('currentStart', 'change data-state and aria-label');
+					handleCurrentStart('pause');
 				}
-				clickedButton.state = 'paused' as ButtonStateMap[T];
-				return clickedButton;
-			} else {
-				// Running to paused
-				controlBlockButtons.currentStartIcon.element
-					? controlBlockButtons.currentStartIcon.element.setAttribute(
-							'name',
-							'play-fill'
-					  )
-					: elementError('currentStartIcon', 'controlButtons: currentStart');
-				if (controlBlockButtons.currentStart.element) {
-					controlBlockButtons.currentStart.element.setAttribute(
-						'aria-label',
-						'Start session'
-					);
-					controlBlockButtons.currentStart.element.setAttribute(
-						'data-state',
-						'paused'
-					);
-				} else {
-					elementError('currentStart', 'change data-state and aria-label');
-				}
-				clickedButton.state = 'running' as ButtonStateMap[T];
+
+				clickedButton.state = state as ButtonStateMap[T];
 				return clickedButton;
 			}
-
 			//! start button
 			// set parameters.groupStartType to manual
 			// set parameters.groupStartTime = now
@@ -220,4 +186,55 @@ export function handleControlBlockClick<T extends ButtonKey>(
 		default:
 	}
 	return clickedButton;
+}
+
+export function handleCurrentStart(state: 'pause' | 'start') {
+	console.log(`handleCurrentStart called with ${state}`);
+	switch (state) {
+		case 'start':
+			// Paused to running
+			console.log(`--handleCurrentStart called with ${state}`);
+			controlBlockButtons.currentStartIcon.element
+				? controlBlockButtons.currentStartIcon.element.setAttribute(
+						'name',
+						'pause-fill'
+				  )
+				: elementError('currentStartIcon', 'controlButtons: currentStart');
+			if (controlBlockButtons.currentStart.element) {
+				controlBlockButtons.currentStart.element.setAttribute(
+					'aria-label',
+					'Pause session'
+				);
+				controlBlockButtons.currentStart.element.setAttribute(
+					'data-state',
+					'running'
+				);
+			} else {
+				elementError('currentStart', 'change data-state and aria-label');
+			}
+			break;
+		case 'pause':
+			// Running to paused
+			console.log(`--handleCurrentStart called with ${state}`);
+			controlBlockButtons.currentStartIcon.element
+				? controlBlockButtons.currentStartIcon.element.setAttribute(
+						'name',
+						'play-fill'
+				  )
+				: elementError('currentStartIcon', 'controlButtons: currentStart');
+			if (controlBlockButtons.currentStart.element) {
+				controlBlockButtons.currentStart.element.setAttribute(
+					'aria-label',
+					'Start session'
+				);
+				controlBlockButtons.currentStart.element.setAttribute(
+					'data-state',
+					'paused'
+				);
+			} else {
+				elementError('currentStart', 'change data-state and aria-label');
+			}
+			break;
+		default:
+	}
 }

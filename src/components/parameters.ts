@@ -14,6 +14,7 @@ import {
 	ClickedButton,
 	controlBlockButtons,
 	handleControlBlockClick,
+	handleCurrentStart,
 } from '../ts/controlButtons';
 import { elementError } from '../utilities/elementError';
 import { futureDate } from '../utilities/timeUtilities';
@@ -414,6 +415,14 @@ export class Parameters {
 					this.idle = true;
 				}
 		}
+	}
+
+	resetTimers(): void {
+		handleCurrentStart('pause');
+		this.scheduleSet = false; // move to nullDate?
+		this.idle = true;
+		this.clocksSet = false;
+		this.progressComplete = false;
 	}
 
 	// ! 241105
