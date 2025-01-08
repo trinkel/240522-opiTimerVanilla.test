@@ -252,3 +252,5 @@ componentController.complete();
  *     // There has to be a start time. If session hasn't started and it's manual, start is now and duration is 0? Then call with duration on start click?
  *     // constructor needs to be rewritten to do what it's doing, but without the loop.
  */
+
+// Added a comment
